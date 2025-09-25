@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/mam9265/FrameLabs/issues"
   },
-  "homepage": "https://github.com/mam9265/FrameLabs#readme"
+  "homepage": "https://github.com/mam9265/FrameLabs#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
