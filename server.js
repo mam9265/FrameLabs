@@ -8,6 +8,7 @@ let community = [];
 //Get Endpoint
 FrameLabs.get('/api/system/community', (req, res) => {
     //Return all the community guides
+    res.json(community);
 })
 
 const PORT = 3000;
