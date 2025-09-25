@@ -1,0 +1,21 @@
+{
+  "name": "framelabs",
+  "version": "1.0.0",
+  "description": "The Official FrameLabs GitHub Repository",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mam9265/FrameLabs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mam9265/FrameLabs/issues"
+  },
+  "homepage": "https://github.com/mam9265/FrameLabs#readme"
+}
