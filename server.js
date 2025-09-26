@@ -20,6 +20,17 @@ FrameLabs.delete('/api/system/community', (req, res) => {
     res.status(204).send();     //204 - No content for successful deletion
 })
 
+//Modify Community Item
+FrameLabs.put('/api/system/community/:id', (req, res) => {
+    const guide = community.find(t => t.id === parseInt(req.params.id)); 
+    if (!guide){
+        return res.status(404).send(`Guide not found.`)
+    }
+    guide.text = req.body.text;
+    res.json (guide);
+    res.status(204).send(`Guide updated.`);
+})
+
 //Port the system runs on :)
 const PORT = 3000;
 FrameLabs.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
