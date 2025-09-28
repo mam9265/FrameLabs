@@ -11,6 +11,31 @@ FrameLabs.get('/api/system/community', (req, res) => {
     res.json(community);
 })
 
+// Make Community Guide 
+let guide = []
+
+app.post('/api/community/guide' , (req , res) => {
+
+    const {title , description }  = req.body;
+
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+
+    
+
+    const newGuide = {
+        id: guide.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      guide.push(newGuide);
+
+      res.status(201).json(newGuide);
+    
+})
+
 //Delete Community Item
 FrameLabs.delete('/api/system/community', (req, res) => {
     //Delete community item
