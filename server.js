@@ -1,16 +1,12 @@
 const express = require('express');
-const mongoose = require('mongoose');
 
 const FrameLabs = express();
 FrameLabs.use(express.json());
 
 //Connect to MongoDB
-mongoose.connect('mongodb+srv://jvw6185_db_user:EAYWIY8dLjvFPJPP@cluster0.wgxd48f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+const connectDB = require('./db.js');
 
+connectDB();
 
 //Array that acts as a "Database"
 let community = [];
