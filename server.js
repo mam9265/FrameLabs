@@ -14,7 +14,7 @@ FrameLabs.get('/api/system/community', (req, res) => {
 // Make Community Guide 
 let guide = []
 
-app.post('/api/community/guide' , (req , res) => {
+FrameLabs.post('/api/community/guide' , (req , res) => {
 
     const {title , description }  = req.body;
 
