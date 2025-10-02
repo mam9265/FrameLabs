@@ -80,6 +80,22 @@ FrameLabs.delete('/api/system/user', (req, res) => {
     res.status(204).send();     //204 - No content for successful deletion
 })
 
+//Make leaderboard score array
+let leaderboard = []
+
+//Get all Leaderboard Scores
+FrameLabs.get('/api/system', (req, res) => {
+    //Return all the leaderboard scores
+    res.json(leaderboard);
+})
+
+//Make an database to store user account info
+let userAccount = []
+
+FrameLabs.get('/api/system/user', (req, res) => {
+    //Return all the user account info
+    res.json(leaderboard);
+})
 
 //Port the system runs on :)
 const PORT = 3000;
