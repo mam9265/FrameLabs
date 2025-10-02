@@ -1,6 +1,12 @@
 const express = require('express');
+
 const FrameLabs = express();
 FrameLabs.use(express.json());
+
+//Connect to MongoDB
+const connectDB = require('./db.js');
+
+connectDB();
 
 //Array that acts as a "Database"
 let community = [];
