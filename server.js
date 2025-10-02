@@ -51,7 +51,6 @@ FrameLabs.delete('/api/system/community', (req, res) => {
     res.status(204).send();     //204 - No content for successful deletion
 })
 
-<<<<<<< Updated upstream
 //Modify Community Item
 FrameLabs.put('/api/system/community/:id', (req, res) => {
     const guide = community.find(t => t.id === parseInt(req.params.id)); 
@@ -61,7 +60,7 @@ FrameLabs.put('/api/system/community/:id', (req, res) => {
     guide.text = req.body.text;
     res.json (guide);
     res.status(204).send(`Guide updated.`);
-=======
+})
 
 //Delete System Item
 FrameLabs.delete('/api/system/system', (req, res) => {
@@ -79,8 +78,8 @@ FrameLabs.delete('/api/system/user', (req, res) => {
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
     user.splice(deleteIndex, 1);
     res.status(204).send();     //204 - No content for successful deletion
->>>>>>> Stashed changes
 })
+
 
 //Port the system runs on :)
 const PORT = 3000;
