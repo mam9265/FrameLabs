@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/api/system/community": {
+    "/api/community/guide": {
       "get": {
         "description": "",
         "responses": {
@@ -20,19 +20,6 @@
           }
         }
       },
-      "delete": {
-        "description": "",
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/api/community/guide": {
       "post": {
         "description": "",
         "parameters": [
@@ -62,7 +49,26 @@
         }
       }
     },
-    "/api/system/community/{id}": {
+    "/api/community/guide/{id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
       "put": {
         "description": "",
         "parameters": [
@@ -98,9 +104,47 @@
         }
       }
     },
-    "/api/system/system": {
+    "/api/community/stage": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/community/trial": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/community/characters": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/system/{id}": {
       "delete": {
         "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "204": {
             "description": "No Content"
@@ -111,15 +155,43 @@
         }
       }
     },
-    "/api/system/user": {
+    "/api/user/{id}": {
       "delete": {
         "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "204": {
             "description": "No Content"
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/system": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
