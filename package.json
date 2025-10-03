@@ -4,7 +4,8 @@
   "description": "The Official FrameLabs GitHub Repository",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "swagger": "node swagger.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,11 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mongodb": "^6.20.0",
-    "mongoose": "^8.18.3"
+    "mongoose": "^8.18.3",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/swagger-ui-express": "^4.1.8"
   }
 }
