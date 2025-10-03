@@ -1,7 +1,11 @@
 const express = require('express');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
+
 const FrameLabs = express();
 FrameLabs.use(express.json());
+FrameLabs.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //Connect to MongoDB
 const connectDB = require('./db.js');
@@ -84,3 +88,4 @@ FrameLabs.delete('/api/system/user', (req, res) => {
 //Port the system runs on :)
 const PORT = 3000;
 FrameLabs.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+FrameLabs.listen(PORT, () => console.log(`API Docs Available at http://localhost:${PORT}/api-docs`));
