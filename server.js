@@ -8,17 +8,24 @@ const connectDB = require('./db.js');
 
 connectDB();
 
-//Array that acts as a "Database"
-let community = [];
+//Databases Used for FrameLab Services
+// Make Community Guide Array
+let communityGuide = []
+// Make Community Stage Array
+let communityStage = []
+//Make Community Trial Array
+let communityTrial = []
+//Make Community Character Character Array
+let communityCharacter = []
+//Make leaderboard score array
+let leaderboard = []
+//Make an database to store user account info
+let userAccount = []
 
-//Get Endpoint
-FrameLabs.get('/api/system/community', (req, res) => {
-    //Return all the community guides
-    res.json(community);
+//Return all the community guides
+FrameLabs.get('/api/community/guide', (req, res) => {
+    res.json(communityGuide);
 })
-
-// Make Community Guide 
-let guide = []
 
 FrameLabs.post('/api/community/guide' , (req , res) => {
 
@@ -27,43 +34,55 @@ FrameLabs.post('/api/community/guide' , (req , res) => {
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-
-    
-
     const newGuide = {
-        id: guide.length + 1,
+        id: communityGuide.length + 1,
         title,
         description,
         createdAt: new Date()
       };
-      guide.push(newGuide);
+      communityGuide.push(newGuide);
 
       res.status(201).json(newGuide);
     
 })
 
-//Delete Community Item
-FrameLabs.delete('/api/system/community', (req, res) => {
+//Delete Community Guide
+FrameLabs.delete('/api/community/guide/:id', (req, res) => {
     //Delete community item
-    const deleteIndex = community.findIndex(t => t.id === parseInt(req.params.id));
+    const deleteIndex = communityGuide.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    community.splice(deleteIndex, 1);
+    communityGuide.splice(deleteIndex, 1);
     res.status(204).send();     //204 - No content for successful deletion
 })
 
-//Modify Community Item
-FrameLabs.put('/api/system/community/:id', (req, res) => {
-    const guide = community.find(t => t.id === parseInt(req.params.id)); 
+//Modify Community Guide
+FrameLabs.put('/api/community/guide/:id', (req, res) => {
+    const guide = communityGuide.find(t => t.id === parseInt(req.params.id)); 
     if (!guide){
         return res.status(404).send(`Guide not found.`)
     }
     guide.text = req.body.text;
-    res.json (guide);
+    res.json (communityGuide);
     res.status(204).send(`Guide updated.`);
 })
 
+//Return all Community Stages
+FrameLabs.get('/api/community/stage', (req, res) => {
+    res.json(communityStage);
+})
+
+//Return all Community Trials
+FrameLabs.get('/api/community/trial', (req, res) => {
+    res.json(communityTrial);
+})
+
+//Return all Community Characters
+FrameLabs.get('/api/community/characters', (req, res) => {
+    res.json(communityCharacter);
+})
+
 //Delete System Item
-FrameLabs.delete('/api/system/system', (req, res) => {
+FrameLabs.delete('/api/system/:id', (req, res) => {
     //Delete system item
     const deleteIndex = system.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
@@ -72,7 +91,7 @@ FrameLabs.delete('/api/system/system', (req, res) => {
 })
 
 //Delete User Item
-FrameLabs.delete('/api/system/user', (req, res) => {
+FrameLabs.delete('/api/user/:id', (req, res) => {
     //Delete user item
     const deleteIndex = user.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
@@ -80,23 +99,17 @@ FrameLabs.delete('/api/system/user', (req, res) => {
     res.status(204).send();     //204 - No content for successful deletion
 })
 
-//Make leaderboard score array
-let leaderboard = []
-
 //Get all Leaderboard Scores
 FrameLabs.get('/api/system', (req, res) => {
     //Return all the leaderboard scores
     res.json(leaderboard);
 })
 
-//Make an database to store user account info
-let userAccount = []
-
-FrameLabs.get('/api/system/user', (req, res) => {
+FrameLabs.get('/api/user', (req, res) => {
     //Return all the user account info
-    res.json(leaderboard);
+    res.json(userAccount);
 })
 
-//Port the system runs on :)
+//Port the system runs on
 const PORT = 3000;
 FrameLabs.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
