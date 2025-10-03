@@ -57,7 +57,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "int"
+            "type": "string"
           }
         ],
         "responses": {
@@ -76,7 +76,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "int"
+            "type": "string"
           },
           {
             "name": "body",
@@ -142,7 +142,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "int"
+            "type": "string"
           }
         ],
         "responses": {
@@ -163,7 +163,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "int"
+            "type": "string"
           }
         ],
         "responses": {
