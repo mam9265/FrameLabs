@@ -14,60 +14,29 @@ connectDB();
 
 //Databases Used for FrameLab Services
 // Make Community Guide Array
-let communityGuide = []
+let communityGuide = [];
 // Make Community Stage Array
-let communityStage = []
+let communityStage = [];
 //Make Community Trial Array
-let communityTrial = []
+let communityTrial = [];
 //Make Community Character Character Array
-let communityCharacter = []
+let communityCharacter = [];
+//Make an Array to Display All Playstyles
+let playStyles = [];
+//Make a Combo Trial Array
+let systemTrial = [];
+//Make a Tutorial Array
+let systemTutorial = [];
 //Make leaderboard score array
-let leaderboard = []
+let leaderboard = [];
 //Make an database to store user account info
-let userAccount = []
+let userAccount = [];
+//Make Button Mapping Arrau
+let buttonMapping = [];
 
 //Return all the community guides
 FrameLabs.get('/api/community/guide', (req, res) => {
     res.json(communityGuide);
-})
-
-FrameLabs.post('/api/community/guide' , (req , res) => {
-
-    const {title , description }  = req.body;
-
-    if (!title || !description) {
-        return res.status(400).json({ error: "Title and description are required." });
-      }
-    const newGuide = {
-        id: communityGuide.length + 1,
-        title,
-        description,
-        createdAt: new Date()
-      };
-      communityGuide.push(newGuide);
-
-      res.status(201).json(newGuide);
-    
-})
-
-//Delete Community Guide
-FrameLabs.delete('/api/community/guide/:id', (req, res) => {
-    //Delete community item
-    const deleteIndex = communityGuide.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    communityGuide.splice(deleteIndex, 1);
-    res.status(204).send();     //204 - No content for successful deletion
-})
-
-//Modify Community Guide
-FrameLabs.put('/api/community/guide/:id', (req, res) => {
-    const guide = communityGuide.find(t => t.id === parseInt(req.params.id)); 
-    if (!guide){
-        return res.status(404).send(`Guide not found.`)
-    }
-    guide.text = req.body.text;
-    res.json (communityGuide);
-    res.status(204).send(`Guide updated.`);
 })
 
 //Return all Community Stages
@@ -83,6 +52,37 @@ FrameLabs.get('/api/community/trial', (req, res) => {
 //Return all Community Characters
 FrameLabs.get('/api/community/characters', (req, res) => {
     res.json(communityCharacter);
+})
+
+//Return all different playstyles
+FrameLabs.get('api/system/playstyle', (req, res) => {
+    res.json(playStyles);
+})
+
+//Return all Combo Trails
+FrameLabs.get('api/system/trials', (req, res) => {
+    res.json(systemTrial);
+})
+
+//Return all available Tutorials
+FrameLabs.get('api/system/tutorial', (req, res) => {
+    res.json(systemTutorial);
+})
+
+//Get all Leaderboard Scores
+FrameLabs.get('/api/system/leaderboard', (req, res) => {
+    //Return all the leaderboard scores
+    res.json(leaderboard);
+})
+
+FrameLabs.get('/api/user/account', (req, res) => {
+    //Return all the user account info
+    res.json(userAccount);
+})
+
+FrameLabs.get('api/user/controller', (req, res) => {
+    //Return all the user's preset button mapping
+    res.json(buttonMapping);
 })
 
 //Delete System Item
@@ -103,15 +103,44 @@ FrameLabs.delete('/api/user/:id', (req, res) => {
     res.status(204).send();     //204 - No content for successful deletion
 })
 
-//Get all Leaderboard Scores
-FrameLabs.get('/api/system', (req, res) => {
-    //Return all the leaderboard scores
-    res.json(leaderboard);
+//Delete Community Guide
+FrameLabs.delete('/api/community/guide/:id', (req, res) => {
+    //Delete community item
+    const deleteIndex = communityGuide.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    communityGuide.splice(deleteIndex, 1);
+    res.status(204).send();     //204 - No content for successful deletion
 })
 
-FrameLabs.get('/api/user', (req, res) => {
-    //Return all the user account info
-    res.json(userAccount);
+
+FrameLabs.post('/api/community/guide' , (req , res) => {
+
+    const {title , description }  = req.body;
+
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newGuide = {
+        id: communityGuide.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      communityGuide.push(newGuide);
+
+      res.status(201).json(newGuide);
+    
+})
+
+//Modify Community Guide
+FrameLabs.put('/api/community/guide/:id', (req, res) => {
+    const guide = communityGuide.find(t => t.id === parseInt(req.params.id)); 
+    if (!guide){
+        return res.status(404).send(`Guide not found.`)
+    }
+    guide.text = req.body.text;
+    res.json (communityGuide);
+    res.status(204).send(`Guide updated.`);
 })
 
 //Port the system runs on
