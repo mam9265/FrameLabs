@@ -351,11 +351,6 @@ FrameLabs.put('/api/system/user/:id/picture', (req, res) => {
     res.status(200).json(user);
 });
 
-//Get all Leaderboard Scores
-FrameLabs.get('/api/system', (req, res) => {
-    //Return all the leaderboard scores
-    res.json(leaderboard);
-})
 
 //Port the system runs on
 const PORT = 3000;
