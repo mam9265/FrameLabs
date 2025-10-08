@@ -275,22 +275,6 @@ FrameLabs.put('/api/system/user/:id', (req, res) => {
     res.status(200).json(user);
 });
 
-//Edit Profile Picture
-FrameLabs.put('/api/system/user/:id/picture', (req, res) => {
-    const user = userAccount.find(u => u.id === parseInt(req.params.id));
-    if (!user) return res.status(404).send("User not found.");
-    user.profilePicture = req.body.profilePicture || user.profilePicture;
-    res.status(200).json(user);
-});
-
-//Edit Controller Mapping
-FrameLabs.put('/api/system/user/:id/controller', (req, res) => {
-    const user = userAccount.find(u => u.id === parseInt(req.params.id));
-    if (!user) return res.status(404).send("User not found.");
-    user.controllerMapping = req.body.controllerMapping || user.controllerMapping;
-    res.status(200).json(user);
-});
-
 //Edit a Tutorial
 FrameLabs.put('/api/system/tutorial/:id', (req, res) => {
     const tutorial = system.find(t => t.id === parseInt(req.params.id));
@@ -302,7 +286,7 @@ FrameLabs.put('/api/system/tutorial/:id', (req, res) => {
 //Edit a Combo Trial
 FrameLabs.put('/api/system/combotrial/:id', (req, res) => {
     const trial = system.find(t => t.id === parseInt(req.params.id));
-    if (!trial) return res.status(404).send("Combo Trail not found.");
+    if (!trial) return res.status(404).send("Combo Trial not found.");
     Object.assign(trial, req.body);
     res.status(200).json(trial);
 });
