@@ -57,7 +57,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
@@ -76,7 +76,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           },
           {
             "name": "body",
@@ -122,7 +122,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
@@ -153,7 +153,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
@@ -184,7 +184,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
@@ -205,7 +205,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
@@ -226,7 +226,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
@@ -267,7 +267,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
@@ -288,7 +288,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           },
           {
             "name": "body",
@@ -321,7 +321,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           },
           {
             "name": "body",
@@ -354,7 +354,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
@@ -375,7 +375,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "int"
           }
         ],
         "responses": {
