@@ -162,7 +162,7 @@ FrameLabs.get('/api/system/tutorial/:id', (req, res) => {
     const tutorialID = req.params.id
     const tutorial = systemTutorial.find(t => t.id === trialID);
     if (trial) {
-        res.json(systemTrial);
+        res.json(systemTutorial);
     } else {
         res.status(404).json({ error: 'Tutorial not found' });
     }
