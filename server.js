@@ -211,10 +211,26 @@ FrameLabs.get('api/system/trials', (req, res) => {
     res.json(systemTrial);
 })
 
+//Edit a Combo Trial
+FrameLabs.put('/api/system/combotrial/:id', (req, res) => {
+    const trial = system.find(t => t.id === parseInt(req.params.id));
+    if (!trial) return res.status(404).send("Combo Trial not found.");
+    Object.assign(trial, req.body);
+    res.status(200).json(trial);
+});
+
 //Return all available Tutorials
 FrameLabs.get('api/system/tutorial', (req, res) => {
     res.json(systemTutorial);
 })
+
+//Edit a Tutorial
+FrameLabs.put('/api/system/tutorial/:id', (req, res) => {
+    const tutorial = system.find(t => t.id === parseInt(req.params.id));
+    if (!tutorial) return res.status(404).send("Tutorial not found.");
+    Object.assign(tutorial, req.body);
+    res.status(200).json(tutorial);
+});
 
 //Get all Leaderboard Scores
 FrameLabs.get('/api/system/leaderboard', (req, res) => {
@@ -227,10 +243,26 @@ FrameLabs.get('/api/user/account', (req, res) => {
     res.json(userAccount);
 })
 
+//Update User Account
+FrameLabs.put('/api/system/user/:id', (req, res) => {
+    const user = userAccount.find(u => u.id === parseInt(req.params.id));
+    if (!user) return res.status(404).send("User not found.");
+    Object.assign(user, req.body);
+    res.status(200).json(user);
+});
+
 FrameLabs.get('api/user/controller', (req, res) => {
     //Return all the user's preset button mapping
     res.json(buttonMapping);
 })
+
+//Edit Controller Mapping
+FrameLabs.put('/api/system/user/:id/controller', (req, res) => {
+    const user = userAccount.find(u => u.id === parseInt(req.params.id));
+    if (!user) return res.status(404).send("User not found.");
+    user.controllerMapping = req.body.controllerMapping || user.controllerMapping;
+    res.status(200).json(user);
+});
 
 //Update a Community Character
 FrameLabs.put('/api/community/character/:id', (req, res) => {
@@ -248,48 +280,11 @@ FrameLabs.put('/api/system/user/:id/picture', (req, res) => {
     res.status(200).json(user);
 });
 
-//Edit Controller Mapping
-FrameLabs.put('/api/system/user/:id/controller', (req, res) => {
-    const user = userAccount.find(u => u.id === parseInt(req.params.id));
-    if (!user) return res.status(404).send("User not found.");
-    user.controllerMapping = req.body.controllerMapping || user.controllerMapping;
-    res.status(200).json(user);
-});
-
 //Get all Leaderboard Scores
 FrameLabs.get('/api/system', (req, res) => {
     //Return all the leaderboard scores
     res.json(leaderboard);
 })
-
-FrameLabs.get('/api/user', (req, res) => {
-    //Return all the user account info
-    res.json(userAccount);
-})
-
-//Update User Account
-FrameLabs.put('/api/system/user/:id', (req, res) => {
-    const user = userAccount.find(u => u.id === parseInt(req.params.id));
-    if (!user) return res.status(404).send("User not found.");
-    Object.assign(user, req.body);
-    res.status(200).json(user);
-});
-
-//Edit a Tutorial
-FrameLabs.put('/api/system/tutorial/:id', (req, res) => {
-    const tutorial = system.find(t => t.id === parseInt(req.params.id));
-    if (!tutorial) return res.status(404).send("Tutorial not found.");
-    Object.assign(tutorial, req.body);
-    res.status(200).json(tutorial);
-});
-
-//Edit a Combo Trial
-FrameLabs.put('/api/system/combotrial/:id', (req, res) => {
-    const trial = system.find(t => t.id === parseInt(req.params.id));
-    if (!trial) return res.status(404).send("Combo Trial not found.");
-    Object.assign(trial, req.body);
-    res.status(200).json(trial);
-});
 
 //Port the system runs on
 const PORT = 3000;
