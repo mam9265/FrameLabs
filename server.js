@@ -160,8 +160,8 @@ FrameLabs.get('api/system/tutorial', (req, res) => {
 //Open a Specific Tutorial
 FrameLabs.get('/api/system/tutorial/:id', (req, res) => {
     const tutorialID = req.params.id
-    const tutorial = systemTutorial.find(t => t.id === trialID);
-    if (trial) {
+    const tutorial = systemTutorial.find(t => t.id === tutorialID);
+    if (tutorial) {
         res.json(systemTutorial);
     } else {
         res.status(404).json({ error: 'Tutorial not found' });
@@ -172,6 +172,17 @@ FrameLabs.get('/api/system/tutorial/:id', (req, res) => {
 FrameLabs.get('/api/system/leaderboard', (req, res) => {
     //Return all the leaderboard scores
     res.json(leaderboard);
+})
+
+//Get a leaderboard score
+FrameLabs.get('/api/system/leaderboard', (req, res) => {
+    const leaderID = req.params.id
+    const leader = leaderboard.find(t => t.id === leaderID);
+    if (leader) {
+        res.json(Leaderboard);
+    } else {
+        res.status(404).json({ error: 'Leaderboard Score not found' });
+    }
 })
 
 //Get all user account information
