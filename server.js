@@ -36,57 +36,104 @@ let userAccount = [];
 //Make Button Mapping Arrau
 let buttonMapping = [];
 
-//Return all the community guides
+//Return all the Community Guides
 FrameLabs.get('/api/community/guide', (req, res) => {
     res.json(communityGuide);
 })
+
+//Get a Community Guide
+FrameLabs.get('/api/community/guide/:id', (req, res) => {
+    const guideID = req.params.id
+    const guide = communityGuide.find(t => t.id === guideID);
+    if (guide) {
+        res.json(communityGuide);
+    } else {
+        res.status(404).json({ error: 'Guide not found' });
+    }
+})
+
 
 //Return all Community Stages
 FrameLabs.get('/api/community/stage', (req, res) => {
     res.json(communityStage);
 })
 
-//Update a Community Stage
-FrameLabs.put('/api/community/stage/:id', (req, res) => {
-    const stage = communityStage.find(s => s.id === parseInt(req.params.id));
-    if (!stage) return res.status(404).send("Stage not found.");
-    Object.assign(stage, req.body);
-    res.status(200).json(stage);
-});
+//Get a Community Stage
+FrameLabs.get('/api/community/stage/:id', (req, res) => {
+    const stageID = req.params.id
+    const stage = communityStage.find(t => t.id === stageID);
+    if (stage) {
+        res.json(communityStage);
+    } else {
+        res.status(404).json({ error: 'Stage not found' });
+    }
+})
+
 
 //Return all Community Trials
 FrameLabs.get('/api/community/trial', (req, res) => {
     res.json(communityTrial);
 })
 
-//Edit a Community Trial
-FrameLabs.put('/api/community/trial/:id', (req, res) => {
-    const trial = communityTrial.find(t => t.id === parseInt(req.params.id));
-    if (!trial) return res.status(404).send("Trial not found.");
-    Object.assign(trial, req.body);
-    res.status(200).json(trial);
-});
+//Open a Community Trial
+FrameLabs.get('/api/community/trial/:id', (req, res) => {
+    const trialID = req.params.id
+    const trial = communityTrial.find(t => t.id === trialID);
+    if (trial) {
+        res.json(communityTrial);
+    } else {
+        res.status(404).json({ error: 'Trial not found' });
+    }
+})
 
 //Return all Community Characters
 FrameLabs.get('/api/community/characters', (req, res) => {
     res.json(communityCharacter);
 })
 
-//Update a Community Character
-FrameLabs.put('/api/community/character/:id', (req, res) => {
-    const character = communityCharacter.find(c => c.id === parseInt(req.params.id));
-    if (!character) return res.status(404).send("Character not found.");
-    Object.assign(character, req.body);
-    res.status(200).json(character);
-});
+//Get a Community Character
+FrameLabs.get('/api/community/characters/:id', (req, res) => {
+    const charaID = req.params.id
+    const chara = communityCharacter.find(t => t.id === charaID);
+    if (chara) {
+        res.json(communityCharacter);
+    } else {
+        res.status(404).json({ error: 'Character not found' });
+    }
+})
+
+
 //Return all different playstyles
 FrameLabs.get('api/system/playstyle', (req, res) => {
     res.json(playStyles);
 })
 
+//Get a Specific Playstyle
+FrameLabs.get('/api/system/playstyle/:id', (req, res) => {
+    const styleID = req.params.id
+    const style = playStyles.find(t => t.id === styleID);
+    if (style) {
+        res.json(communityTrial);
+    } else {
+        res.status(404).json({ error: 'Style not found' });
+    }
+})
+
+
 //Return all Playable Characters
 FrameLabs.get('api/system/characters', (req, res) => {
     res.json(systemCharacter);
+})
+
+//Get a Playable Character
+FrameLabs.get('/api/system/characters/:id', (req, res) => {
+    const charaID = req.params.id
+    const chara = systemCharacter.find(t => t.id === charaID);
+    if (chara) {
+        res.json(communityCharacter);
+    } else {
+        res.status(404).json({ error: 'Character not found' });
+    }
 })
 
 //Return all Combo Trails
@@ -94,9 +141,31 @@ FrameLabs.get('api/system/trials', (req, res) => {
     res.json(systemTrial);
 })
 
+//Open a Combo Trial
+FrameLabs.get('/api/system/trials/:id', (req, res) => {
+    const trialID = req.params.id
+    const trial = systemTrial.find(t => t.id === trialID);
+    if (trial) {
+        res.json(systemTrial);
+    } else {
+        res.status(404).json({ error: 'Trial not found' });
+    }
+})
+
 //Return all available Tutorials
 FrameLabs.get('api/system/tutorial', (req, res) => {
     res.json(systemTutorial);
+})
+
+//Open a Specific Tutorial
+FrameLabs.get('/api/system/tutorial/:id', (req, res) => {
+    const tutorialID = req.params.id
+    const tutorial = systemTutorial.find(t => t.id === trialID);
+    if (trial) {
+        res.json(systemTutorial);
+    } else {
+        res.status(404).json({ error: 'Tutorial not found' });
+    }
 })
 
 //Get all Leaderboard Scores
@@ -105,11 +174,13 @@ FrameLabs.get('/api/system/leaderboard', (req, res) => {
     res.json(leaderboard);
 })
 
+//Get all user account information
 FrameLabs.get('/api/user/account', (req, res) => {
     //Return all the user account info
     res.json(userAccount);
 })
 
+//Get all button mapping presets
 FrameLabs.get('api/user/controller', (req, res) => {
     //Return all the user's preset button mapping
     res.json(buttonMapping);
