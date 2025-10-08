@@ -23,6 +23,8 @@ let communityTrial = [];
 let communityCharacter = [];
 //Make an Array to Display All Playstyles
 let playStyles = [];
+//Display all avaiable fighters
+let systemCharacter = [];
 //Make a Combo Trial Array
 let systemTrial = [];
 //Make a Tutorial Array
@@ -57,6 +59,11 @@ FrameLabs.get('/api/community/characters', (req, res) => {
 //Return all different playstyles
 FrameLabs.get('api/system/playstyle', (req, res) => {
     res.json(playStyles);
+})
+
+//Return all Playable Characters
+FrameLabs.get('api/system/characters', (req, res) => {
+    res.json(systemCharacter);
 })
 
 //Return all Combo Trails
