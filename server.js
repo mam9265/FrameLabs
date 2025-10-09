@@ -43,7 +43,7 @@ FrameLabs.get('/api/community/guide', (req, res) => {
 
 //Get a Community Guide
 FrameLabs.get('/api/community/guide/:id', (req, res) => {
-    const guideID = req.params.id
+    const guideID = req.params.id;
     const guide = communityGuide.find(t => t.id === guideID);
     if (guide) {
         res.json(communityGuide);
@@ -60,7 +60,7 @@ FrameLabs.get('/api/community/stage', (req, res) => {
 
 //Get a Community Stage
 FrameLabs.get('/api/community/stage/:id', (req, res) => {
-    const stageID = req.params.id
+    const stageID = req.params.id;
     const stage = communityStage.find(t => t.id === stageID);
     if (stage) {
         res.json(communityStage);
@@ -69,7 +69,6 @@ FrameLabs.get('/api/community/stage/:id', (req, res) => {
     }
 })
 
-
 //Return all Community Trials
 FrameLabs.get('/api/community/trial', (req, res) => {
     res.json(communityTrial);
@@ -77,7 +76,7 @@ FrameLabs.get('/api/community/trial', (req, res) => {
 
 //Open a Community Trial
 FrameLabs.get('/api/community/trial/:id', (req, res) => {
-    const trialID = req.params.id
+    const trialID = req.params.id;
     const trial = communityTrial.find(t => t.id === trialID);
     if (trial) {
         res.json(communityTrial);
@@ -93,7 +92,7 @@ FrameLabs.get('/api/community/characters', (req, res) => {
 
 //Get a Community Character
 FrameLabs.get('/api/community/characters/:id', (req, res) => {
-    const charaID = req.params.id
+    const charaID = req.params.id;
     const chara = communityCharacter.find(t => t.id === charaID);
     if (chara) {
         res.json(communityCharacter);
@@ -102,7 +101,6 @@ FrameLabs.get('/api/community/characters/:id', (req, res) => {
     }
 })
 
-
 //Return all different playstyles
 FrameLabs.get('api/system/playstyle', (req, res) => {
     res.json(playStyles);
@@ -110,7 +108,7 @@ FrameLabs.get('api/system/playstyle', (req, res) => {
 
 //Get a Specific Playstyle
 FrameLabs.get('/api/system/playstyle/:id', (req, res) => {
-    const styleID = req.params.id
+    const styleID = req.params.id;
     const style = playStyles.find(t => t.id === styleID);
     if (style) {
         res.json(communityTrial);
@@ -119,7 +117,6 @@ FrameLabs.get('/api/system/playstyle/:id', (req, res) => {
     }
 })
 
-
 //Return all Playable Characters
 FrameLabs.get('api/system/characters', (req, res) => {
     res.json(systemCharacter);
@@ -127,7 +124,7 @@ FrameLabs.get('api/system/characters', (req, res) => {
 
 //Get a Playable Character
 FrameLabs.get('/api/system/characters/:id', (req, res) => {
-    const charaID = req.params.id
+    const charaID = req.params.id;
     const chara = systemCharacter.find(t => t.id === charaID);
     if (chara) {
         res.json(communityCharacter);
@@ -143,7 +140,7 @@ FrameLabs.get('api/system/trials', (req, res) => {
 
 //Open a Combo Trial
 FrameLabs.get('/api/system/trials/:id', (req, res) => {
-    const trialID = req.params.id
+    const trialID = req.params.id;
     const trial = systemTrial.find(t => t.id === trialID);
     if (trial) {
         res.json(systemTrial);
@@ -159,7 +156,7 @@ FrameLabs.get('api/system/tutorial', (req, res) => {
 
 //Open a Specific Tutorial
 FrameLabs.get('/api/system/tutorial/:id', (req, res) => {
-    const tutorialID = req.params.id
+    const tutorialID = req.params.id;
     const tutorial = systemTutorial.find(t => t.id === tutorialID);
     if (tutorial) {
         res.json(systemTutorial);
@@ -175,8 +172,8 @@ FrameLabs.get('/api/system/leaderboard', (req, res) => {
 })
 
 //Get a leaderboard score
-FrameLabs.get('/api/system/leaderboard', (req, res) => {
-    const leaderID = req.params.id
+FrameLabs.get('/api/system/leaderboard/:id', (req, res) => {
+    const leaderID = req.params.id;
     const leader = leaderboard.find(t => t.id === leaderID);
     if (leader) {
         res.json(Leaderboard);
@@ -186,44 +183,68 @@ FrameLabs.get('/api/system/leaderboard', (req, res) => {
 })
 
 //Get all user account information
-FrameLabs.get('/api/user/account', (req, res) => {
+FrameLabs.get('/api/user/:id/account', (req, res) => {
     //Return all the user account info
     res.json(userAccount);
 })
 
 //Get all button mapping presets
-FrameLabs.get('api/user/controller', (req, res) => {
+FrameLabs.get('api/user/:id/controller', (req, res) => {
     //Return all the user's preset button mapping
     res.json(buttonMapping);
 })
 
-//Delete System Item
-FrameLabs.delete('/api/system/:id', (req, res) => {
-    //Delete system item
-    const deleteIndex = system.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    system.splice(deleteIndex, 1);
-    res.status(204).send();     //204 - No content for successful deletion
-})
-
-//Delete User Item
-FrameLabs.delete('/api/user/:id', (req, res) => {
-    //Delete user item
-    const deleteIndex = user.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    user.splice(deleteIndex, 1);
-    res.status(204).send();     //204 - No content for successful deletion
+//Get a specific button preset
+FrameLabs.get('api/user/:id/controller/:id', (req,res) =>{
+    const presetID = req.params.id;
+    const preset = buttonMapping.find(t => t.id === presetID);
+    if (preset) {
+        res.json(buttonMapping);
+    } else {
+        res.status(404).json({ error: 'Preset Not Found'});
+    }
 })
 
 //Delete Community Guide
 FrameLabs.delete('/api/community/guide/:id', (req, res) => {
-    //Delete community item
     const deleteIndex = communityGuide.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
     communityGuide.splice(deleteIndex, 1);
     res.status(204).send();     //204 - No content for successful deletion
 })
 
+//Delete Community Stage
+FrameLabs.delete('/api/community/stage/:id', (req, res) => {
+    const deleteIndex = communityStage.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    communityStage.splice(deleteIndex, 1);
+    res.status(204).send();     //204 - No content for successful deletion
+})
+
+//Delete Community Trial
+FrameLabs.delete('/api/community/trial/:id', (req, res) => {
+    const deleteIndex = communityTrial.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    communityTrial.splice(deleteIndex, 1);
+    res.status(204).send();     //204 - No content for successful deletion
+})
+
+//Delete Community Character
+FrameLabs.delete('/api/community/characters/:id', (req, res) => {
+    const deleteIndex = communityCharacter.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    communityCharacter.splice(deleteIndex, 1);
+    res.status(204).send();     //204 - No content for successful deletion
+})
+
+//Delete System Tutorial
+FrameLabs.delete('/api/system/tutorial/:id', (req, res) => {
+    //Delete system item
+    const deleteIndex = systemTutorial.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    systemTutorial.splice(deleteIndex, 1);
+    res.status(204).send();     //204 - No content for successful deletion
+})
 
 FrameLabs.post('/api/community/guide' , (req , res) => {
 
@@ -255,16 +276,6 @@ FrameLabs.put('/api/community/guide/:id', (req, res) => {
     res.status(204).send(`Guide updated.`);
 })
 
-//Return all Community Stages
-FrameLabs.get('/api/community/stage', (req, res) => {
-    res.json(communityStage);
-})
-
-//Return all Community Trials
-FrameLabs.get('/api/community/trial', (req, res) => {
-    res.json(communityTrial);
-})
-
 //Edit a Community Trial
 FrameLabs.put('/api/community/trial/:id', (req, res) => {
     const trial = communityTrial.find(t => t.id === parseInt(req.params.id));
@@ -273,38 +284,13 @@ FrameLabs.put('/api/community/trial/:id', (req, res) => {
     res.status(200).json(trial);
 });
 
-//Return all Community Characters
-FrameLabs.get('/api/community/characters', (req, res) => {
-    res.json(communityCharacter);
-})
-
-//Return all different playstyles
-FrameLabs.get('api/system/playstyle', (req, res) => {
-    res.json(playStyles);
-})
-
-//Return all Playable Characters
-FrameLabs.get('api/system/characters', (req, res) => {
-    res.json(systemCharacter);
-})
-
-//Return all Combo Trails
-FrameLabs.get('api/system/trials', (req, res) => {
-    res.json(systemTrial);
-})
-
 //Edit a Combo Trial
-FrameLabs.put('/api/system/combotrial/:id', (req, res) => {
+FrameLabs.put('/api/system/trial/:id', (req, res) => {
     const trial = system.find(t => t.id === parseInt(req.params.id));
     if (!trial) return res.status(404).send("Combo Trial not found.");
     Object.assign(trial, req.body);
     res.status(200).json(trial);
 });
-
-//Return all available Tutorials
-FrameLabs.get('api/system/tutorial', (req, res) => {
-    res.json(systemTutorial);
-})
 
 //Edit a Tutorial
 FrameLabs.put('/api/system/tutorial/:id', (req, res) => {
@@ -314,17 +300,6 @@ FrameLabs.put('/api/system/tutorial/:id', (req, res) => {
     res.status(200).json(tutorial);
 });
 
-//Get all Leaderboard Scores
-FrameLabs.get('/api/system/leaderboard', (req, res) => {
-    //Return all the leaderboard scores
-    res.json(leaderboard);
-})
-
-FrameLabs.get('/api/user/account', (req, res) => {
-    //Return all the user account info
-    res.json(userAccount);
-})
-
 //Update User Account
 FrameLabs.put('/api/system/user/:id', (req, res) => {
     const user = userAccount.find(u => u.id === parseInt(req.params.id));
@@ -333,13 +308,8 @@ FrameLabs.put('/api/system/user/:id', (req, res) => {
     res.status(200).json(user);
 });
 
-FrameLabs.get('api/user/controller', (req, res) => {
-    //Return all the user's preset button mapping
-    res.json(buttonMapping);
-})
-
 //Edit Controller Mapping
-FrameLabs.put('/api/system/user/:id/controller', (req, res) => {
+FrameLabs.put('/api/system/user/:id/controller/:id', (req, res) => {
     const user = userAccount.find(u => u.id === parseInt(req.params.id));
     if (!user) return res.status(404).send("User not found.");
     user.controllerMapping = req.body.controllerMapping || user.controllerMapping;
