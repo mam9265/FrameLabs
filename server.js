@@ -237,12 +237,57 @@ FrameLabs.delete('/api/community/characters/:id', (req, res) => {
     res.status(204).send();     //204 - No content for successful deletion
 })
 
+//Delete Playstyle
+FrameLabs.delete('/api/system/playstyle/:id', (req, res) => {
+    const deleteIndex = playStyles.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    playStyles.splice(deleteIndex, 1);
+    res.status(204).send();
+})
+
+//Delete Playable Character
+FrameLabs.delete('/api/system/characters/:id', (req, res) => {
+    const deleteIndex = systemCharacter.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    systemCharacter.splice(deleteIndex, 1);
+    res.status(204).send();
+})
+
+FrameLabs.delete('/api/system/trials/:id', (req, res) => {
+    const deleteIndex = systemTrial.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    systemTrial.splice(deleteIndex, 1);
+    res.status(204).send();
+})
+
 //Delete System Tutorial
 FrameLabs.delete('/api/system/tutorial/:id', (req, res) => {
     //Delete system item
     const deleteIndex = systemTutorial.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
     systemTutorial.splice(deleteIndex, 1);
+    res.status(204).send();     //204 - No content for successful deletion
+})
+
+//Remove all Leaderboard Scores
+FrameLabs.delete('/api/system/leaderboard', (req, res) => {
+    leaderboard.length = 0;
+    res.json({ message: 'Leaderboard cleared successfully.' });
+})
+
+//Remove a single Leaderboard Score
+FrameLabs.delete('/api/system/leaderboard/:id', (req, res) => {
+    const deleteIndex = Leaderboard.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    Leaderboard.splice(deleteIndex, 1);
+    res.status(204).send();     //204 - No content for successful deletion
+})
+
+//Remove a button mapping preset
+FrameLabs.get('api/user/:id/controller/:id', (req,res) =>{
+    const deleteIndex = buttonMapping.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    buttonMapping.splice(deleteIndex, 1);
     res.status(204).send();     //204 - No content for successful deletion
 })
 
