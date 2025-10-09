@@ -33,6 +33,8 @@ let systemTutorial = [];
 let leaderboard = [];
 //Make an database to store user account info
 let userAccount = [];
+//Make an account to store the users data
+let user = []
 //Make Button Mapping Arrau
 let buttonMapping = [];
 
@@ -242,7 +244,7 @@ FrameLabs.delete('/api/system/playstyle/:id', (req, res) => {
     const deleteIndex = playStyles.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
     playStyles.splice(deleteIndex, 1);
-    res.status(204).send();
+    res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete Playable Character
@@ -250,14 +252,14 @@ FrameLabs.delete('/api/system/characters/:id', (req, res) => {
     const deleteIndex = systemCharacter.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
     systemCharacter.splice(deleteIndex, 1);
-    res.status(204).send();
+    res.status(204).send();     //204 - No content for successful deletion
 })
 
 FrameLabs.delete('/api/system/trials/:id', (req, res) => {
     const deleteIndex = systemTrial.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
     systemTrial.splice(deleteIndex, 1);
-    res.status(204).send();
+    res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete System Tutorial
@@ -284,10 +286,17 @@ FrameLabs.delete('/api/system/leaderboard/:id', (req, res) => {
 })
 
 //Remove a button mapping preset
-FrameLabs.get('api/user/:id/controller/:id', (req,res) =>{
+FrameLabs.delete('api/user/:id/controller/:id', (req,res) => {
     const deleteIndex = buttonMapping.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
     buttonMapping.splice(deleteIndex, 1);
+    res.status(204).send();     //204 - No content for successful deletion
+})
+
+FrameLabs.delete('api/user/:id', (req, res) => {
+    const deleteIndex = user.findIndex(t => t.id === parseInt(req.params.id));
+    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+    user.splice(deleteIndex, 1);
     res.status(204).send();     //204 - No content for successful deletion
 })
 
@@ -370,7 +379,7 @@ FrameLabs.put('/api/community/character/:id', (req, res) => {
 });
 
 //Edit Profile Picture
-FrameLabs.put('/api/system/user/:id/picture', (req, res) => {
+FrameLabs.put('/api/system/user/:id//account/picture', (req, res) => {
     const user = userAccount.find(u => u.id === parseInt(req.params.id));
     if (!user) return res.status(404).send("User not found.");
     user.profilePicture = req.body.profilePicture || user.profilePicture;
