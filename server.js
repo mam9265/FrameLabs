@@ -43,6 +43,191 @@ FrameLabs.get('/api/community/guide', (req, res) => {
     res.json(communityGuide);
 })
 
+//Create a Community Guide
+FrameLabs.post('/api/community/guide', (req , res) => {
+    const {title , description }  = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newGuide = {
+        id: communityGuide.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      communityGuide.push(newGuide);
+      res.status(201).json(newGuide);
+})
+
+//Create a Community Stage
+FrameLabs.post('/api/community/stage', (req , res) => {
+    const {title , description }  = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newStage = {
+        id: communityStage.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      communityStage.push(newStage);
+      res.status(201).json(newStage);
+})
+
+//Create a Community Trial
+FrameLabs.post('/api/community/trial', (req , res) => {
+    const {title , description }  = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newTrial = {
+        id: communityTrial.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      communityTrial.push(newTrial);
+      res.status(201).json(newTrial);
+})
+
+//Create a Community Character
+FrameLabs.post('/api/community/characters', (req , res) => {
+    const {title , description }  = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newChara = {
+        id: communityCharacter.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      communityCharacter.push(newChara);
+      res.status(201).json(newChara);
+})
+
+//Add a new playstyle
+FrameLabs.post('api/system/playstyle', (req, res) => {
+    const {title , description }  = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newStyle = {
+        id: playStyles.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      communityCharacter.push(newStyle);
+      res.status(201).json(newStyle);
+})
+
+//Add a new playable character
+FrameLabs.post('api/system/characters', (req , res) => {
+    const {title , description }  = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newChara = {
+        id: systemCharacter.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      systemCharacter.push(newChara);
+      res.status(201).json(newChara);
+})
+
+//Add a new Combo Trial
+FrameLabs.post('api/system/trials', (req , res) => {
+    const {title , description }  = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newTrial = {
+        id: systemTrial.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      systemTrial.push(newTrial);
+      res.status(201).json(newTrial);
+})
+
+//Add a new tutorial
+FrameLabs.post('api/system/tutorial', (req , res) => {
+    const {title , description }  = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newTutorial = {
+        id: systemTutorial.length + 1,
+        title,
+        description,
+        createdAt: new Date()
+      };
+      systemTrial.push(newTutorial);
+      res.status(201).json(newTutorial);
+})
+
+//Create a new leaderboard score
+FrameLabs.post('/api/system/leaderboard', (req, res) => {
+    const {player_name , score }  = req.body;
+    if (!player_name || !score) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newLeader = {
+        id: leaderboard.length + 1,
+        player_name,
+        score,
+        createdAt: new Date()
+      };
+      leaderboard.push(newLeader);
+      res.status(201).json(newLeader);
+})
+
+//Create a new user and the user's account
+FrameLabs.post('/api/user', (req, res) => {
+    const {user_name, password, profilePicture } = req.body;
+    if (!user_name || !password || !profilePicture) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newUser = {
+        id: user.length + 1,
+        user_name,
+        password,
+        createdAt: new Date()
+      };
+      User.push(newUser);
+      res.status(201).json(newUser);
+
+    const newAccount = {
+        id: userAccount.length + 1,
+        user_name,
+        profilePicture,
+        createdAt: new Date()
+    };
+    userAccount.push(newAccount);
+    res.status(201).json(newAccount)
+})
+
+//Create a button mapping
+FrameLabs.post('/api/user/:id/controller', (req, res) => {
+    const {preset_name , preset_description }  = req.body;
+    if (!preset_name || !preset_description) {
+        return res.status(400).json({ error: "Title and description are required." });
+      }
+    const newPreset = {
+        id: buttonMapping.length + 1,
+        preset_name,
+        preset_description,
+        createdAt: new Date()
+      };
+      buttonMapping.push(newPreset);
+      res.status(201).json(newPreset);
+})
+
 //Get a Community Guide
 FrameLabs.get('/api/community/guide/:id', (req, res) => {
     const guideID = req.params.id;
@@ -293,31 +478,15 @@ FrameLabs.delete('api/user/:id/controller/:id', (req,res) => {
     res.status(204).send();     //204 - No content for successful deletion
 })
 
+//Delete a user and their account
 FrameLabs.delete('api/user/:id', (req, res) => {
     const deleteIndex = user.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
     user.splice(deleteIndex, 1);
+    userAccount.splice(deleteIndex, 1);
     res.status(204).send();     //204 - No content for successful deletion
 })
 
-FrameLabs.post('/api/community/guide' , (req , res) => {
-
-    const {title , description }  = req.body;
-
-    if (!title || !description) {
-        return res.status(400).json({ error: "Title and description are required." });
-      }
-    const newGuide = {
-        id: communityGuide.length + 1,
-        title,
-        description,
-        createdAt: new Date()
-      };
-      communityGuide.push(newGuide);
-
-      res.status(201).json(newGuide);
-    
-})
 
 //Modify Community Guide
 FrameLabs.put('/api/community/guide/:id', (req, res) => {
@@ -378,14 +547,20 @@ FrameLabs.put('/api/community/character/:id', (req, res) => {
     res.status(200).json(character);
 });
 
+//Update a Playstyle
+FrameLabs.put('/api/system/playstyle/:id', (req, res) => {
+    const Playstyle = playStyles.find(c => c.id === parseInt(req.params.id));
+    if (!Playstyle) return res.status(404).send("Playstyle not found.");
+    Object.assign(Playstyle, req.body);
+    res.status(200).json(Playstyle);
+});
 //Edit Profile Picture
-FrameLabs.put('/api/system/user/:id//account/picture', (req, res) => {
+FrameLabs.put('/api/system/user/:id/account/:id/picture', (req, res) => {
     const user = userAccount.find(u => u.id === parseInt(req.params.id));
     if (!user) return res.status(404).send("User not found.");
     user.profilePicture = req.body.profilePicture || user.profilePicture;
     res.status(200).json(user);
 });
-
 
 //Port the system runs on
 const PORT = 3000;
