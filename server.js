@@ -440,6 +440,7 @@ FrameLabs.delete('/api/system/characters/:id', (req, res) => {
     res.status(204).send();     //204 - No content for successful deletion
 })
 
+//Delete Combo Trial
 FrameLabs.delete('/api/system/trials/:id', (req, res) => {
     const deleteIndex = systemTrial.findIndex(t => t.id === parseInt(req.params.id));
     if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
@@ -499,12 +500,44 @@ FrameLabs.put('/api/community/guide/:id', (req, res) => {
     res.status(204).send(`Guide updated.`);
 })
 
+//Edit a Community Stage
+FrameLabs.put('/api/community/stage/:id', (req, res) => {
+    const stage = communityStage.find(t => t.id === parseInt(req.params.id));
+    if (!stage) return res.status(404).send("Stage not found.");
+    Object.assign(stage, req.body);
+    res.status(200).json(stage);
+});
+
 //Edit a Community Trial
 FrameLabs.put('/api/community/trial/:id', (req, res) => {
     const trial = communityTrial.find(t => t.id === parseInt(req.params.id));
     if (!trial) return res.status(404).send("Trial not found.");
     Object.assign(trial, req.body);
     res.status(200).json(trial);
+});
+
+//Update a Community Character
+FrameLabs.put('/api/community/character/:id', (req, res) => {
+    const character = communityCharacter.find(c => c.id === parseInt(req.params.id));
+    if (!character) return res.status(404).send("Character not found.");
+    Object.assign(character, req.body);
+    res.status(200).json(character);
+});
+
+//Update a Playstyle
+FrameLabs.put('/api/system/playstyle/:id', (req, res) => {
+    const Playstyle = playStyles.find(c => c.id === parseInt(req.params.id));
+    if (!Playstyle) return res.status(404).send("Playstyle not found.");
+    Object.assign(Playstyle, req.body);
+    res.status(200).json(Playstyle);
+});
+
+//Update a playable character
+FrameLabs.put('/api/system/character/:id', (req, res) => {
+    const character = systemCharacter.find(c => c.id === parseInt(req.params.id));
+    if (!character) return res.status(404).send("Character not found.");
+    Object.assign(character, req.body);
+    res.status(200).json(character);
 });
 
 //Edit a Combo Trial
@@ -531,34 +564,19 @@ FrameLabs.put('/api/system/user/:id', (req, res) => {
     res.status(200).json(user);
 });
 
+//Edit Leaderboard Score
+FrameLabs.put('/api/system/leaderboard/:id', (req, res) => {
+    const leaderboard = leaderboard.find(u => u.id === parseInt(req.params.id));
+    if (!leaderboard) return res.status(404).send("Score not found.");
+    Object.assign(leaderboard, req.body);
+    res.status(200).json(leaderboard);
+});
+
 //Edit Controller Mapping
 FrameLabs.put('/api/system/user/:id/controller/:id', (req, res) => {
     const user = userAccount.find(u => u.id === parseInt(req.params.id));
     if (!user) return res.status(404).send("User not found.");
     user.controllerMapping = req.body.controllerMapping || user.controllerMapping;
-    res.status(200).json(user);
-});
-
-//Update a Community Character
-FrameLabs.put('/api/community/character/:id', (req, res) => {
-    const character = communityCharacter.find(c => c.id === parseInt(req.params.id));
-    if (!character) return res.status(404).send("Character not found.");
-    Object.assign(character, req.body);
-    res.status(200).json(character);
-});
-
-//Update a Playstyle
-FrameLabs.put('/api/system/playstyle/:id', (req, res) => {
-    const Playstyle = playStyles.find(c => c.id === parseInt(req.params.id));
-    if (!Playstyle) return res.status(404).send("Playstyle not found.");
-    Object.assign(Playstyle, req.body);
-    res.status(200).json(Playstyle);
-});
-//Edit Profile Picture
-FrameLabs.put('/api/system/user/:id/account/:id/picture', (req, res) => {
-    const user = userAccount.find(u => u.id === parseInt(req.params.id));
-    if (!user) return res.status(404).send("User not found.");
-    user.profilePicture = req.body.profilePicture || user.profilePicture;
     res.status(200).json(user);
 });
 
