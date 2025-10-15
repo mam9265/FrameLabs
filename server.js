@@ -38,11 +38,6 @@ let user = []
 //Make Button Mapping Arrau
 let buttonMapping = [];
 
-//Return all the Community Guides
-FrameLabs.get('/api/community/guide', (req, res) => {
-    res.json(communityGuide);
-})
-
 //Create a Community Guide
 FrameLabs.post('/api/community/guide', (req , res) => {
     const {title , description }  = req.body;
@@ -226,6 +221,11 @@ FrameLabs.post('/api/user/:id/controller', (req, res) => {
       };
       buttonMapping.push(newPreset);
       res.status(201).json(newPreset);
+})
+
+//Return all the Community Guides
+FrameLabs.get('/api/community/guide', (req, res) => {
+    res.json(communityGuide);
 })
 
 //Get a Community Guide
