@@ -13,30 +13,29 @@ const connectDB = require('./db.js');
 connectDB();
 
 //Databases Used for FrameLab Services
-// Make Community Guide Array
-let communityGuide = [];
-// Make Community Stage Array
-let communityStage = [];
-//Make Community Trial Array
-let communityTrial = [];
-//Make Community Character Character Array
-let communityCharacter = [];
-//Make an Array to Display All Playstyles
-let playStyles = [];
-//Display all avaiable fighters
-let systemCharacter = [];
-//Make a Combo Trial Array
-let systemTrial = [];
-//Make a Tutorial Array
-let systemTutorial = [];
-//Make leaderboard score array
-let leaderboard = [];
-//Make an database to store user account info
-let userAccount = [];
-//Make an account to store the users data
-let user = []
-//Make Button Mapping Arrau
-let buttonMapping = [];
+const communityGuide = require('./models/communityGuide');
+
+const communityStage = require('./models/communityStage');
+
+const communityTrial = require('./models/communityTrial');
+
+const communityCharacter= require('./models/communityCharacter');
+
+const playStyles = require('./models/playStyles');
+
+const systemCharacter = require('./models/systemCharacter');
+
+const systemTrial = require('./models/systemTrial');
+
+const systemTutorial = require('./models/systemTutorial');
+
+const leaderboard = require('./models/leaderboard'); 
+
+const userAccount= require('./models/userAccount');
+
+const user = require('./models/user');
+
+const buttonMapping = require('./models/buttonMapping');
 
 //Return all the Community Guides
 FrameLabs.get('/api/community/guide', (req, res) => {
