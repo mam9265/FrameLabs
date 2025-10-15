@@ -1,22 +1,16 @@
 const http = require('http');
 const hostname = '127.0.0.1';
 const port = 300;
+const fs = require('fs')
 
-function loadHTML() {
-    fetch('homePage.html')
-        .then(response => response.text())
-        //.then(text => document.getElementById('homePage').innerHTML = text);
-  }
+const fileContents = fs.readFileSync('homePage.html').toString()
 
 const server = http.createServer((req, res) => {
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
-    //res.end('');
 
-    loadHTML();
-
-    
+    res.end(fileContents);
 
 });
 
