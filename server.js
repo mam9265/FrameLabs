@@ -21,9 +21,9 @@ const communityTrial = require('./models/communityTrial');
 
 const communityCharacter= require('./models/communityCharacter');
 
-const playStyles = require('./models/playStyles');
+const playStyles = require('./models/playStyles.js/index.js');
 
-const systemCharacter = require('./models/systemCharacter');
+const systemCharacter = require('./models/systemCharacter.js/index.js');
 
 const systemTrial = require('./models/systemTrial');
 
