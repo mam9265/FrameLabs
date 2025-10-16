@@ -381,98 +381,92 @@ FrameLabs.get('api/user/:id/controller/:id', async (req,res) =>{
 })
 
 //Delete Community Guide
-FrameLabs.delete('/api/community/guide/:id', (req, res) => {
-    const deleteIndex = communityGuide.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    communityGuide.splice(deleteIndex, 1);
+FrameLabs.delete('/api/community/guide/:id', async (req, res) => {
+    const deleted = await communityGuide.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Guide not found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete Community Stage
-FrameLabs.delete('/api/community/stage/:id', (req, res) => {
-    const deleteIndex = communityStage.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+FrameLabs.delete('/api/community/stage/:id', async (req, res) => {
+    const deleted = await communityStage.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Stage not found.');}
     communityStage.splice(deleteIndex, 1);
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete Community Trial
-FrameLabs.delete('/api/community/trial/:id', (req, res) => {
-    const deleteIndex = communityTrial.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    communityTrial.splice(deleteIndex, 1);
+FrameLabs.delete('/api/community/trial/:id', async (req, res) => {
+    const deleted = await communityTrial.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Trial not found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete Community Character
-FrameLabs.delete('/api/community/characters/:id', (req, res) => {
-    const deleteIndex = communityCharacter.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    communityCharacter.splice(deleteIndex, 1);
+FrameLabs.delete('/api/community/characters/:id', async (req, res) => {
+    const deleted = await communityCharacter.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Character not found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete Playstyle
-FrameLabs.delete('/api/system/playstyle/:id', (req, res) => {
-    const deleteIndex = playStyles.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    playStyles.splice(deleteIndex, 1);
+FrameLabs.delete('/api/system/playstyle/:id', async (req, res) => {
+    const deleted = await playStyles.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Playstyle not found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete Playable Character
-FrameLabs.delete('/api/system/characters/:id', (req, res) => {
-    const deleteIndex = systemCharacter.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    systemCharacter.splice(deleteIndex, 1);
+FrameLabs.delete('/api/system/characters/:id', async (req, res) => {
+    const deleted = await systemCharacter.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Character not found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete Combo Trial
-FrameLabs.delete('/api/system/trials/:id', (req, res) => {
-    const deleteIndex = systemTrial.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    systemTrial.splice(deleteIndex, 1);
+FrameLabs.delete('/api/system/trials/:id', async (req, res) => {
+    const deleted = await systemTrial.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Trial not found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete System Tutorial
-FrameLabs.delete('/api/system/tutorial/:id', (req, res) => {
-    //Delete system item
-    const deleteIndex = systemTutorial.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    systemTutorial.splice(deleteIndex, 1);
+FrameLabs.delete('/api/system/tutorial/:id', async (req, res) => {
+    const deleted = await systemTutorial.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Tutorial not found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Remove all Leaderboard Scores
-FrameLabs.delete('/api/system/leaderboard', (req, res) => {
-    leaderboard.length = 0;
+FrameLabs.delete('/api/system/leaderboard', async (req, res) => {
+    const result = await leaderboard.deleteMany({});
+    if (result.deletedCount === 0) {
+      return res.status(404).send('No leaderboard scores to delete.');
+    }
     res.json({ message: 'Leaderboard cleared successfully.' });
 })
 
 //Remove a single Leaderboard Score
-FrameLabs.delete('/api/system/leaderboard/:id', (req, res) => {
-    const deleteIndex = Leaderboard.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
+FrameLabs.delete('/api/system/leaderboard/:id', async (req, res) => {
+    const deleted = await leaderboard.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Score not found.');}
     Leaderboard.splice(deleteIndex, 1);
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Remove a button mapping preset
-FrameLabs.delete('api/user/:id/controller/:id', (req,res) => {
-    const deleteIndex = buttonMapping.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    buttonMapping.splice(deleteIndex, 1);
+FrameLabs.delete('api/user/:id/controller/:id', async (req,res) => {
+    const deleted = await buttonMapping.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('Given ID was not found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
 //Delete a user and their account
-FrameLabs.delete('api/user/:id', (req, res) => {
-    const deleteIndex = user.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    user.splice(deleteIndex, 1);
-    userAccount.splice(deleteIndex, 1);
+FrameLabs.delete('api/user/:id', async (req, res) => {
+    const deleted = await user.findByIdAndDelete(req.params.id);
+    if (!deleted) {return res.status(404).send('User not found.');}
+    const result = await userAccount.findByIdAndDelete(req.params.id);
+    if (!result) {return res.status(404).send('User account found.');}
     res.status(204).send();     //204 - No content for successful deletion
 })
 
