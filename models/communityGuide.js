@@ -12,6 +12,5 @@ const communityGuideSchema = new mongoose.Schema({
   },
 });
 
-const communityGuide = mongoose.model('CommunityGuide', communityGuideSchema);
+module.exports = mongoose.model('CommunityGuide', communityGuideSchema);
 
-module.exports = communityGuide;
