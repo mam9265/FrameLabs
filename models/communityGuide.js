@@ -1,9 +1,16 @@
 const mongoose = require('mongoose');
 
-const CommunityGuideSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  createdAt: { type: Date, default: Date.now }
+const communityGuideSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+    unique: true,
+  },
 });
 
-module.exports = mongoose.model('CommunityGuide', CommunityGuideSchema);
+module.exports = mongoose.model('CommunityGuide', communityGuideSchema);
+
