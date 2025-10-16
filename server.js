@@ -21,9 +21,9 @@ const communityTrial = require('./models/communityTrial');
 
 const communityCharacter= require('./models/communityCharacter');
 
-const playStyles = require('./models/playStyles.js/index.js');
+const playStyles = require('./models/playStyles.js');
 
-const systemCharacter = require('./models/systemCharacter.js/index.js');
+const systemCharacter = require('./models/systemCharacter.js');
 
 const systemTrial = require('./models/systemTrial');
 
@@ -200,17 +200,28 @@ FrameLabs.post('/api/user/:id/controller', async (req, res) => {
 
 //Return all the Community Guides
 FrameLabs.get('/api/community/guide', async (req, res) => {
-    const guides = await communityGuide.find({});
-    res.json(guides);
-})
+    try {
+      const guides = await communityGuide.find(); 
+      res.status(200).json(guides);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error while fetching guides' });
+    }
+  });
 
 //Get a Community Guide
 FrameLabs.get('/api/community/guide/:id', async (req, res) => {
-    const guide = await communityGuide.findById(req.params.id);
+    try{
+        const guideID = req.params.id;
+        const guide = await communityGuide.findById(guideID);
     if (guide) {
         res.json(guide);
-    } else {
+      } else {
         res.status(404).json({ error: 'Guide not found' });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error while fetching guide' });
     }
 })
 
