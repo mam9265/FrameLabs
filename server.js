@@ -199,16 +199,16 @@ FrameLabs.post('/api/user/:id/controller', async (req, res) => {
 })
 
 //Return all the Community Guides
-FrameLabs.get('/api/community/guide', (req, res) => {
-    res.json(communityGuide);
+FrameLabs.get('/api/community/guide', async (req, res) => {
+    const guides = await communityGuide.find({});
+    res.json(guides);
 })
 
 //Get a Community Guide
-FrameLabs.get('/api/community/guide/:id', (req, res) => {
-    const guideID = req.params.id;
-    const guide = communityGuide.find(t => t.id === guideID);
+FrameLabs.get('/api/community/guide/:id', async (req, res) => {
+    const guide = await communityGuide.findById(req.params.id);
     if (guide) {
-        res.json(communityGuide);
+        res.json(guide);
     } else {
         res.status(404).json({ error: 'Guide not found' });
     }
@@ -216,152 +216,154 @@ FrameLabs.get('/api/community/guide/:id', (req, res) => {
 
 
 //Return all Community Stages
-FrameLabs.get('/api/community/stage', (req, res) => {
-    res.json(communityStage);
+FrameLabs.get('/api/community/stage', async (req, res) => {
+    const stages = await communityStage.find({});
+    res.json(stages);
 })
 
 //Get a Community Stage
-FrameLabs.get('/api/community/stage/:id', (req, res) => {
-    const stageID = req.params.id;
-    const stage = communityStage.find(t => t.id === stageID);
+FrameLabs.get('/api/community/stage/:id', async (req, res) => {
+    const stage = await communityStage.findById(req.params.id);
     if (stage) {
-        res.json(communityStage);
+        res.json(stage);
     } else {
         res.status(404).json({ error: 'Stage not found' });
     }
 })
 
 //Return all Community Trials
-FrameLabs.get('/api/community/trial', (req, res) => {
-    res.json(communityTrial);
+FrameLabs.get('/api/community/trial', async (req, res) => {
+    const trials = await communityTrial.find({});
+    res.json(trials);
 })
 
 //Open a Community Trial
-FrameLabs.get('/api/community/trial/:id', (req, res) => {
-    const trialID = req.params.id;
-    const trial = communityTrial.find(t => t.id === trialID);
+FrameLabs.get('/api/community/trial/:id', async (req, res) => {
+    const trial = await communityTrial.findById(req.params.id);
     if (trial) {
-        res.json(communityTrial);
+        res.json(trial);
     } else {
         res.status(404).json({ error: 'Trial not found' });
     }
 })
 
 //Return all Community Characters
-FrameLabs.get('/api/community/characters', (req, res) => {
-    res.json(communityCharacter);
+FrameLabs.get('/api/community/characters', async (req, res) => {
+    const characters = await communityCharacter.find({});
+    res.json(characters);
 })
 
 //Get a Community Character
-FrameLabs.get('/api/community/characters/:id', (req, res) => {
-    const charaID = req.params.id;
-    const chara = communityCharacter.find(t => t.id === charaID);
-    if (chara) {
-        res.json(communityCharacter);
+FrameLabs.get('/api/community/characters/:id', async (req, res) => {
+    const character = await communityCharacter.findById(req.params.id);
+    if (character) {
+        res.json(character);
     } else {
         res.status(404).json({ error: 'Character not found' });
     }
 })
 
 //Return all different playstyles
-FrameLabs.get('api/system/playstyle', (req, res) => {
-    res.json(playStyles);
+FrameLabs.get('/api/system/playstyle', async (req, res) => {
+    const styles = await playStyles.find({});
+    res.json(styles);
 })
 
 //Get a Specific Playstyle
-FrameLabs.get('/api/system/playstyle/:id', (req, res) => {
-    const styleID = req.params.id;
-    const style = playStyles.find(t => t.id === styleID);
+FrameLabs.get('/api/system/playstyle/:id', async (req, res) => {
+    const style = await playStyles.findById(req.params.id);
     if (style) {
-        res.json(communityTrial);
+        res.json(style);
     } else {
         res.status(404).json({ error: 'Style not found' });
     }
 })
 
 //Return all Playable Characters
-FrameLabs.get('api/system/characters', (req, res) => {
-    res.json(systemCharacter);
+FrameLabs.get('/api/system/characters', async (req, res) => {
+    const characters = await systemCharacter.find({});
+    res.json(characters);
 })
 
 //Get a Playable Character
-FrameLabs.get('/api/system/characters/:id', (req, res) => {
-    const charaID = req.params.id;
-    const chara = systemCharacter.find(t => t.id === charaID);
-    if (chara) {
-        res.json(communityCharacter);
+FrameLabs.get('/api/system/characters/:id', async (req, res) => {
+    const character = await systemCharacter.findById(req.params.id);
+    if (character) {
+        res.json(character);
     } else {
         res.status(404).json({ error: 'Character not found' });
     }
 })
 
 //Return all Combo Trails
-FrameLabs.get('api/system/trials', (req, res) => {
-    res.json(systemTrial);
+FrameLabs.get('/api/system/trials', async (req, res) => {
+    const trials = await systemTrial.find({});
+    res.json(trials);
 })
 
 //Open a Combo Trial
-FrameLabs.get('/api/system/trials/:id', (req, res) => {
-    const trialID = req.params.id;
-    const trial = systemTrial.find(t => t.id === trialID);
+FrameLabs.get('/api/system/trials/:id', async (req, res) => {
+    const trial = await systemTrial.findById(req.params.id);
     if (trial) {
-        res.json(systemTrial);
+        res.json(trial);
     } else {
         res.status(404).json({ error: 'Trial not found' });
     }
 })
 
 //Return all available Tutorials
-FrameLabs.get('api/system/tutorial', (req, res) => {
-    res.json(systemTutorial);
+FrameLabs.get('/api/system/tutorial', async (req, res) => {
+    const tutorials = await systemTutorial.find({});
+    res.json(tutorials);
 })
 
 //Open a Specific Tutorial
-FrameLabs.get('/api/system/tutorial/:id', (req, res) => {
-    const tutorialID = req.params.id;
-    const tutorial = systemTutorial.find(t => t.id === tutorialID);
+FrameLabs.get('/api/system/tutorial/:id', async (req, res) => {
+    const tutorial = await systemTutorial.findById(req.params.id);
     if (tutorial) {
-        res.json(systemTutorial);
+        res.json(tutorial);
     } else {
         res.status(404).json({ error: 'Tutorial not found' });
     }
 })
 
 //Get all Leaderboard Scores
-FrameLabs.get('/api/system/leaderboard', (req, res) => {
-    //Return all the leaderboard scores
-    res.json(leaderboard);
+FrameLabs.get('/api/system/leaderboard', async (req, res) => {
+    const scores = await leaderboard.find({});
+    res.json(scores);
 })
 
 //Get a leaderboard score
-FrameLabs.get('/api/system/leaderboard/:id', (req, res) => {
-    const leaderID = req.params.id;
-    const leader = leaderboard.find(t => t.id === leaderID);
-    if (leader) {
-        res.json(Leaderboard);
+FrameLabs.get('/api/system/leaderboard/:id', async (req, res) => {
+    const score = await leaderboard.findById(req.params.id);
+    if (score) {
+        res.json(score);
     } else {
         res.status(404).json({ error: 'Leaderboard Score not found' });
     }
 })
 
 //Get all user account information
-FrameLabs.get('/api/user/:id/account', (req, res) => {
-    //Return all the user account info
-    res.json(userAccount);
+FrameLabs.get('/api/user/:id/account', async (req, res) => {
+    const userInfo = await user.findById(req.params.id);
+    if (userInfo) {
+        res.json(userInfo);
+    } else {
+        res.status(404).json({ error: 'User not found' });
+    }
 })
 
 //Get all button mapping presets
-FrameLabs.get('api/user/:id/controller', (req, res) => {
-    //Return all the user's preset button mapping
-    res.json(buttonMapping);
+FrameLabs.get('/api/user/:id/controller', async (req, res) => {
+    const mappings = await buttonMapping.find({});
+    res.json(mappings);
 })
 
 //Get a specific button preset
-FrameLabs.get('api/user/:id/controller/:id', (req,res) =>{
-    const presetID = req.params.id;
-    const preset = buttonMapping.find(t => t.id === presetID);
-    if (preset) {
-        res.json(buttonMapping);
+FrameLabs.get('api/user/:id/controller/:id', async (req,res) =>{
+    const mapping = await buttonMapping.findById(req.params.id);
+    if (mapping) {
+        res.json(mapping);
     } else {
         res.status(404).json({ error: 'Preset Not Found'});
     }
