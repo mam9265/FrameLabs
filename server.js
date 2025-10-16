@@ -379,11 +379,23 @@ FrameLabs.get('api/user/:id/controller/:id', (req,res) =>{
 })
 
 //Delete Community Guide
-FrameLabs.delete('/api/community/guide/:id', (req, res) => {
-    const deleteIndex = communityGuide.findIndex(t => t.id === parseInt(req.params.id));
-    if (deleteIndex === -1) {return res.status(404).send('Given ID was not found.');}
-    communityGuide.splice(deleteIndex, 1);
-    res.status(204).send();     //204 - No content for successful deletion
+FrameLabs.delete('/api/community/guide/:id', async (req, res) => {
+    try {
+        const guideID = req.params.id;
+    
+        const guide = await communityGuide.findById(guideID);
+    
+        if (!guide) {
+          return res.status(404).json({ error: 'Guide not found' });
+        }
+
+        await guide.deleteOne();
+    
+        res.status(200).json(guide);
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error while deleting guide' });
+      }
 })
 
 //Delete Community Stage
@@ -476,14 +488,27 @@ FrameLabs.delete('api/user/:id', (req, res) => {
 
 
 //Modify Community Guide
-FrameLabs.put('/api/community/guide/:id', (req, res) => {
-    const guide = communityGuide.find(t => t.id === parseInt(req.params.id)); 
-    if (!guide){
-        return res.status(404).send(`Guide not found.`)
-    }
-    guide.text = req.body.text;
-    res.json (communityGuide);
-    res.status(204).send(`Guide updated.`);
+FrameLabs.put('/api/community/guide/:id', async (req, res) => {
+    try {
+        const guideID = req.params.id;
+        const { title, description } = req.body;
+    
+        const guide = await communityGuide.findById(guideID);
+    
+        if (!guide) {
+          return res.status(404).json({ error: 'Guide not found' });
+        }
+
+        if (title) guide.title = title;
+        if (description) guide.description = description;
+    
+        await guide.save();
+    
+        res.status(200).json(guide);
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error while updating guide' });
+      }
 })
 
 //Edit a Community Stage
