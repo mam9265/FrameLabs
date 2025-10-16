@@ -38,187 +38,163 @@ const user = require('./models/user');
 const buttonMapping = require('./models/buttonMapping');
 
 //Create a Community Guide
-FrameLabs.post('/api/community/guide', (req , res) => {
+FrameLabs.post('/api/community/guide', async (req , res) => {
     const {title , description }  = req.body;
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newGuide = {
-        id: communityGuide.length + 1,
+    const newGuide = await communityGuide.create({
         title,
         description,
         createdAt: new Date()
-      };
-      communityGuide.push(newGuide);
+      });
       res.status(201).json(newGuide);
 })
 
 //Create a Community Stage
-FrameLabs.post('/api/community/stage', (req , res) => {
+FrameLabs.post('/api/community/stage', async (req , res) => {
     const {title , description }  = req.body;
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newStage = {
-        id: communityStage.length + 1,
+    const newStage = await communityStage.create({
         title,
         description,
         createdAt: new Date()
-      };
-      communityStage.push(newStage);
+      });
       res.status(201).json(newStage);
 })
 
 //Create a Community Trial
-FrameLabs.post('/api/community/trial', (req , res) => {
+FrameLabs.post('/api/community/trial', async (req , res) => {
     const {title , description }  = req.body;
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newTrial = {
-        id: communityTrial.length + 1,
+    const newTrial = await communityTrial.create({
         title,
         description,
         createdAt: new Date()
-      };
-      communityTrial.push(newTrial);
+      });
       res.status(201).json(newTrial);
 })
 
 //Create a Community Character
-FrameLabs.post('/api/community/characters', (req , res) => {
+FrameLabs.post('/api/community/characters', async (req , res) => {
     const {title , description }  = req.body;
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newChara = {
-        id: communityCharacter.length + 1,
+    const newChara = await communityCharacter.create({
         title,
         description,
         createdAt: new Date()
-      };
-      communityCharacter.push(newChara);
+      });
       res.status(201).json(newChara);
 })
 
 //Add a new playstyle
-FrameLabs.post('api/system/playstyle', (req, res) => {
+FrameLabs.post('api/system/playstyle', async (req, res) => {
     const {title , description }  = req.body;
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newStyle = {
-        id: playStyles.length + 1,
+    const newStyle = await playStyles.create({
         title,
         description,
         createdAt: new Date()
-      };
-      communityCharacter.push(newStyle);
+      });
       res.status(201).json(newStyle);
 })
 
 //Add a new playable character
-FrameLabs.post('api/system/characters', (req , res) => {
+FrameLabs.post('api/system/characters', async (req , res) => {
     const {title , description }  = req.body;
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newChara = {
-        id: systemCharacter.length + 1,
+    const newChara = await systemCharacter.create({
         title,
         description,
         createdAt: new Date()
-      };
-      systemCharacter.push(newChara);
+      });
       res.status(201).json(newChara);
 })
 
 //Add a new Combo Trial
-FrameLabs.post('api/system/trials', (req , res) => {
+FrameLabs.post('api/system/trials', async (req , res) => {
     const {title , description }  = req.body;
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newTrial = {
-        id: systemTrial.length + 1,
+    const newTrial = await systemTrial.create({
         title,
         description,
         createdAt: new Date()
-      };
-      systemTrial.push(newTrial);
+      });
       res.status(201).json(newTrial);
 })
 
 //Add a new tutorial
-FrameLabs.post('api/system/tutorial', (req , res) => {
+FrameLabs.post('api/system/tutorial', async (req , res) => {
     const {title , description }  = req.body;
     if (!title || !description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newTutorial = {
-        id: systemTutorial.length + 1,
+    const newTutorial = await systemTutorial.create({
         title,
         description,
         createdAt: new Date()
-      };
-      systemTrial.push(newTutorial);
+      });
       res.status(201).json(newTutorial);
 })
 
 //Create a new leaderboard score
-FrameLabs.post('/api/system/leaderboard', (req, res) => {
+FrameLabs.post('/api/system/leaderboard', async (req, res) => {
     const {player_name , score }  = req.body;
     if (!player_name || !score) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newLeader = {
-        id: leaderboard.length + 1,
+    const newLeader = await leaderboard.create({
         player_name,
         score,
         createdAt: new Date()
-      };
-      leaderboard.push(newLeader);
+      });
       res.status(201).json(newLeader);
 })
 
 //Create a new user and the user's account
-FrameLabs.post('/api/user', (req, res) => {
+FrameLabs.post('/api/user', async (req, res) => {
     const {user_name, password, profilePicture } = req.body;
     if (!user_name || !password || !profilePicture) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newUser = {
-        id: user.length + 1,
+    const newUser = await user.create({
         user_name,
         password,
         createdAt: new Date()
-      };
-      User.push(newUser);
+      });
       res.status(201).json(newUser);
 
-    const newAccount = {
-        id: userAccount.length + 1,
+    const newAccount = await userAccount.create({
         user_name,
         profilePicture,
         createdAt: new Date()
-    };
-    userAccount.push(newAccount);
+    });
     res.status(201).json(newAccount)
 })
 
 //Create a button mapping
-FrameLabs.post('/api/user/:id/controller', (req, res) => {
+FrameLabs.post('/api/user/:id/controller', async (req, res) => {
     const {preset_name , preset_description }  = req.body;
     if (!preset_name || !preset_description) {
         return res.status(400).json({ error: "Title and description are required." });
       }
-    const newPreset = {
-        id: buttonMapping.length + 1,
+    const newPreset = await buttonMapping.create({
         preset_name,
         preset_description,
         createdAt: new Date()
-      };
-      buttonMapping.push(newPreset);
+      });
       res.status(201).json(newPreset);
 })
 
