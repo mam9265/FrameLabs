@@ -16,4 +16,4 @@ const communityCharacterSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('communityCharacter', communityCharacterSchema);
+module.exports = mongoose.model('CommunityCharacter', communityCharacterSchema);

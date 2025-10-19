@@ -83,7 +83,7 @@ FrameLabs.post('/api/community/trial', async (req , res) => {
 FrameLabs.post('/api/community/characters', async (req , res) => {
     const {name , description }  = req.body;
     if (!name || !description) {
-        return res.status(400).json({ error: "Title and description are required." });
+        return res.status(400).json({ error: "Name and description are required." });
       }
     const newChara = await communityCharacter.create({
         name,
@@ -806,7 +806,7 @@ FrameLabs.put('/api/community/trial/:id', async (req, res) => {
 });
 
 //Update a Community Character
-FrameLabs.put('/api/community/character/:id', async (req, res) => {
+FrameLabs.put('/api/community/characters/:id', async (req, res) => {
   try {
     const charaID = req.params.id;
     const { name, description } = req.body;
@@ -854,7 +854,7 @@ FrameLabs.put('/api/system/playstyle/:id', async (req, res) => {
 });
 
 //Update a playable character
-FrameLabs.put('/api/system/character/:id', async (req, res) => {
+FrameLabs.put('/api/system/characters/:id', async (req, res) => {
   try {
     const charaID = req.params.id;
     const { title, description } = req.body;
