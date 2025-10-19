@@ -878,7 +878,7 @@ FrameLabs.put('/api/system/characters/:id', async (req, res) => {
 });
 
 //Edit a Combo Trial
-FrameLabs.put('/api/system/trial/:id', async (req, res) => {
+FrameLabs.put('/api/system/trials/:id', async (req, res) => {
   try {
     const trialID = req.params.id;
     const { title, description } = req.body;
