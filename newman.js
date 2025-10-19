@@ -1,4 +1,4 @@
-const newman = require(newman);
+const newman = require('newman');
 
 newman.run({
 
