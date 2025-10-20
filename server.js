@@ -155,7 +155,7 @@ FrameLabs.post('/api/system/leaderboard', async (req, res) => {
     if (!player_name || !score) {
         return res.status(400).json({ error: "Player Name and Score are required." });
       }
-    const newLeader = await leaderboard.create({
+    const newLeader = await Leaderboard.create({
         player_name,
         score,
         createdAt: new Date()
