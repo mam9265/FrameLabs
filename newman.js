@@ -1,4 +1,6 @@
-const newman = require('newman');
+//function newmanTests() {
+
+    const newman = require('newman');
 
 newman.run({
 
@@ -11,3 +13,7 @@ newman.run({
     console.log('collection run complete!');
 
 });
+
+//}
+
+//newmanTests();
