@@ -4,7 +4,7 @@
 
 newman.run({
 
-    collection: require('./Collections/FrameLabsCommunityGuideTesting.postman_collection'),
+    collection: require('Collections/FrameLabsCommunityGuideTesting.postman_collection.json'),
     reporters: 'cli'
 
 }, function (err) {
