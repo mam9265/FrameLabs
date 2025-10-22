@@ -8,6 +8,7 @@ const communityTrialSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
+    unique: true,
   },
   createdAt: {
     type: Date,
