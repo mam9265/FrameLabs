@@ -4,6 +4,7 @@ const leaderboardSchema = new mongoose.Schema({
   player_name: {
     type: String,
     required: true,
+    unique: true,
   },
   score: {
     type: Number,

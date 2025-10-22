@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
@@ -155,7 +156,7 @@ FrameLabs.post('/api/system/leaderboard', async (req, res) => {
     if (!player_name || !score) {
         return res.status(400).json({ error: "Player Name and Score are required." });
       }
-    const newLeader = await Leaderboard.create({
+    const newLeader = await leaderboard.create({
         player_name,
         score,
         createdAt: new Date()
@@ -451,14 +452,30 @@ FrameLabs.get('/api/system/leaderboard/:id', async (req, res) => {
     }
 })
 
+//Get all Users
+FrameLabs.get('/api/user', async (req, res) => {
+  try {
+      const users = await user.find(); 
+      res.status(200).json(users);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error while fetching users' });
+    }
+})
+
 //Get all user account information
 FrameLabs.get('/api/user/:id/account', async (req, res) => {
-    const userInfo = await user.findById(req.params.id);
-    if (userInfo) {
-        res.json(userInfo);
-    } else {
-        res.status(404).json({ error: 'User not found' });
-    }
+    const userId = req.params.id;
+    try {
+      const account = await userAccount.findOne({ userId: userId });
+      if (account) {
+          res.json(account);
+      } else {
+          res.status(404).json({ error: 'User account not found' });
+      }
+  } catch (error) {
+      res.status(500).json({ error: 'Server error', details: error.message });
+  }
 })
 
 //Get all button mapping presets
@@ -715,20 +732,23 @@ FrameLabs.delete('/api/user/:id', async (req, res) => {
   try {
     const userId = req.params.id;
 
+    // Delete the user
     const deletedUser = await user.findByIdAndDelete(userId);
     if (!deletedUser) {
       return res.status(404).json({ error: 'User not found.' });
     }
 
-    const deletedAccount = await userAccount.findOneAndDelete({ userId });
+    // Delete the associated account
+    const deletedAccount = await userAccount.findOneAndDelete({ userId: userId });
     if (!deletedAccount) {
       return res.status(404).json({ error: 'User account not found.' });
     }
 
-    res.status(204).send();
+    // Success with no response body (204)
+    res.status(204).send(); 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Server error while deleting user and account' });
+    res.status(500).json({ error: 'Server error while deleting user and account.' });
   }
 })
 
@@ -925,13 +945,17 @@ FrameLabs.put('/api/system/tutorial/:id', async (req, res) => {
   }
 });
 
-//Update User Account
-FrameLabs.put('/api/system/user/:id', async (req, res) => {
+//Update User Account 
+FrameLabs.put('/api/user/:id/account', async (req, res) => {
   try {
     const userId = req.params.id;
     const { name, profilePicture } = req.body;
 
-    const account = await userAccount.findById(userId);
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: 'Invalid user ID' });
+    }
+
+    const account = await userAccount.findOne({ userId: new mongoose.Types.ObjectId(userId) });
 
     if (!account) {
       return res.status(404).json({ error: 'User account not found' });
@@ -944,7 +968,7 @@ FrameLabs.put('/api/system/user/:id', async (req, res) => {
 
     res.status(200).json(account);
   } catch (err) {
-    console.error(err);
+    console.error('Update user account error:', err);
     res.status(500).json({ error: 'Server error while updating user account' });
   }
 });
