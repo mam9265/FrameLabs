@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -7,6 +8,10 @@ const swaggerDocument = require('./swagger-output.json');
 const FrameLabs = express();
 FrameLabs.use(express.json());
 FrameLabs.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const path = require('path');
+
+FrameLabs.use(express.static(path.join(__dirname, 'public')));
 
 //Connect to MongoDB
 const connectDB = require('./db.js');
@@ -1028,4 +1033,5 @@ const PORT = 3000;
 FrameLabs.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
   console.log(`API Docs available at http://localhost:${PORT}/api-docs`);
+  console.log(`Application running at http://localhost:${PORT}/homePage.html`);
 });
