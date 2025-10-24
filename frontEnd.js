@@ -3,7 +3,7 @@ const hostname = '127.0.0.1';
 const port = 300;
 const fs = require('fs')
 
-const fileContents = fs.readFileSync('homePage.html').toString()
+const fileContents = fs.readFileSync('./public/homePage.html').toString()
 
 const server = http.createServer((req, res) => {
 
@@ -14,4 +14,4 @@ const server = http.createServer((req, res) => {
 
 });
 
-server.listen(port, hostname, () => {console.log('Server running at http://'+ hostname + ':' + port + '/');});
+//server.listen(port, hostname, () => {console.log('Server running at http://'+ hostname + ':' + port + '/');});
