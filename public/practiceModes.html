@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frame Labs</title>
+
+    <style>
+        body {
+            background-color: #015b91;
+            color: #9be0e3;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 180px;
+            letter-spacing: 6px;
+            margin-top: 50px;
+            margin-bottom: 25px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(1, 1fr);
+            gap: 30px;
+            width: 65%;
+            margin: 45px auto;
+        }
+        .menu-item {
+            display: block;
+            background-color: #2a006b;
+            color: white;
+            text-decoration: none;
+            padding: 60px 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: background 0.3s;
+            font-size: 20px;
+        }
+
+        .menu-item:hover {
+            background-color: #3a008b;
+        }
+
+        .menu-item .icon {
+            display: block;
+            font-size: 5em;
+            margin-bottom: 8px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            font-size: 60px;
+        }
+    </style>
+
+    <script>
+        function button(action) {
+            alert('You selected: ' + action);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>FRAME LABS</h1>
+
+    <div class="menu">
+        <!--
+        <a class="menu-item" href="controlConfig.html">
+            <span class="icon">🎮</span>
+            Control Config
+        </a>
+        <a class="menu-item" href="practiceModes.html">
+            <span class="icon">🥋</span>
+            Practice Modes
+        </a>
+        <a class="menu-item" href="accountConfig.html">
+            <span class="icon">👤</span>
+            Account Config
+        </a>
+        -->
+        <a class="menu-item" href="settings.html">
+            <span class="icon">⚙️</span>
+            Settings
+        </a>
+        <a class="menu-item" href="communityCreations.html">
+            <span class="icon">🤝</span>
+            Community Creations
+        </a>
+        <a class="menu-item" href="homePage.html">
+            <span class="icon">🏠</span>
+            Quit Game
+        </a>
+    </div>
+
+    <div class="footer">🌐</div>
+</body>
+</html>
