@@ -45,6 +45,17 @@ const user = require('./models/user');
 
 const buttonMapping = require('./models/buttonMapping');
 
+// Graceful shutdown route (admin only!)
+FrameLabs.post('/shutdown', (req, res) => {
+  res.json({ message: 'Server shutting down...' });
+
+  // Give the response time to send before exiting
+  setTimeout(() => {
+    console.log('Server shutting down...');
+    process.exit(0);
+  }, 500);
+});
+
 //Login route
 FrameLabs.post('/api/login', async (req, res) => {
   const { user_name, password } = req.body;
