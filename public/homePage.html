@@ -18,8 +18,8 @@
         h1 {
             font-size: 180px;
             letter-spacing: 6px;
-            margin-top: 60px;
-            margin-bottom: 30px;
+            margin-top: 50px;
+            margin-bottom: 25px;
         }
 
         .menu {
@@ -27,31 +27,29 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
             width: 65%;
-            margin: 60px auto;
+            margin: 50px auto;
         }
-
         .menu-item {
-            background-color: #2a0b61;
-            color: #41c4b5;
-            border-radius: 20px;
-            padding: 40px 0;
-            font-size: 22px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: block;
+            background-color: #2a006b;
+            color: white;
+            text-decoration: none;
+            padding: 60px 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: background 0.3s;
+            font-size: 20px;
         }
 
         .menu-item:hover {
-            background-color: #41158c;
-            transform: scale(1.05);
+            background-color: #3a008b;
         }
 
-        .icon {
-            font-size: 48px;
-            margin-bottom: 10px;
+        .menu-item .icon {
             display: block;
+            font-size: 5em;
+            margin-bottom: 8px;
         }
-
         .footer {
             position: fixed;
             bottom: 20px;
@@ -71,30 +69,30 @@
     <h1>FRAME LABS</h1>
 
     <div class="menu">
-        <div class="menu-item" onclick="button('Control Config')">
+        <a class="menu-item" href="controlConfig.html">
             <span class="icon">🎮</span>
             Control Config
-        </div>
-        <div class="menu-item" onclick="button('Practice Modes')">
+        </a>
+        <a class="menu-item" href="practiceModes.html">
             <span class="icon">🥋</span>
             Practice Modes
-        </div>
-        <div class="menu-item" onclick="button('Account Config')">
+        </a>
+        <a class="menu-item" href="accountConfig.html">
             <span class="icon">👤</span>
             Account Config
-        </div>
-        <div class="menu-item" onclick="button('Settings')">
+        </a>
+        <a class="menu-item" href="settings.html">
             <span class="icon">⚙️</span>
             Settings
-        </div>
-        <div class="menu-item" onclick="button('Community Creations')">
+        </a>
+        <a class="menu-item" href="communityCreations.html">
             <span class="icon">🤝</span>
             Community Creations
-        </div>
-        <div class="menu-item" onclick="button('Quit Game')">
+        </a>
+        <a class="menu-item" href="exit.html">
             <span class="icon">😢</span>
             Quit Game
-        </div>
+        </a>
     </div>
 
     <div class="footer">🌐</div>
