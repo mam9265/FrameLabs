@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
+const auth = require('./Middleware/auth')
+const rolecheck = require('./Middleware/roleCheck')
 
 const FrameLabs = express();
 FrameLabs.use(express.json());
@@ -42,6 +44,23 @@ const userAccount= require('./models/userAccount');
 const user = require('./models/user');
 
 const buttonMapping = require('./models/buttonMapping');
+
+//Login route
+FrameLabs.post('/api/login', async (req, res) => {
+  const { user_name, password } = req.body;
+  const existingUser = await user.findOne({ name: user_name });
+  if (!existingUser || existingUser.password !== password) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+  // Generate JWT
+  const jwt = require('jsonwebtoken');
+  const token = jwt.sign(
+    { id: existingUser._id, role: existingUser.role || 'user' },
+    process.env.JWT_SECRET,
+    { expiresIn: '2h' }
+  );
+  res.json({ token });
+});
 
 //Create a Community Guide
 FrameLabs.post('/api/community/guide', async (req , res) => {
