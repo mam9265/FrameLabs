@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Controller Config</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #eef; }
+    form { display: flex; flex-direction: column; width: 300px; gap: 12px; }
+    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
+    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    button:hover { background: #45a049; }
+  </style>
+</head>
+<body>
+  <h2>Controller Config</h2>
+  <form id="settings">
+    
+    <label for="gamespeed">Choose a game:</label>
+    <select name="gamespeed" id="gamespeed">
+      <option value="slow">Slow</option>
+      <option value="normal">Normal</option>
+      <option value="fast">Fast</option>
+      <option value="Bauhaus">Free Bird</option>
+      required
+    </select>
+
+    
+    <div class="slidecontainer">
+      <p>Main Volume:</p>
+      <input type="range" min="1" max="100" value="50" id="mainSlider" required>
+      <p>Value: <span id="mainV"></span></p>
+    </div>
+
+    <script>
+      var slider = document.getElementById("mainSlider");
+      var output = document.getElementById("mainV");
+      output.innerHTML = slider.value;
+      slider.oninput = function() { output.innerHTML = this.value; }
+    </script>
+
+    <!--
+    <p>Sound Volume:</p>
+    <input type="range" min="1" max="100" value="50" required>
+
+    <p>Voice Volume:</p>
+    <input type="range" min="1" max="100" value="50" required>
+
+    <p>Music Volume:</p>
+    <input type="range" min="1" max="100" value="50" required>
+    -->
+
+    <button type="Save">Save Config</button>
+    
+
+  </form>
+
+  <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
+
+</body>
+</html>
