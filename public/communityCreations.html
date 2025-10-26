@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <title>Community Creations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
   <style>
     body {
-      background-color: #015b91;
+      background-color: #005b91;
       color: #9be0e3;
       font-family: 'Orbitron', sans-serif;
       text-align: center;
       margin: 0;
-      padding: 0;
+      padding: 60px 20px;
     }
 
     h1 {
-      font-size: 80px;
-      margin-top: 50px;
-      letter-spacing: 4px;
+      font-size: 60px;
+      letter-spacing: 3px;
+      margin-bottom: 60px;
     }
 
     .menu {
@@ -24,7 +26,8 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 40px;
       width: 60%;
-      margin: 60px auto;
+      margin: 0 auto;
+      max-width: 1000px;
     }
 
     .menu-item {
@@ -33,13 +36,15 @@
       color: #9be0e3;
       text-decoration: none;
       padding: 60px 20px;
-      border-radius: 20px;
-      font-size: 24px;
-      transition: background 0.3s;
+      border-radius: 30px;
+      font-size: 22px;
+      letter-spacing: 1px;
+      transition: background-color 0.3s, transform 0.2s;
     }
 
     .menu-item:hover {
       background-color: #3a008b;
+      transform: scale(1.05);
     }
 
     .back-button {
@@ -48,30 +53,33 @@
       left: 30px;
       background-color: #2a006b;
       color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
       border: none;
-      border-radius: 10px;
-      padding: 15px 25px;
-      font-size: 20px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
     }
 
     .back-button:hover {
       background-color: #3a008b;
+      transform: scale(1.05);
     }
   </style>
 </head>
 
 <body>
-  <h1>Community Creations</h1>
+  <h1>COMMUNITY CREATIONS</h1>
 
   <div class="menu">
-    <a class="menu-item" href="communityStages.html">🏟️ Community Stages</a>
-    <a class="menu-item" href="communityCharacters.html">🥋 Community Characters</a>
-    <a class="menu-item" href="communityTrials.html">👊 Community Trials</a>
-    <a class="menu-item" href="communityGuides.html">📘 Community Guides</a>
+    <a class="menu-item" href="communityStages.html">🏟️ COMMUNITY STAGES</a>
+    <a class="menu-item" href="communityCharacters.html">🥋 COMMUNITY CHARACTERS</a>
+    <a class="menu-item" href="communityTrials.html">👊 COMMUNITY TRIALS</a>
+    <a class="menu-item" href="communityGuides.html">📘 COMMUNITY GUIDES</a>
   </div>
 
-  <button class="back-button" onclick="window.location.href='mainMenu.html'">⬅️ Back</button>
+  <button class="back-button" onclick="window.location.href='homePage.html'">⟵ MAIN MENU</button>
 </body>
 </html>
