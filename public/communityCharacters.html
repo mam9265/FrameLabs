@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Community Character</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #eef; }
+    form { display: flex; flex-direction: column; width: 300px; gap: 12px; }
+    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
+    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    button:hover { background: #45a049; }
+  </style>
+</head>
+<body>
+  <h2>Add a Community Character</h2>
+  
+  <form id="characterForm">
+    <label for="name">Character Name:</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
+
+    <button type="submit">Add Character</button>
+
+    <button class="back-button" onclick="window.location.href='communityCreations.html'">Back to Community Creations</button>
+  </form>
+
+  <p id="responseMsg"></p>
+
+  <script>
+    document.getElementById("characterForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const description = document.getElementById("description").value;
+
+      try {
+        const response = await fetch("/api/community/characters", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, description }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          document.getElementById("responseMsg").innerText =
+            `✅ Character "${data.name}" added successfully!`;
+          e.target.reset();
+        } else {
+          document.getElementById("responseMsg").innerText = `❌ Error: ${data.error}`;
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById("responseMsg").innerText = "⚠️ Failed to reach server.";
+      }
+    });
+  </script>
+</body>
+</html>

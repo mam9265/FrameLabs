@@ -1,103 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Frame Labs</title>
+  <meta charset="UTF-8">
+  <title>Practice Mode</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #005b91;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 60px 20px;
+    }
 
-    <style>
-        body {
-            background-color: #015b91;
-            color: #9be0e3;
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
+    h1 {
+      font-size: 60px;
+      letter-spacing: 3px;
+      margin-bottom: 80px;
+    }
 
-        h1 {
-            font-size: 180px;
-            letter-spacing: 6px;
-            margin-top: 50px;
-            margin-bottom: 25px;
-        }
+    .row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      flex-wrap: wrap;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
 
-        .menu {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(1, 1fr);
-            gap: 30px;
-            width: 65%;
-            margin: 45px auto;
-        }
-        .menu-item {
-            display: block;
-            background-color: #2a006b;
-            color: white;
-            text-decoration: none;
-            padding: 60px 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: background 0.3s;
-            font-size: 20px;
-        }
+    .card {
+      background-color: #2a006b;
+      border-radius: 40px;
+      width: 240px;
+      height: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 25px;
+      transition: transform 0.2s, background-color 0.3s;
+    }
 
-        .menu-item:hover {
-            background-color: #3a008b;
-        }
+    .card:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
 
-        .menu-item .icon {
-            display: block;
-            font-size: 5em;
-            margin-bottom: 8px;
-        }
-        .footer {
-            position: fixed;
-            bottom: 20px;
-            right: 30px;
-            font-size: 60px;
-        }
-    </style>
+    .emoji {
+      font-size: 80px;
+      margin-bottom: 10px;
+    }
 
-    <script>
-        function button(action) {
-            alert('You selected: ' + action);
-        }
-    </script>
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .back-button {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+    }
+
+    .back-button:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
-
 <body>
-    <h1>FRAME LABS</h1>
+  <h1>PRACTICE MODE</h1>
 
-    <div class="menu">
-        <!--
-        <a class="menu-item" href="controlConfig.html">
-            <span class="icon">🎮</span>
-            Control Config
-        </a>
-        <a class="menu-item" href="practiceModes.html">
-            <span class="icon">🥋</span>
-            Practice Modes
-        </a>
-        <a class="menu-item" href="accountConfig.html">
-            <span class="icon">👤</span>
-            Account Config
-        </a>
-        -->
-        <a class="menu-item" href="settings.html">
-            <span class="icon">⚙️</span>
-            Settings
-        </a>
-        <a class="menu-item" href="communityCreations.html">
-            <span class="icon">🤝</span>
-            Community Creations
-        </a>
-        <a class="menu-item" href="homePage.html">
-            <span class="icon">🏠</span>
-            Quit Game
-        </a>
+  <div class="row">
+    <div class="card">
+      <span class="emoji">🥋</span>
+      <h2>FREESTYLE TRAINING</h2>
+      <p>SELECT A CHARACTER AND EXPERIMENT ON A DUMMY.</p>
     </div>
 
-    <div class="footer">🌐</div>
+    <div class="card">
+      <span class="emoji">🎮</span>
+      <h2>COMBO TRIALS</h2>
+      <p>TRY TO ENTER THE CORRECT COMBOS FOR EACH CHARACTER.</p>
+    </div>
+
+    <div class="card">
+      <span class="emoji">📘</span>
+      <h2>BASIC TUTORIAL</h2>
+      <p>NEW TO FRAME LABS OR FIGHTING GAMES? LEARN THE BASICS HERE.</p>
+    </div>
+
+    <div class="card">
+      <span class="emoji">📅</span>
+      <h2>DAILY CHALLENGE</h2>
+      <p>TAKE PART IN A DAILY CHALLENGE WHERE YOU USE A RANDOM CHARACTER.</p>
+    </div>
+  </div>
+
+  <button class="back-button" onclick="goBack()">⟵ MAIN MENU</button>
+
+  <script>
+    function goBack() {
+      window.location.href = "homePage.html";
+    }
+  </script>
 </body>
 </html>

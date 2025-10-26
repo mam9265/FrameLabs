@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Community Creations</title>
+  <style>
+    body {
+      background-color: #015b91;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: 80px;
+      margin-top: 50px;
+      letter-spacing: 4px;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      width: 60%;
+      margin: 60px auto;
+    }
+
+    .menu-item {
+      display: block;
+      background-color: #2a006b;
+      color: #9be0e3;
+      text-decoration: none;
+      padding: 60px 20px;
+      border-radius: 20px;
+      font-size: 24px;
+      transition: background 0.3s;
+    }
+
+    .menu-item:hover {
+      background-color: #3a008b;
+    }
+
+    .back-button {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 25px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #3a008b;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Community Creations</h1>
+
+  <div class="menu">
+    <a class="menu-item" href="communityStages.html">🏟️ Community Stages</a>
+    <a class="menu-item" href="communityCharacters.html">🥋 Community Characters</a>
+    <a class="menu-item" href="communityTrials.html">👊 Community Trials</a>
+    <a class="menu-item" href="communityGuides.html">📘 Community Guides</a>
+  </div>
+
+  <button class="back-button" onclick="window.location.href='mainMenu.html'">⬅️ Back</button>
+</body>
+</html>
