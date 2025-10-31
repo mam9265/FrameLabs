@@ -6,6 +6,9 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
 const auth = require('./Middleware/auth')
 const rolecheck = require('./Middleware/roleCheck')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 
 const FrameLabs = express();
 FrameLabs.use(express.json());
@@ -56,21 +59,40 @@ FrameLabs.post('/shutdown', (req, res) => {
   }, 500);
 });
 
-//Login route
 FrameLabs.post('/api/login', async (req, res) => {
   const { user_name, password } = req.body;
-  const existingUser = await user.findOne({ name: user_name });
-  if (!existingUser || existingUser.password !== password) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+
+  console.log('Login attempt:', req.body);
+
+  try {
+    const existingUser = await user.findOne({ name: user_name });
+    console.log('Found user:', existingUser);
+
+    if (!existingUser) {
+      console.log('User not found');
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, existingUser.password);
+    console.log('Password match:', isMatch);
+
+    if (!isMatch) {
+      console.log('Password mismatch');
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+      { id: existingUser._id, role: existingUser.role || 'user' },
+      process.env.JWT_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    console.log('Login successful, token generated');
+    res.json({ token });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Server error during login' });
   }
-  // Generate JWT
-  const jwt = require('jsonwebtoken');
-  const token = jwt.sign(
-    { id: existingUser._id, role: existingUser.role || 'user' },
-    process.env.JWT_SECRET,
-    { expiresIn: '2h' }
-  );
-  res.json({ token });
 });
 
 //Create a Community Guide
@@ -199,35 +221,38 @@ FrameLabs.post('/api/system/leaderboard', async (req, res) => {
       res.status(201).json(newLeader);
 })
 
-//Create a new user and the user's account
 FrameLabs.post('/api/user', async (req, res) => {
   try {
-    const {user_name, password, profilePicture } = req.body;
+    const { user_name, password, profilePicture } = req.body;
+
     if (!user_name || !password || !profilePicture) {
-        return res.status(400).json({ error: "Title and description are required." });
-      }
-    
-    const newUser = await user.create({
+      return res.status(400).json({ error: "Username, password, and profile picture are required." });
+    }
+
+    const newUser = new user({
       name: user_name,
       password,
     });
-    
-    const newAccount = await userAccount.create({
+
+    await newUser.save();
+
+    const newAccount = new userAccount({
       userId: newUser._id,
       name: user_name,
       profilePicture,
     });
-    
+
+    await newAccount.save();
+
     res.status(201).json({
       user: newUser,
       account: newAccount,
     });
-    
   } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error while creating user and account' });
+    console.error('User creation error:', err);
+    res.status(500).json({ error: 'Server error while creating user and account' });
   }
-})
+});
 
 //Create a button mapping
 FrameLabs.post('/api/user/:id/controller', async (req, res) => {
@@ -779,8 +804,8 @@ FrameLabs.delete('/api/user/:id', async (req, res) => {
       return res.status(404).json({ error: 'User account not found.' });
     }
 
-    // Success with no response body (204)
-    res.status(204).send(); 
+    // Success
+    res.status(200).json(deletedAccount); 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error while deleting user and account.' });
