@@ -1,66 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Controller Config</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background: #eef; }
-    form { display: flex; flex-direction: column; width: 300px; gap: 12px; }
-    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
-    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
-    button:hover { background: #45a049; }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Control Config</title>
+  <link rel="stylesheet" href="/css/controller-mapper.css" />
 </head>
 <body>
-  <h2>Controller Config</h2>
-  
-  <form id="ConfigForm">
-    <label for="games">Choose a game:</label>
-    <select name="games" id="games">
-      <option value="Stronk Freeter">Stronk Freeter</option>
-      <option value="Teggen">Teggen</option>
-      <option value="Super Bash Sisters">Super Bash Sisters</option>
-      <option value="Bauhaus">Bauhaus</option>
-      required
-    </select>
+  <header>
+    <main class="inline" style="justify-content:space-between">
+      <div>
+        <h1>Control Config</h1>
+        <div class="muted">Plug in a controller and press any button to begin.</div>
+      </div>
+      <div class="inline">
+        <button id="btn-export" class="btn">Export JSON</button>
+        <label class="btn secondary" for="file-import">Import JSON</label>
+        <input id="file-import" type="file" accept="application/json" hidden />
+      </div>
+    </main>
+  </header>
 
-    <!-- punches -->
-    <label for="lightPunch">Light Punch:</label>
-    <textarea id="lightPunch" name="lightPunch" rows="1" required></textarea>
-    
+  <main class="grid">
+    <section class="card">
+      <h2>Status</h2>
+      <div class="stack">
+        <div class="row"><div class="muted">Connection</div><div id="status" class="pill">Waiting…</div></div>
+        <div class="row"><div class="muted">Gamepad</div><div id="pad-id" class="kbd">—</div></div>
+        <div class="row">
+          <div class="muted">Mapping</div>
+          <div class="inline">
+            <span class="kbd nowrap" id="mapping">—</span>
+            <button id="btn-clear" class="btn secondary small">Clear Saved Mapping</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="muted">Deadzones & Options</div>
+          <div class="inline small">
+            LS Deadzone <input id="dz-ls" type="range" min="0" max="0.5" step="0.01" value="0.15" class="slider" />
+            <span id="dz-ls-val" class="kbd">0.15</span>
+            RS Deadzone <input id="dz-rs" type="range" min="0" max="0.5" step="0.01" value="0.15" class="slider" />
+            <span id="dz-rs-val" class="kbd">0.15</span>
+            <label class="inline"><input id="invert-y" type="checkbox" /> Invert Y</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="muted">Live Input</div>
+          <div class="stack">
+            <div class="inputs" id="buttons"></div>
+            <div class="small mono" id="axes"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <label for="mediumPunch">Medium Punch:  </label>
-    <textarea id="mediumPunch" name="mediumPunch" rows="1" required></textarea>
+    <section class="card">
+      <h2>Actions & Rebindings</h2>
+      <table class="table small" id="actions-table">
+        <thead><tr><th>Action</th><th>Binding</th><th></th></tr></thead>
+        <tbody id="actions-body"></tbody>
+      </table>
+      <div class="hr"></div>
+      <div class="small muted">
+        Click <b>Rebind</b>, then press a button or move a stick. Axis bindings capture the axis with the largest motion.
+      </div>
+    </section>
 
-    <label for="heavyPunch">Heavy Punch:  </label>
-    <textarea id="heavyPunch" name="heavyPunch" rows="1" required></textarea>
+    <section class="card">
+      <h2>Preview (Use This In Your Game Loop)</h2>
+      <pre class="small mono" style="white-space:pre-wrap">
+import { getActionState } from '/js/gamepad-core.js';
 
-    <!-- kicks -->
-    <label for="lightKick">Light Kick:  </label>
-    <textarea id="lightKick" name="lightKick" rows="1" required></textarea>
-
-    <label for="mediumKick">Medium Kick:  </label>
-    <textarea id="mediumKick" name="mediumKick" rows="1" required></textarea>
-
-    <label for="heavyKick">Heavy Kick:  </label>
-    <textarea id="heavyKick" name="heavyKick" rows="1" required></textarea>
-
-    <!-- movement -->
-     <label for="up">Up:  </label>
-    <textarea id="up" name="up" rows="1" required></textarea>
-
-    <label for="left">Left: </label>
-    <textarea id="left" name="left" rows="1" required></textarea>
-
-    <label for="right">Right:  </label>
-    <textarea id="right" name="right" rows="1" required></textarea>
-
-    <label for="down">Down:  </label>
-    <textarea id="down" name="down" rows="1" required></textarea>
-
-    <button type="Save">Save Config</button>
-    <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
-  </form>
-
-</body>
-</html>
+const state = getActionState();
+// state.moveX, state.moveY, state.lookX, state.lookY  (-1..1)
+// state.jump, state.shoot, state.dash, state.menu
