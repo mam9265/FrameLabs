@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <title>Settings</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background: #eef; }
-    form { display: flex; flex-direction: column; width: 300px; gap: 12px; }
+    body { font-family: Arial, sans-serif; margin: 40px; background-color: #005b91; color: #9be0e3; }
+    .menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 65%; margin: 30px auto; }
     input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
-    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
-    button:hover { background: #45a049; }
+    button { background-color: #2a006b; color: #9be0e3; border: none; cursor: pointer; }
+    button:hover { background-color: #3a008b; }
   </style>
 </head>
 <body>
@@ -20,16 +20,50 @@
       <option value="slow">Slow</option>
       <option value="normal">Normal</option>
       <option value="fast">Fast</option>
-      <option value="Bauhaus">Free Bird</option>
+      <option value="freeBird">Free Bird</option>
       required
     </select>
 
-    
-    <div class="slidecontainer">
+    <div class="mainVolume">
+    <a class="slidecontainer">
       <p>Main Volume:</p>
       <input type="range" min="1" max="100" value="50" id="mainSlider" required>
       <p>Value: <span id="mainV"></span></p>
+    </a>
     </div>
+
+    <div class="mainVolumeValue">
+    <script>
+      var slider = document.getElementById("mainSlider");
+      var output = document.getElementById("mainV");
+      output.innerHTML = slider.value;
+      slider.oninput = function() { output.innerHTML = this.value; }
+    </script>
+    </div>
+
+    <div class="soundVolume">
+    <a class="slidecontainer">
+      <p>Sound Volume:</p>
+      <input type="range" min="1" max="100" value="50" id="soundSlider" required>
+      <p>Value: <span id="mainV"></span></p>
+    </a>
+    </div>
+
+    <div class="soundVolumeValue">
+    <script>
+      var slider = document.getElementById("soundSlider");
+      var output = document.getElementById("soundV");
+      output.innerHTML = slider.value;
+      slider.oninput = function() { output.innerHTML = this.value; }
+    </script>
+    </div>
+
+<!--
+    <a class="slidecontainer">
+      <p>Main Volume:</p>
+      <input type="range" min="1" max="100" value="50" id="mainSlider" required>
+      <p>Value: <span id="mainV"></span></p>
+    </a>
 
     <script>
       var slider = document.getElementById("mainSlider");
@@ -38,7 +72,7 @@
       slider.oninput = function() { output.innerHTML = this.value; }
     </script>
 
-    <!--
+    
     <p>Sound Volume:</p>
     <input type="range" min="1" max="100" value="50" required>
 

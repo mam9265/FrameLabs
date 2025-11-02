@@ -6,7 +6,9 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
 const auth = require('./Middleware/auth')
 const rolecheck = require('./Middleware/roleCheck')
+const multer = require('multer');
 const bcrypt = require('bcrypt');
+const upload = multer({ dest: 'uploads/' });
 const jwt = require('jsonwebtoken');
 
 
@@ -221,36 +223,33 @@ FrameLabs.post('/api/system/leaderboard', async (req, res) => {
       res.status(201).json(newLeader);
 })
 
-FrameLabs.post('/api/user', async (req, res) => {
+FrameLabs.post('/api/user', upload.single('profilePicture'), async (req, res) => {
   try {
-    const { user_name, password, profilePicture } = req.body;
+    const { user_name, password } = req.body;
 
-    if (!user_name || !password || !profilePicture) {
+    if (!user_name || !password || !req.file) {
       return res.status(400).json({ error: "Username, password, and profile picture are required." });
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new user({
       name: user_name,
       password,
     });
-
     await newUser.save();
 
     const newAccount = new userAccount({
       userId: newUser._id,
       name: user_name,
-      profilePicture,
+      profilePicture: `/uploads/${req.file.filename}`,
     });
-
     await newAccount.save();
 
-    res.status(201).json({
-      user: newUser,
-      account: newAccount,
-    });
+    res.status(201).json({ message: "User and account created successfully!" });
   } catch (err) {
     console.error('User creation error:', err);
-    res.status(500).json({ error: 'Server error while creating user and account' });
+    res.status(500).json({ error: 'Server error while creating user and account.' });
   }
 });
 
