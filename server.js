@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const fs = require('fs');
+const { exec, spawn } = require('child_process');
+
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
@@ -266,6 +269,52 @@ FrameLabs.post('/api/user/:id/controller', async (req, res) => {
       });
       res.status(201).json(newPreset);
 })
+
+const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+
+
+//Launch Ikemen GO
+FrameLabs.post('/launch-ikemen', (req, res) => {
+  try {
+      // Path to the Ikemen GO executable
+      const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+
+      // Optional: automatically detect primary screen resolution
+      // For now, set manually
+      const screenWidth = 1920;
+      const screenHeight = 1080;
+
+      // Command-line arguments for fullscreen and proper zoom
+      const args = [
+          '-fullscreen', '1',
+          '-screenwidth', screenWidth,
+          '-screenheight', screenHeight,
+          '-zoom', '1'
+      ];
+
+      // Spawn the process
+      const ikemenProcess = spawn(ikemenPath, args, { cwd: path.dirname(ikemenPath) });
+
+      // Optional: listen for stdout/stderr
+      ikemenProcess.stdout.on('data', (data) => {
+          console.log(`Ikemen GO stdout: ${data}`);
+      });
+
+      ikemenProcess.stderr.on('data', (data) => {
+          console.error(`Ikemen GO stderr: ${data}`);
+      });
+
+      ikemenProcess.on('close', (code) => {
+          console.log(`Ikemen GO exited with code ${code}`);
+      });
+
+      res.json({ message: 'Ikemen GO launched!' });
+
+  } catch (err) {
+      console.error('Error launching Ikemen GO:', err);
+      res.status(500).json({ error: 'Failed to launch Ikemen GO' });
+  }
+});
 
 //Return all the Community Guides
 FrameLabs.get('/api/community/guide', async (req, res) => {

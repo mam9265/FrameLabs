@@ -13,12 +13,7 @@
       margin: 0;
       padding: 60px 20px;
     }
-
-    h1 {
-      font-size: 60px;
-      letter-spacing: 3px;
-      margin-bottom: 80px;
-    }
+    h1 { font-size: 60px; letter-spacing: 3px; margin-bottom: 80px; }
 
     .row {
       display: flex;
@@ -41,6 +36,9 @@
       justify-content: flex-start;
       padding: 25px;
       transition: transform 0.2s, background-color 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      color: #9be0e3;
     }
 
     .card:hover {
@@ -48,20 +46,9 @@
       transform: scale(1.05);
     }
 
-    .emoji {
-      font-size: 80px;
-      margin-bottom: 10px;
-    }
-
-    .card h2 {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      font-size: 14px;
-      line-height: 1.5;
-    }
+    .emoji { font-size: 80px; margin-bottom: 10px; }
+    .card h2 { font-size: 18px; margin-bottom: 10px; }
+    .card p { font-size: 14px; line-height: 1.5; }
 
     .back-button {
       position: fixed;
@@ -83,43 +70,30 @@
       background-color: #3a008b;
       transform: scale(1.05);
     }
-
-    .card:link {
-      color: #9be0e3;
-      text-decoration: none;
-    }
-
-    .card:visited {
-      color: #9be0e3;
-      text-decoration: none;
-    }
-
   </style>
 </head>
 <body>
   <h1>PRACTICE MODE</h1>
-
   <div class="row">
-
-    <a href="./practiceModeScreens/freeStyleTraining.html" div class="card">
+    <div class="card" onclick="launchIkemen()">
       <span class="emoji">🥋</span>
       <h2>FREESTYLE TRAINING</h2>
       <p>SELECT A CHARACTER AND EXPERIMENT ON A DUMMY.</p>
-    </a>
+    </div>
 
-    <a href="./practiceModeScreens/comboTrials.html" div class="card">
+    <a href="./practiceModeScreens/comboTrials.html" class="card">
       <span class="emoji">🎮</span>
       <h2>COMBO TRIALS</h2>
       <p>TRY TO ENTER THE CORRECT COMBOS FOR EACH CHARACTER.</p>
     </a>
 
-    <a href="./practiceModeScreens/basicTutorial.html" div class="card">
+    <a href="./practiceModeScreens/basicTutorial.html" class="card">
       <span class="emoji">📘</span>
       <h2>BASIC TUTORIAL</h2>
       <p>NEW TO FRAME LABS OR FIGHTING GAMES? LEARN THE BASICS HERE.</p>
     </a>
 
-    <a href="./practiceModeScreens/dailyChallenge.html" div class="card">
+    <a href="./practiceModeScreens/dailyChallenge.html" class="card">
       <span class="emoji">📅</span>
       <h2>DAILY CHALLENGE</h2>
       <p>TAKE PART IN A DAILY CHALLENGE WHERE YOU USE A RANDOM CHARACTER.</p>
@@ -132,7 +106,13 @@
     function goBack() {
       window.location.href = "homePage.html";
     }
-  </script>
 
+    function launchIkemen() {
+      fetch('/launch-ikemen', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => alert(data.message))
+        .catch(err => alert('Error launching Ikemen GO: ' + err.message));
+    }
+  </script>
 </body>
 </html>
