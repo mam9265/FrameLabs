@@ -11,8 +11,8 @@ const userAccountSchema = new mongoose.Schema({
     required: true,
   },
   profilePicture: {
-    type: String,
-    required: true,
+    data: Buffer,
+    contentType: String,
   },
 });
 

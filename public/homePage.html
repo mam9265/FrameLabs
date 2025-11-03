@@ -61,6 +61,28 @@
             right: 30px;
             font-size: 60px;
         }
+
+        #user-info {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #profile-picture {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #9be0e3;
+        }
+
+        #username {
+            font-size: 20px;
+            color: #9be0e3;
+        }
     </style>
 
     <script>
@@ -77,6 +99,11 @@
           window.location.href = '/login.html';
         }
     </script>
+
+    <div id="user-info">
+        <img id="profile-picture" src="" alt="Profile Picture" />
+        <span id="username"></span>
+    </div>
 
     <h1>FRAME LABS</h1>
 
@@ -117,6 +144,45 @@
           }
         }
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+<script>
+  async function loadUserInfo() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/login.html';
+      return;
+    }
+
+    try {
+      const decoded = jwt_decode(token);
+      const userId = decoded.id;
+
+      const res = await fetch(`/api/user/${userId}/account`);
+      if (!res.ok) throw new Error('Failed to fetch user account');
+
+      const account = await res.json();
+
+      document.getElementById('username').textContent = account.name || 'Unknown User';
+
+      const imgRes = await fetch(`/api/user/${userId}/profilePicture`);
+      if (imgRes.ok) {
+        const blob = await imgRes.blob();
+        const imgUrl = URL.createObjectURL(blob);
+        document.getElementById('profile-picture').src = imgUrl;
+      } else {
+        document.getElementById('profile-picture').src = 'default-avatar.png'; // fallback
+      }
+    } catch (err) {
+      console.error('Error loading user info:', err);
+      alert('Error loading your account info. Please log in again.');
+      localStorage.removeItem('token');
+      window.location.href = '/login.html';
+    }
+  }
+
+  window.onload = loadUserInfo;
+</script>
 
 </body>
 </html>

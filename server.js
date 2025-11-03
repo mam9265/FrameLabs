@@ -10,8 +10,9 @@ const swaggerDocument = require('./swagger-output.json');
 const auth = require('./Middleware/auth')
 const rolecheck = require('./Middleware/roleCheck')
 const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 const bcrypt = require('bcrypt');
-const upload = multer({ dest: 'uploads/' });
 const jwt = require('jsonwebtoken');
 
 
@@ -234,8 +235,6 @@ FrameLabs.post('/api/user', upload.single('profilePicture'), async (req, res) =>
       return res.status(400).json({ error: "Username, password, and profile picture are required." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = new user({
       name: user_name,
       password,
@@ -245,7 +244,10 @@ FrameLabs.post('/api/user', upload.single('profilePicture'), async (req, res) =>
     const newAccount = new userAccount({
       userId: newUser._id,
       name: user_name,
-      profilePicture: `/uploads/${req.file.filename}`,
+      profilePicture: {
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+      },
     });
     await newAccount.save();
 
@@ -585,6 +587,28 @@ FrameLabs.get('/api/user/:id/account', async (req, res) => {
       res.status(500).json({ error: 'Server error', details: error.message });
   }
 })
+
+FrameLabs.get('/api/user/:id/profilePicture', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    console.log('GET profilePicture for userId =', userId);
+
+    const account = await userAccount.findOne({ userId });
+    console.log('Account found:', account);
+
+    if (!account || !account.profilePicture || !account.profilePicture.data) {
+      console.warn('Profile picture not found for userId', userId);
+      return res.status(404).json({ error: 'Profile picture not found' });
+    }
+
+    console.log('Sending picture contentType =', account.profilePicture.contentType);
+    res.contentType(account.profilePicture.contentType);
+    res.send(account.profilePicture.data);
+  } catch (err) {
+    console.error('Error retrieving profile picture:', err);
+    res.status(500).json({ error: 'Error retrieving profile picture' });
+  }
+});
 
 //Get all button mapping presets
 FrameLabs.get('/api/user/:id/controller', async (req, res) => {
