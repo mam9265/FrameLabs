@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Account Config</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background-color: #005b91; color: #9be0e3; }
+    form { display: flex; flex-direction: column; width: 300px; gap: 12px; }
+    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
+    button { background-color: #2a006b; color: #9be0e3; border: none; cursor: pointer; }
+    button:hover { background-color: #3a008b; }
+  </style>
+</head>
+<body>
+  <h2>Account Config</h2>
+  
+  <form id="ConfigForm">
+
+    <!--
+    -->
+
+    <!--Placeholder function for getting account info to display on page-->
+    <script>
+        function getInformation() {}
+    </script>
+
+    <label for="username">Username:</label>
+    <textarea id="username" name="username" rows="1" required></textarea>
+
+    <label for="email">Email:  </label>
+    <textarea id="email" name="email" rows="1" required></textarea>
+
+    <button type="pictureChange">Change Picture</button>
+
+    <button type="passwordChange">Change Password</button>
+
+    <label for="skill">Choose a skill level that best represents you:</label>
+    <select name="skill" id="skill">
+      <option value="baby">VERY NEW</option>
+      <option value="child">NEWER</option>
+      <option value="average">AVERAGE</option>
+      <option value="lord">ABOVE AVERAGE</option>
+      <option value="king">COMPETITIVE</option>
+      <option value="force">AMONG THE BEST</option>
+      <option value="god">MR MARTIN</option>
+      required
+    </select>
+
+    <!--
+    <label for="heavyPunch">Heavy Punch:  </label>
+    <textarea id="heavyPunch" name="heavyPunch" rows="1" required></textarea>
+
+    <-- kicks --=>
+    <label for="lightKick">Light Kick:  </label>
+    <textarea id="lightKick" name="lightKick" rows="1" required></textarea>
+
+    <label for="mediumKick">Medium Kick:  </label>
+    <textarea id="mediumKick" name="mediumKick" rows="1" required></textarea>
+
+    <label for="heavyKick">Heavy Kick:  </label>
+    <textarea id="heavyKick" name="heavyKick" rows="1" required></textarea>
+
+    <-- movement --=>
+     <label for="up">Up:  </label>
+    <textarea id="up" name="up" rows="1" required></textarea>
+
+    <label for="left">Left: </label>
+    <textarea id="left" name="left" rows="1" required></textarea>
+
+    <label for="right">Right:  </label>
+    <textarea id="right" name="right" rows="1" required></textarea>
+
+    <label for="down">Down:  </label>
+    <textarea id="down" name="down" rows="1" required></textarea>-->
+
+    <button type="Save">Save Config</button>
+    <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
+  </form>
+
+</body>
+</html>
