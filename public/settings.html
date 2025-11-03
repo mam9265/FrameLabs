@@ -24,6 +24,9 @@
       required
     </select>
 
+    <hr>
+
+    <!--MAIN VOLUME-->
     <div class="mainVolume">
     <a class="slidecontainer">
       <p>Main Volume:</p>
@@ -41,11 +44,14 @@
     </script>
     </div>
 
+    <hr>
+
+    <!--SOUND VOLUME-->
     <div class="soundVolume">
     <a class="slidecontainer">
       <p>Sound Volume:</p>
       <input type="range" min="1" max="100" value="50" id="soundSlider" required>
-      <p>Value: <span id="mainV"></span></p>
+      <p>Value: <span id="soundV"></span></p>
     </a>
     </div>
 
@@ -58,30 +64,47 @@
     </script>
     </div>
 
-<!--
-    <a class="slidecontainer">
-      <p>Main Volume:</p>
-      <input type="range" min="1" max="100" value="50" id="mainSlider" required>
-      <p>Value: <span id="mainV"></span></p>
-    </a>
+    <hr>
 
-    <script>
-      var slider = document.getElementById("mainSlider");
-      var output = document.getElementById("mainV");
-      output.innerHTML = slider.value;
-      slider.oninput = function() { output.innerHTML = this.value; }
-    </script>
+    <!--VOICE VOLUME-->
+    <div class="voiceVolume">
+      <a class="slidecontainer">
+        <p>Voice Volume:</p>
+        <input type="range" min="1" max="100" value="50" id="voiceSlider" required>
+        <p>Value: <span id="voiceV"></span></p>
+      </a>
+      </div>
+  
+      <div class="voiceVolumeValue">
+      <script>
+        var slider = document.getElementById("voiceSlider");
+        var output = document.getElementById("voiceV");
+        output.innerHTML = slider.value;
+        slider.oninput = function() { output.innerHTML = this.value; }
+      </script>
+      </div>
 
-    
-    <p>Sound Volume:</p>
-    <input type="range" min="1" max="100" value="50" required>
+      <hr>
 
-    <p>Voice Volume:</p>
-    <input type="range" min="1" max="100" value="50" required>
+      <!--MUSIC VOLUME-->
+      <div class="musicVolume">
+      <a class="slidecontainer">
+        <p>Music Volume:</p>
+        <input type="range" min="1" max="100" value="50" id="musicSlider" required>
+        <p>Value: <span id="musicV"></span></p>
+      </a>
+      </div>
+  
+      <div class="musicVolumeValue">
+      <script>
+        var slider = document.getElementById("musicSlider");
+        var output = document.getElementById("musicV");
+        output.innerHTML = slider.value;
+        slider.oninput = function() { output.innerHTML = this.value; }
+      </script>
+      </div>
 
-    <p>Music Volume:</p>
-    <input type="range" min="1" max="100" value="50" required>
-    -->
+      <hr>
 
     <button type="Save">Save Config</button>
     
