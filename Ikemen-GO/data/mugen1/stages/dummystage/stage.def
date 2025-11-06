@@ -1,0 +1,8 @@
+[Info]
+name = DummyStage
+author = You
+versiondate = 2025-11-01
+mugenversion = 1.1
+
+[Files]
+bg = 0
