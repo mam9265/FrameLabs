@@ -8,10 +8,6 @@ go/*
 *.sh
 *.png
 save/*
-Ikemen_GO_Linux
-Ikemen_GO_MacOS
-Ikemen_GO_x86.exe
-Ikemen_GO.command
 external/script/.idea/*
 *.manifest
 resources/*
