@@ -1,0 +1,9 @@
+external/script/main.lua:4034: <game end>
+stack traceback:
+	[G]: in function 'refresh'
+	external/script/main.lua:4034: in function 'f_menuCommonDraw'
+	.\external\script\options.lua:1219: in function 'loop'
+	.\external\script\options.lua:1251: in function 'f'
+	external/script/main.lua:3105: in function 'loop'
+	external/script/main.lua:4156: in main chunk
+	[G]: ?

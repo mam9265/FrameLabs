@@ -1,0 +1,6 @@
+[Info]
+name = DummyStage
+author = Test
+
+[Files]
+; image and stage files (can be empty for testing)

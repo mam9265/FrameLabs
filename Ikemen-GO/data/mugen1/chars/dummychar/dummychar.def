@@ -1,0 +1,12 @@
+[Info]
+name = DummyChar
+displayname = Dummy Character
+author = You
+versiondate = 2025-11-01
+mugenversion = 1.1
+
+[Files]
+cmd = cmd.lua
+cns = cns.lua
+st = st.lua
+anim = anim.lua
