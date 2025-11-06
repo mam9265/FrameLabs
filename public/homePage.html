@@ -18,10 +18,10 @@
         }
 
         h1 {
-            font-size: 100px;
+            font-size: 110px;
             letter-spacing: 6px;
-            margin-top: 20px;
-            margin-bottom: 15px;
+            margin-top: 40px;
+            margin-bottom: 10px;
         }
 
         .menu {
@@ -29,19 +29,25 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
             width: 65%;
-            margin: 30px auto;
+            margin: 15px auto;
+            flex-grow: 1;
+            align-content: end;
+            min-height: 60vh;
         }
 
         .menu-item {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             background-color: #2a006b;
             color: white;
             text-decoration: none;
-            padding: 35px 20px;
+            padding: 60px 20px;
             border-radius: 10px;
             text-align: center;
             transition: background 0.3s;
-            font-size: 22px;
+            font-size: 33px;
             font-family: 'Orbitron', sans-serif;
         }
 
@@ -49,38 +55,32 @@
             background-color: #3a008b;
         }
 
-        .menu-item .icon {
-            display: block;
-            font-size: 2em;
-            margin-bottom: 8px;
-        }
-
-        .footer {
-            position: fixed;
-            bottom: 20px;
-            right: 30px;
-            font-size: 60px;
+        .menu-item .icon { 
+            display: block; font-size: 3em; margin-bottom: 8px; 
         }
 
         #user-info {
-            position: absolute;
-            top: 20px;
-            right: 30px;
+            display: none;
+        }
+
+        .account-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            margin-top: 30px;
+            margin-bottom: 20px;
         }
 
         #profile-picture {
-            width: 60px;
-            height: 60px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #9be0e3;
         }
 
         #username {
-            font-size: 20px;
+            font-size: 35px;
             color: #9be0e3;
         }
     </style>
@@ -93,96 +93,97 @@
 </head>
 
 <body>
-    <script>
-        const token = localStorage.getItem('token');
-        if (!token) {
-          window.location.href = '/login.html';
-        }
-    </script>
-
-    <div id="user-info">
-        <img id="profile-picture" src="" alt="Profile Picture" />
-        <span id="username"></span>
-    </div>
-
-    <h1>FRAME LABS</h1>
-
-    <div class="menu">
-        <a class="menu-item" href="controlConfig.html">
-            <span class="icon">🎮</span>
-            Control Config
-        </a>
-        <a class="menu-item" href="practiceModes.html">
-            <span class="icon">🥋</span>
-            Practice Modes
-        </a>
-        <a class="menu-item" href="accountConfig.html">
-            <span class="icon">👤</span>
-            Account Config
-        </a>
-        <a class="menu-item" href="settings.html">
-            <span class="icon">⚙️</span>
-            Settings
-        </a>
-        <a class="menu-item" href="communityCreations.html">
-            <span class="icon">🤝</span>
-            Community Creations
-        </a>
-        <a class="menu-item" href="#" onclick="logout()">
-            <span class="icon">😢</span>
-            Logout
-        </a>
-    </div>
-
-    <div class="footer">🌐</div>
-
-    <script>
-        function logout() {
-          if (confirm('Are you sure you want to log out?')) {
-            localStorage.removeItem('token');
+    <body>
+        <script>
+          const token = localStorage.getItem('token');
+          if (!token) {
             window.location.href = '/login.html';
           }
-        }
-    </script>
-
-<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-<script>
-  async function loadUserInfo() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      window.location.href = '/login.html';
-      return;
-    }
-
-    try {
-      const decoded = jwt_decode(token);
-      const userId = decoded.id;
-
-      const res = await fetch(`/api/user/${userId}/account`);
-      if (!res.ok) throw new Error('Failed to fetch user account');
-
-      const account = await res.json();
-
-      document.getElementById('username').textContent = account.name || 'Unknown User';
-
-      const imgRes = await fetch(`/api/user/${userId}/profilePicture`);
-      if (imgRes.ok) {
-        const blob = await imgRes.blob();
-        const imgUrl = URL.createObjectURL(blob);
-        document.getElementById('profile-picture').src = imgUrl;
-      } else {
-        document.getElementById('profile-picture').src = 'default-avatar.png'; // fallback
-      }
-    } catch (err) {
-      console.error('Error loading user info:', err);
-      alert('Error loading your account info. Please log in again.');
-      localStorage.removeItem('token');
-      window.location.href = '/login.html';
-    }
-  }
-
-  window.onload = loadUserInfo;
-</script>
+        </script>
+      
+        <h1>FRAME LABS</h1>
+      
+        <div class="menu">
+          <a class="menu-item" href="controlConfig.html">
+            <span class="icon">🎮</span>
+            Control Config
+          </a>
+          <a class="menu-item" href="practiceModes.html">
+            <span class="icon">🥋</span>
+            Practice Modes
+          </a>
+      
+          <a class="menu-item" href="accountConfig.html" id="account-config">
+            <div class="account-info">
+              <img id="profile-picture" src="default-avatar.png" alt="Profile Picture" />
+              <span id="username">Loading...</span>
+            </div>
+            Account Config
+          </a>
+      
+          <a class="menu-item" href="settings.html">
+            <span class="icon">⚙️</span>
+            Settings
+          </a>
+          <a class="menu-item" href="communityCreations.html">
+            <span class="icon">🤝</span>
+            Community Creations
+          </a>
+          <a class="menu-item" href="#" onclick="logout()">
+            <span class="icon">😢</span>
+            Logout
+          </a>
+        </div>
+      
+        <script>
+          function logout() {
+            if (confirm('Are you sure you want to log out?')) {
+              localStorage.removeItem('token');
+              window.location.href = '/login.html';
+            }
+          }
+        </script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+        <script>
+          async function loadUserInfo() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+              window.location.href = '/login.html';
+              return;
+            }
+      
+            try {
+              const decoded = jwt_decode(token);
+              const userId = decoded.id;
+      
+              const res = await fetch(`/api/user/${userId}/account`);
+              if (!res.ok) throw new Error('Failed to fetch user account');
+      
+              const account = await res.json();
+              document.getElementById('username').textContent = account.name || 'Unknown User';
+      
+              const imgRes = await fetch(`/api/user/${userId}/profilePicture`);
+              const imgElement = document.getElementById('profile-picture');
+      
+              if (imgRes.ok) {
+                const blob = await imgRes.blob();
+                const imgUrl = URL.createObjectURL(blob);
+                imgElement.src = imgUrl;
+              } else {
+                imgElement.src = 'default-avatar.png';
+              }
+            } catch (err) {
+              console.error('Error loading user info:', err);
+              alert('Error loading your account info. Please log in again.');
+              localStorage.removeItem('token');
+              window.location.href = '/login.html';
+            }
+          }
+      
+          window.onload = loadUserInfo;
+        </script>
+      </body>
 
 </body>
 </html>
