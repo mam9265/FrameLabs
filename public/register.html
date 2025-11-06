@@ -70,7 +70,7 @@
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #9be0e3;
-      display: none;
+      display: block;
     }
 
     button {
@@ -109,6 +109,37 @@
       text-decoration: underline;
       color: #e6b800;
     }
+
+    /* === Password strength feedback === */
+    .password-feedback {
+      text-align: left;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .strength-bar {
+      height: 10px;
+      border-radius: 6px;
+      background-color: #333;
+      margin-top: 5px;
+      width: 100%;
+    }
+
+    .strength-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      width: 0;
+      transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .valid {
+      color: #7aff7a;
+    }
+
+    .invalid {
+      color: #ff7070;
+    }
   </style>
 </head>
 
@@ -116,12 +147,12 @@
   <div class="register-container">
     <h1>CREATE ACCOUNT</h1>
     <input type="text" id="username" placeholder="Choose Username" />
-    <input type="password" id="password" placeholder="Choose Password" />
+    <input type="password" id="password" placeholder="Choose Password" oninput="updatePasswordStrength()" />
     <input type="password" id="confirmPassword" placeholder="Confirm Password" />
 
     <div class="upload-section">
       <input type="file" id="profilePicture" accept="image/*" onchange="previewImage(event)" />
-      <img id="preview" alt="Profile Preview" />
+      <img id="preview" alt="Profile Preview" src="/images/default.jpg" />
     </div>
 
     <button onclick="register()">Register</button>
@@ -129,56 +160,158 @@
     <div id="error" class="error"></div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
   <script>
-    function previewImage(event) {
-      const preview = document.getElementById('preview');
-      const file = event.target.files[0];
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirmPassword');
+    const errorDiv = document.getElementById('error');
+  
+    const meterContainer = document.createElement('div');
+    meterContainer.style.width = '100%';
+    meterContainer.style.height = '10px';
+    meterContainer.style.borderRadius = '4px';
+    meterContainer.style.marginTop = '10px';
+    meterContainer.style.backgroundColor = '#3b3b3b';
+    passwordInput.insertAdjacentElement('afterend', meterContainer);
+  
+    const meter = document.createElement('div');
+    meter.style.height = '100%';
+    meter.style.width = '0%';
+    meter.style.borderRadius = '4px';
+    meter.style.transition = 'width 0.3s ease, background-color 0.3s ease';
+    meterContainer.appendChild(meter);
+  
+    const strengthLabel = document.createElement('div');
+    strengthLabel.style.marginTop = '5px';
+    strengthLabel.style.fontSize = '14px';
+    strengthLabel.style.color = '#9be0e3';
+    meterContainer.insertAdjacentElement('afterend', strengthLabel);
+
+    const requirementsDiv = document.createElement('div');
+    requirementsDiv.style.marginTop = '10px';
+    requirementsDiv.style.textAlign = 'left';
+    requirementsDiv.style.fontSize = '14px';
+    requirementsDiv.style.color = '#9be0e3';
+    requirementsDiv.innerHTML = `
+      <ul style="list-style:none; padding:0; margin:0;">
+        <li id="req-length">❌ At least 8 characters</li>
+        <li id="req-upper">❌ One uppercase letter</li>
+        <li id="req-number">❌ One number</li>
+        <li id="req-special">❌ One special character (!@#$%^&*)</li>
+      </ul>
+    `;
+    strengthLabel.insertAdjacentElement('afterend', requirementsDiv);
+  
+    const matchLabel = document.createElement('div');
+    matchLabel.style.marginTop = '10px';
+    matchLabel.style.fontSize = '14px';
+    matchLabel.style.color = '#ff7070';
+    confirmInput.insertAdjacentElement('afterend', matchLabel);
+  
+    passwordInput.addEventListener('input', updatePasswordFeedback);
+    confirmInput.addEventListener('input', checkPasswordsMatch);
+  
+    function updatePasswordFeedback() {
+      const pwd = passwordInput.value;
+  
+      const result = zxcvbn(pwd);
+      const colors = ['#ff4b5c', '#ffad46', '#ffe46b', '#9be07b', '#4de074'];
+      const labels = ['Very Weak', 'Weak', 'Fair', 'Strong', 'Very Strong'];
+      const widths = ['20%', '40%', '60%', '80%', '100%'];
+  
+      meter.style.width = pwd ? widths[result.score] : '0%';
+      meter.style.backgroundColor = colors[result.score];
+      strengthLabel.textContent = pwd ? `Password Strength: ${labels[result.score]}` : '';
+  
+      updateRequirement('req-length', pwd.length >= 8);
+      updateRequirement('req-upper', /[A-Z]/.test(pwd));
+      updateRequirement('req-number', /\d/.test(pwd));
+      updateRequirement('req-special', /[^A-Za-z0-9]/.test(pwd));
+  
+      checkPasswordsMatch();
+    }
+  
+    function updateRequirement(id, condition) {
+      const item = document.getElementById(id);
+      item.textContent = `${condition ? '✅' : '❌'} ${item.textContent.replace(/^✅ |^❌ /, '')}`;
+    }
+  
+    function checkPasswordsMatch() {
+      const pwd = passwordInput.value;
+      const confirm = confirmInput.value;
+  
+      if (!confirm) {
+        matchLabel.textContent = '';
+        return;
+      }
+  
+      if (pwd === confirm) {
+        matchLabel.textContent = '✔️ Passwords match';
+        matchLabel.style.color = '#4de074';
+      } else {
+        matchLabel.textContent = '❌ Passwords do not match';
+        matchLabel.style.color = '#ff7070';
       }
     }
-
+  
+    function validatePasswordPolicy(pwd) {
+      return (
+        pwd.length >= 8 &&
+        /[A-Z]/.test(pwd) &&
+        /\d/.test(pwd) &&
+        /[^A-Za-z0-9]/.test(pwd)
+      );
+    }
+  
     async function register() {
       const user_name = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const password = passwordInput.value.trim();
+      const confirmPassword = confirmInput.value.trim();
       const fileInput = document.getElementById('profilePicture');
-      const errorDiv = document.getElementById('error');
-
+  
+      errorDiv.textContent = '';
+  
       if (!user_name || !password || !confirmPassword) {
         errorDiv.textContent = 'Please fill out all fields.';
         return;
       }
-
+  
       if (password !== confirmPassword) {
         errorDiv.textContent = 'Passwords do not match.';
         return;
       }
-
-      if (fileInput.files.length === 0) {
-        errorDiv.textContent = 'Please select a profile picture.';
+  
+      if (!validatePasswordPolicy(password)) {
+        errorDiv.textContent =
+          'Password must be at least 8 characters and include a capital letter, number, and special character.';
         return;
       }
-
+  
       const formData = new FormData();
       formData.append('user_name', user_name);
       formData.append('password', password);
-      formData.append('profilePicture', fileInput.files[0]);
-
+  
+      if (fileInput.files.length > 0) {
+        formData.append('profilePicture', fileInput.files[0]);
+      } else {
+        const response = await fetch('/images/default.jpg');
+        const blob = await response.blob();
+        formData.append('profilePicture', blob, 'default.jpg');
+      }
+  
       try {
         const res = await fetch('/api/user', {
           method: 'POST',
           body: formData
         });
-
+  
         const data = await res.json();
-
+  
         if (!res.ok) {
           errorDiv.textContent = data.error || 'Registration failed.';
           return;
         }
-
+  
         alert('Account created successfully! You can now log in.');
         window.location.href = '/login.html';
       } catch (err) {
@@ -187,5 +320,10 @@
       }
     }
   </script>
+  
+  
+  
+  
 </body>
 </html>
+
