@@ -210,6 +210,16 @@
   
     passwordInput.addEventListener('input', updatePasswordFeedback);
     confirmInput.addEventListener('input', checkPasswordsMatch);
+
+    function previewImage(event) {
+    const preview = document.getElementById('preview');
+    const file = event.target.files[0];
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+    } else {
+      preview.src = '/images/default.jpg';
+    }
+    }
   
     function updatePasswordFeedback() {
       const pwd = passwordInput.value;
