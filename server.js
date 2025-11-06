@@ -3,7 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const { exec, spawn } = require('child_process');
-const path = require('path');
 const os = require('os');
 const { screen } = require('electron');
 const { get } = require('systeminformation'); 
@@ -311,8 +310,6 @@ FrameLabs.post('/launch-ikemen', async (req, res) => {
     ikemenProcess.stdout.on('data', data => console.log(`Ikemen GO stdout: ${data}`));
     ikemenProcess.stderr.on('data', data => console.error(`Ikemen GO stderr: ${data}`));
     ikemenProcess.on('close', code => console.log(`Ikemen GO exited with code ${code}`));
-
-    res.json({ message: 'Ikemen GO launched successfully', resolution: { screenWidth, screenHeight } });
 
   } catch (err) {
     console.error('Error launching Ikemen GO:', err);
