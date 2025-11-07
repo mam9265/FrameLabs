@@ -8,7 +8,7 @@
   "BarGuard": false,
   "BarRedLife": true,
   "BarStun": false,
-  "Borderless": false,
+  "Borderless": true,
   "ComboExtraFrameWindow": 0,
   "CommonAir": [
     "data/common.air"
@@ -51,8 +51,8 @@
   "Framerate": 60,
   "Fullscreen": true,
   "FullscreenRefreshRate": 60,
-  "FullscreenWidth": 1920,
-  "FullscreenHeight": 1080,
+  "FullscreenWidth": 0,
+  "FullscreenHeight": 0,
   "GameWidth": 1920,
   "GameHeight": 1080,
   "GameFramerate": 60,
