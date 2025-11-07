@@ -3,7 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const { exec, spawn } = require('child_process');
-
+const os = require('os');
+const { screen } = require('electron');
+const { get } = require('systeminformation'); 
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
@@ -272,47 +274,48 @@ FrameLabs.post('/api/user/:id/controller', async (req, res) => {
       res.status(201).json(newPreset);
 })
 
-const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
-
-
-//Launch Ikemen GO
-FrameLabs.post('/launch-ikemen', (req, res) => {
+FrameLabs.post('/launch-ikemen', async (req, res) => {
   try {
-      // Path to the Ikemen GO executable
-      const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+    // Path to Ikemen GO executable
+    const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
 
-      // Optional: automatically detect primary screen resolution
-      // For now, set manually
-      const screenWidth = 1920;
-      const screenHeight = 1080;
+    // --- AUTO-DETECT SCREEN SIZE ---
+    let screenWidth, screenHeight;
 
-      // Command-line arguments for fullscreen and proper zoom
-      const args = [
-          '-fullscreen', '1',
-          '-screenwidth', screenWidth,
-          '-screenheight', screenHeight,
-          '-zoom', '1'
-      ];
+    try {
+      // ✅ Works if you're using Electron (recommended)
+      const primaryDisplay = screen.getPrimaryDisplay();
+      screenWidth = primaryDisplay.size.width;
+      screenHeight = primaryDisplay.size.height;
+    } catch {
+      // ✅ Fallback: use systeminformation (works in Node)
+      const si = await import('systeminformation');
+      const displays = await si.graphics();
 
-      // Spawn the process
-      const ikemenProcess = spawn(ikemenPath, args, { cwd: path.dirname(ikemenPath) });
+      let primary = displays.displays?.find(d => d.main) || displays.displays?.[0];
 
-      // Optional: listen for stdout/stderr
-      ikemenProcess.stdout.on('data', (data) => {
-          console.log(`Ikemen GO stdout: ${data}`);
-      });
+      screenWidth = primary?.resolutionx || 1920; // default fallback
+      screenHeight = primary?.resolutiony || 1080; // default fallback
+    }
 
-      ikemenProcess.stderr.on('data', (data) => {
-          console.error(`Ikemen GO stderr: ${data}`);
-      });
+    // --- Build args ---
+    const args = [
+      '-fullscreen', '1',
+      '-screenwidth', screenWidth.toString(),
+      '-screenheight', screenHeight.toString(),
+      '-zoom', '1'
+    ];
 
-      ikemenProcess.on('close', (code) => {
-          console.log(`Ikemen GO exited with code ${code}`);
-      });
+    // --- Launch process ---
+    const ikemenProcess = spawn(ikemenPath, args, { cwd: path.dirname(ikemenPath) });
+
+    ikemenProcess.stdout.on('data', data => console.log(`Ikemen GO stdout: ${data}`));
+    ikemenProcess.stderr.on('data', data => console.error(`Ikemen GO stderr: ${data}`));
+    ikemenProcess.on('close', code => console.log(`Ikemen GO exited with code ${code}`));
 
   } catch (err) {
-      console.error('Error launching Ikemen GO:', err);
-      res.status(500).json({ error: 'Failed to launch Ikemen GO' });
+    console.error('Error launching Ikemen GO:', err);
+    res.status(500).json({ error: 'Failed to launch Ikemen GO' });
   }
 });
 
