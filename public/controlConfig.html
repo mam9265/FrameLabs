@@ -5,61 +5,66 @@
   <title>Controller Config</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 40px; background-color: #005b91; color: #9be0e3; }
-    form { display: flex; flex-direction: column; width: 300px; gap: 12px; }
+    .container { display: flex; width: 1000px; gap: 12px; }
     input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
     button { background-color: #2a006b; color: #9be0e3; border: none; cursor: pointer; }
     button:hover { background-color: #3a008b; }
   </style>
 </head>
 <body>
+
   <h2>Controller Config</h2>
   
   <form id="ConfigForm">
+    
     <label for="games">Choose a game:</label>
-    <select name="games" id="games">
-      <option value="Stronk Freeter">Stronk Freeter</option>
-      <option value="Mr. Martin's Infinite Shoe Collection">Mr. Martin's Infinite Shoe Collection</option>
-      <option value="Super Bash Sisters">Super Bash Sisters</option>
-      <option value="Bauhaus">Bauhaus</option>
+    <select name="configSelect" id="configSelect">
+      <option value="new">NEW CONFIG</option>
       required
     </select>
 
+    <label for="configName">CONFIG NAME: <input type="text" id="configName" name="CONFIGNAME"> </label>
+    <hr>
+
     <!-- punches -->
-    <label for="lightPunch">Light Punch:</label>
-    <textarea id="lightPunch" name="lightPunch" rows="1" required></textarea>
-
-    <label for="mediumPunch">Medium Punch:  </label>
-    <textarea id="mediumPunch" name="mediumPunch" rows="1" required></textarea>
-
-    <label for="heavyPunch">Heavy Punch:  </label>
-    <textarea id="heavyPunch" name="heavyPunch" rows="1" required></textarea>
+    <label for="lightPunch">Light Punch: <input type="text" id="lightPunch" name="LP"> </label>
+    <label for="mediumPunch">Medium Punch: <input type="text" id="mediumPunch" name="MP"> </label>
+    <label for="heavyPunch">Heavy Punch: <input type="text" id="heavyPunch" name="HP"> </label>
+    <br>
 
     <!-- kicks -->
-    <label for="lightKick">Light Kick:  </label>
-    <textarea id="lightKick" name="lightKick" rows="1" required></textarea>
-
-    <label for="mediumKick">Medium Kick:  </label>
-    <textarea id="mediumKick" name="mediumKick" rows="1" required></textarea>
-
-    <label for="heavyKick">Heavy Kick:  </label>
-    <textarea id="heavyKick" name="heavyKick" rows="1" required></textarea>
+    <label for="lightKick">Light Kick: <input type="text" id="lightKick" name="LK"> </label>
+    <label for="mediumKick">Medium Kick: <input type="text" id="mediumKick" name="MK"> </label>
+    <label for="heavyKick">Heavy Kick: <input type="text" id="heavyKick" name="HK"> </label>
+    <hr>
 
     <!-- movement -->
-     <label for="up">Up:  </label>
-    <textarea id="up" name="up" rows="1" required></textarea>
-
-    <label for="left">Left: </label>
-    <textarea id="left" name="left" rows="1" required></textarea>
-
-    <label for="right">Right:  </label>
-    <textarea id="right" name="right" rows="1" required></textarea>
-
-    <label for="down">Down:  </label>
-    <textarea id="down" name="down" rows="1" required></textarea>
+    <label for="up">Up: <input type="text" id="up" name="UP"> </label>
+    <label for="left">Left: <input type="text" id="left" name="LEFT"> </label>
+    <label for="down">Down: <input type="text" id="down" name="DOWN"> </label>
+    <label for="right">Right: <input type="text" id="right" name="RIGHT"> </label>
+    <hr>
 
     <button type="Save">Save Config</button>
-    <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
   </form>
+
+  <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
+
+  <script>
+
+    //Getting data from form
+    const lightPunch = document.getElementById("lightPunch");
+    const mediumPunch = document.getElementById("mediumPunch");
+    const heavyPunch = document.getElementById("heavyPunch");
+    const lightKick = document.getElementById("lightKick");
+    const mediumKick = document.getElementById("mediumKick");
+    const heavyKick = document.getElementById("heavyKick");
+    const up = document("up");
+    const left = document("left");
+    const down = document("down");
+    const right = document("right");
+
+  </script>
 
 </body>
 </html>
