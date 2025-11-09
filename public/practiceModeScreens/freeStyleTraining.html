@@ -85,20 +85,23 @@
     <div id="error-message"></div>
     <div id="debug-log"></div>
     <script>
+        // Initialize elements first
+        const videoElement = document.getElementById('game-video');
+        const startButton = document.getElementById('start-button');
+        const errorDiv = document.getElementById('error-message');
+        const debugLog = document.getElementById('debug-log');
+        let gameRunning = false;
+
+        // Make debug log visible by default in non-Electron mode
+        debugLog.style.display = 'block';
+
         // Check for Electron APIs - but don't require them
         const electronAPI = window.electronAPI;
         const ipcRenderer = electronAPI?.ipcRenderer;
         
-        // Initialize elements
-        const videoElement = document.getElementById('game-video');
-        const startButton = document.getElementById('start-button');
-        
         // Log which mode we're running in
         const isElectron = !!(electronAPI && ipcRenderer);
-        log(isElectron ? 'Running in Electron mode' : 'Running in browser mode');
-        const errorDiv = document.getElementById('error-message');
-        const debugLog = document.getElementById('debug-log');
-        let gameRunning = false;
+        log('Initializing in ' + (isElectron ? 'Electron' : 'browser') + ' mode');
 
         function log(message) {
             const time = new Date().toLocaleTimeString();
@@ -133,12 +136,26 @@
                 } else {
                     log('Using server endpoint to start game');
                     try {
-                        log('Sending POST request to /launch-ikemen...');
+                        log('Sending POST request to launch game...');
+                        // Calculate absolute screen coordinates of the game container and send them
+                        const rect = document.getElementById('game-container').getBoundingClientRect();
+                        const dpr = window.devicePixelRatio || 1;
+                        const absoluteX = Math.round((window.screenX + rect.left) * dpr);
+                        const absoluteY = Math.round((window.screenY + rect.top) * dpr);
+                        const payload = {
+                            x: absoluteX,
+                            y: absoluteY,
+                            width: Math.round(rect.width * dpr),
+                            height: Math.round(rect.height * dpr)
+                        };
+                        log('Computed screen payload: ' + JSON.stringify(payload));
+
                         const resp = await fetch('/launch-ikemen', { 
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
-                            }
+                            },
+                            body: JSON.stringify(payload)
                         });
                         log('Server response status: ' + resp.status);
                         
@@ -149,17 +166,32 @@
                         
                         const data = await resp.json();
                         log('Server response data: ' + JSON.stringify(data));
-                        
+
                         if (data.error) {
                             throw new Error(data.error);
                         }
-                        
+
                         log('Game launch requested, PID: ' + (data.pid || 'unknown'));
-                        log('Waiting 2 seconds before starting capture...');
+
+                        // Attempt a follow-up position request (retry) in case initial positioning
+                        // didn't perfectly align. Use the same payload we used for launch.
+                        try {
+                            const posResp = await fetch('/position-window', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(Object.assign({ pid: data.pid }, payload))
+                            });
+                            const posData = await posResp.json();
+                            log('Position response: ' + JSON.stringify(posData));
+                        } catch (posErr) {
+                            log('Position retry failed: ' + (posErr && posErr.message ? posErr.message : posErr));
+                        }
+
+                        log('Waiting 1.5 seconds before showing game status...');
                         setTimeout(() => {
-                            log('Starting window capture...');
+                            log('Starting window capture / status display...');
                             captureGameWindow();
-                        }, 2000);
+                        }, 1500);
                     } catch (err) {
                         throw new Error('Failed to launch game: ' + (err.message || err));
                     }
@@ -174,96 +206,24 @@
 
         async function captureGameWindow() {
             try {
-                log('Trying to capture Ikemen GO window...');
+                log('Game window should appear in container...');
+                startButton.style.display = 'none';
+                gameRunning = true;
 
-                // If desktopCapturer is available use it to select the specific window by id
-                // Use the preload-exposed API to get sources
-                const maxRetries = 12;
-                let source = null;
-                for (let i = 0; i < maxRetries; i++) {
-                        let res = { success: false };
-                        if (electronAPI && typeof electronAPI.getSources === 'function') {
-                            res = await electronAPI.getSources({ types: ['window', 'screen'], thumbnailSize: { width: 320, height: 180 } });
-                        } else {
-                            res = { success: false, error: 'electronAPI unavailable' };
-                        }
+                // In non-Electron mode, the game window is positioned by the server
+                // Hide the video element since we're not using capture
+                videoElement.style.display = 'none';
 
-                        if (!res.success) {
-                            log('getSources error or unavailable: ' + (res.error || '<none>'));
-                            // Fall back to getDisplayMedia if getSources not available
-                            break;
-                        }
+                // Add a message to show game status
+                const statusDiv = document.createElement('div');
+                statusDiv.style.color = 'white';
+                statusDiv.style.padding = '20px';
+                statusDiv.textContent = 'Game Running...';
+                document.getElementById('game-container').appendChild(statusDiv);
 
-                        const sources = res.sources || [];
-                    log('Available sources: ' + (sources.map(s => s.name).join(', ') || '<none>'));
-
-                    source = sources.find(s => {
-                        const name = (s.name || '').toLowerCase();
-                        return name.includes('ikemen') || name.includes('m.u.g.e.n') || name.includes('ikemen_go');
-                    });
-
-                    if (source) break;
-                    log(`Ikemen window not found, retry ${i + 1}/${maxRetries}...`);
-                    await new Promise(r => setTimeout(r, 1000));
-                }
-
-                if (source) {
-                    log('Found source: ' + source.name + ' (id=' + source.id + ')');
-
-                    // Use the source.id as chromeMediaSourceId to capture only that window
-                    const constraints = {
-                        audio: false,
-                        video: {
-                            mandatory: {
-                                chromeMediaSource: 'desktop',
-                                chromeMediaSourceId: source.id,
-                                minWidth: 1280,
-                                maxWidth: 1920,
-                                minHeight: 720,
-                                maxHeight: 1080
-                            }
-                        }
-                    };
-
-                    let stream;
-                    try {
-                        stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    } catch (err) {
-                        // Some Chromium builds require getDisplayMedia for window capture; fall back
-                        log('getUserMedia with chromeMediaSourceId failed: ' + (err && err.message ? err.message : err));
-                        stream = null;
-                    }
-                    if (!stream) {
-                        // fall back to prompt the user to pick the Ikemen window
-                        log('Falling back to getDisplayMedia to let user pick the Ikemen window');
-                        stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
-                    }
-                    videoElement.srcObject = stream;
-                    videoElement.style.display = 'block';
-                    await videoElement.play();
-
-                    // Hide the button only after capture is running
-                    startButton.style.display = 'none';
-                    gameRunning = true;
-                    log('Game capture started successfully for: ' + source.name);
-                } else {
-                    // desktopCapturer/getSources not available or Ikemen not found — fall back to user-pick
-                    log('Falling back to getDisplayMedia — please pick the Ikemen GO window in the chooser');
-                    try {
-                        const dispStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
-                        videoElement.srcObject = dispStream;
-                        videoElement.style.display = 'block';
-                        await videoElement.play();
-                        startButton.style.display = 'none';
-                        gameRunning = true;
-                        log('Display capture started (user-selected source)');
-                    } catch (err) {
-                        throw new Error('getDisplayMedia failed or user cancelled: ' + (err && err.message ? err.message : err));
-                    }
-                }
             } catch (error) {
-                showError('Failed to capture game: ' + (error && error.message ? error.message : error));
-                log('Capture error: ' + (error && error.message ? error.message : error));
+                showError('Error: ' + (error && error.message ? error.message : error));
+                log('Error: ' + (error && error.message ? error.message : error));
             }
         }
 

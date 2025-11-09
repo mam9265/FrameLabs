@@ -1,2 +1,1 @@
-const frontEnd = require('./frontEnd.js');
-const server = require('./server.js');
+require('./server.js');
