@@ -17,37 +17,58 @@
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        webview {
-            width: 100%;
-            height: 100%;
-            border: none;
+            position: relative;
         }
     </style>
 </head>
 <body>
-    <div id="game-container">
-        <webview id="game-view" allowfullscreen></webview>
-    </div>
+    <div id="game-container"></div>
     <script>
         const { ipcRenderer } = require('electron');
-        const gameView = document.getElementById('game-view');
+        const { desktopCapturer } = require('electron');
 
-        ipcRenderer.on('game-stream', (event, stream) => {
-            // Set the source when we receive the game stream
-            if (stream) {
-                gameView.src = `game-stream://${stream}`;
+        ipcRenderer.on('game-started', async () => {
+            try {
+                const sources = await desktopCapturer.getSources({
+                    types: ['window'],
+                    thumbnailSize: { width: 1920, height: 1080 }
+                });
+
+                // Find the Ikemen GO window
+                const ikemenWindow = sources.find(source => 
+                    source.name.includes('Ikemen') || 
+                    source.name.includes('M.U.G.E.N')
+                );
+
+                if (ikemenWindow) {
+                    // Create video element
+                    const video = document.createElement('video');
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'contain';
+                    document.getElementById('game-container').appendChild(video);
+
+                    // Get the video stream
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        audio: false,
+                        video: {
+                            mandatory: {
+                                chromeMediaSource: 'desktop',
+                                chromeMediaSourceId: ikemenWindow.id,
+                                minWidth: 1280,
+                                maxWidth: 1920,
+                                minHeight: 720,
+                                maxHeight: 1080
+                            }
+                        }
+                    });
+
+                    video.srcObject = stream;
+                    video.play();
+                }
+            } catch (err) {
+                console.error('Error capturing game window:', err);
             }
-        });
-
-        // Handle game input focus
-        gameView.addEventListener('did-finish-load', () => {
-            gameView.focus();
-        });
-
-        // Keep focus on the game when clicking
-        gameView.addEventListener('click', () => {
-            gameView.focus();
         });
     </script>
 </body>

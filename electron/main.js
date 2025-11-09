@@ -1,8 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const { spawn } = require('child_process');
 
 let mainWindow;
-let gameWindow;
+let ikemenProcess;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -10,40 +11,36 @@ function createWindow() {
         height: 1080,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: true,
-            webviewTag: true,
-            preload: path.join(__dirname, 'preload.js')
-        }
-    });
-
-    // Create hidden window for the game
-    gameWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        show: false,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
+            webviewTag: true
         }
     });
 
     // Load the freestyle training page
     mainWindow.loadFile(path.join(__dirname, '../public/practiceModeScreens/freestyleTraining.html'));
 
-    // Load Ikemen GO in the game window
-    const ikemenPath = path.join(__dirname, '../Ikemen-GO/Ikemen_GO.exe');
-    gameWindow.loadURL(`file://${ikemenPath}`);
+    // Wait for the page to load before starting Ikemen GO
+    mainWindow.webContents.on('did-finish-load', () => {
+        // Start Ikemen-GO process
+        const ikemenPath = path.join(__dirname, '../Ikemen-GO/Ikemen_GO.exe');
+        ikemenProcess = spawn(ikemenPath, [], {
+            windowsHide: false // We need the window to be visible to capture it
+        });
 
-    // Capture the game window and send it to the main window
-    gameWindow.webContents.on('did-finish-load', () => {
-        const stream = gameWindow.webContents.getOSProcessId();
-        mainWindow.webContents.send('game-stream', stream);
+        ikemenProcess.on('error', (err) => {
+            console.error('Failed to start Ikemen-GO:', err);
+        });
+
+        // Give the process a moment to create its window
+        setTimeout(() => {
+            mainWindow.webContents.send('game-started');
+        }, 2000);
     });
 
     mainWindow.on('closed', () => {
         mainWindow = null;
-        if (gameWindow) {
-            gameWindow.close();
+        if (ikemenProcess) {
+            ikemenProcess.kill();
         }
     });
 }
