@@ -12,20 +12,44 @@
             background: #000;
         }
         #game-container {
-            width: 100%;
-            height: 100%;
+            width: 1280px;
+            height: 720px;
+            margin: 20px auto;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
+            border: 2px solid #333;
+            border-radius: 4px;
+            overflow: hidden;
         }
         #game-video {
-            width: 100%;
-            height: 100%;
+            width: 1280px;
+            height: 720px;
             object-fit: contain;
+            display: none;
+            background: #000;
+        }
+        #start-button {
+            padding: 20px 40px;
+            font-size: 24px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #start-button:hover {
+            background: #45a049;
+        }
+        #start-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
         }
         #error-message {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -34,16 +58,21 @@
             padding: 20px;
             border-radius: 5px;
             display: none;
+            z-index: 1000;
         }
         #debug-log {
             position: fixed;
             bottom: 0;
             left: 0;
+            right: 0;
             color: white;
             background: rgba(0, 0, 0, 0.8);
-            padding: 5px;
+            padding: 10px;
             font-family: monospace;
             font-size: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
             display: none;
         }
     </style>
@@ -51,160 +80,220 @@
 <body>
     <div id="game-container">
         <video id="game-video" autoplay></video>
-        <div id="error-message"></div>
+        <button id="start-button">Start Freestyle Training</button>
     </div>
+    <div id="error-message"></div>
     <div id="debug-log"></div>
     <script>
-        const { ipcRenderer } = require('electron');
-        const { desktopCapturer } = require('electron').remote || require('@electron/remote');
+        // Check for Electron APIs - but don't require them
+        const electronAPI = window.electronAPI;
+        const ipcRenderer = electronAPI?.ipcRenderer;
         
+        // Initialize elements
         const videoElement = document.getElementById('game-video');
+        const startButton = document.getElementById('start-button');
+        
+        // Log which mode we're running in
+        const isElectron = !!(electronAPI && ipcRenderer);
+        log(isElectron ? 'Running in Electron mode' : 'Running in browser mode');
         const errorDiv = document.getElementById('error-message');
         const debugLog = document.getElementById('debug-log');
+        let gameRunning = false;
 
         function log(message) {
-            console.log(message);
-            debugLog.textContent += message + '\n';
+            const time = new Date().toLocaleTimeString();
+            const logMessage = `[${time}] ${message}`;
+            console.log(logMessage);
+            debugLog.innerHTML += logMessage + '<br>';
+            debugLog.scrollTop = debugLog.scrollHeight;
             debugLog.style.display = 'block';
-        }
-
-        async function captureGameWindow() {
-            try {
-                log('Starting window capture...');
-                
-                // Function to get all window sources
-                const getSources = async () => {
-                    try {
-                        return await desktopCapturer.getSources({
-                            types: ['window'],
-                            thumbnailSize: { width: 1920, height: 1080 }
-                        });
-                    } catch (err) {
-                        log('Error getting sources: ' + err.message);
-                        return [];
-                    }
-                };
-
-                const sources = await getSources();
-                log('Found windows: ' + sources.map(s => s.name).join(', '));
-
-                // Try to find the game window, including minimized windows
-                let retries = 0;
-                const maxRetries = 10;
-                
-                const findWindow = async () => {
-                    const currentSources = await getSources();
-                    return currentSources.find(source => 
-                        source.name.toLowerCase().includes('ikemen') || 
-                        source.name.toLowerCase().includes('m.u.g.e.n')
-                    );
-                };
-
-                let ikemenWindow = await findWindow();
-                
-                while (!ikemenWindow && retries < maxRetries) {
-                    log(`Retry ${retries + 1}/${maxRetries} to find game window...`);
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    ikemenWindow = await findWindow();
-                    retries++;
-
-                if (ikemenWindow) {
-                    log('Found game window: ' + ikemenWindow.name);
-
-                    const stream = await navigator.mediaDevices.getUserMedia({
-                        audio: false,
-                        video: {
-                            mandatory: {
-                                chromeMediaSource: 'desktop',
-                                chromeMediaSourceId: ikemenWindow.id
-                            }
-                        }
-                    });
-
-                    videoElement.srcObject = stream;
-                    await videoElement.play();
-                    log('Game capture started');
-                } else {
-                    throw new Error('Game window not found');
-                }
-            }
-                } catch (err) {
-                    log('Capture error: ' + err.message);
-                    showError(err.message);
-                }
         }
 
         function showError(message) {
             errorDiv.textContent = `Error: ${message}`;
             errorDiv.style.display = 'block';
+            startButton.disabled = false;
+            startButton.textContent = 'Start Freestyle Training';
         }
 
-        // Listen for the capture command
-        ipcRenderer.on('capture-game-window', async () => {
-            log('Received capture command');
-            await captureGameWindow();
-        });
-
-        // Handle any game startup errors
-        ipcRenderer.on('game-error', (event, message) => {
-            showError(message);
-        });
-
-        // Handle game logs
-        ipcRenderer.on('game-log', (event, message) => {
-            log(message);
-        });
-
-        // Start debug mode
-        debugLog.style.display = 'block';
-        log('Freestyle Training page loaded');
-    </script>
-</body>
-</html>
-
-        ipcRenderer.on('game-started', async () => {
+        async function startGame() {
+            if (gameRunning) {
+                log('Game already running, ignoring start request');
+                return;
+            }
+            
             try {
-                const sources = await desktopCapturer.getSources({
-                    types: ['window'],
-                    thumbnailSize: { width: 1920, height: 1080 }
-                });
+                startButton.disabled = true;
+                startButton.textContent = 'Starting...';
+                log('Starting game...');
 
-                // Find the Ikemen GO window
-                const ikemenWindow = sources.find(source => 
-                    source.name.includes('Ikemen') || 
-                    source.name.includes('M.U.G.E.N')
-                );
+                if (electronAPI?.ipcRenderer?.send) {
+                    log('Using Electron IPC to start game');
+                    electronAPI.ipcRenderer.send('start-game');
+                } else {
+                    log('Using server endpoint to start game');
+                    try {
+                        log('Sending POST request to /launch-ikemen...');
+                        const resp = await fetch('/launch-ikemen', { 
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        log('Server response status: ' + resp.status);
+                        
+                        if (!resp.ok) {
+                            const errorText = await resp.text();
+                            throw new Error(`Server rejected launch request (${resp.status}): ${errorText}`);
+                        }
+                        
+                        const data = await resp.json();
+                        log('Server response data: ' + JSON.stringify(data));
+                        
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
+                        
+                        log('Game launch requested, PID: ' + (data.pid || 'unknown'));
+                        log('Waiting 2 seconds before starting capture...');
+                        setTimeout(() => {
+                            log('Starting window capture...');
+                            captureGameWindow();
+                        }, 2000);
+                    } catch (err) {
+                        throw new Error('Failed to launch game: ' + (err.message || err));
+                    }
+                }
+            } catch (error) {
+                showError('Failed to start game: ' + error.message);
+                log('Start game error: ' + error.message);
+                startButton.disabled = false;
+                startButton.textContent = 'Start Freestyle Training';
+            }
+        }
 
-                if (ikemenWindow) {
-                    // Create video element
-                    const video = document.createElement('video');
-                    video.style.width = '100%';
-                    video.style.height = '100%';
-                    video.style.objectFit = 'contain';
-                    document.getElementById('game-container').appendChild(video);
+        async function captureGameWindow() {
+            try {
+                log('Trying to capture Ikemen GO window...');
 
-                    // Get the video stream
-                    const stream = await navigator.mediaDevices.getUserMedia({
+                // If desktopCapturer is available use it to select the specific window by id
+                // Use the preload-exposed API to get sources
+                const maxRetries = 12;
+                let source = null;
+                for (let i = 0; i < maxRetries; i++) {
+                        let res = { success: false };
+                        if (electronAPI && typeof electronAPI.getSources === 'function') {
+                            res = await electronAPI.getSources({ types: ['window', 'screen'], thumbnailSize: { width: 320, height: 180 } });
+                        } else {
+                            res = { success: false, error: 'electronAPI unavailable' };
+                        }
+
+                        if (!res.success) {
+                            log('getSources error or unavailable: ' + (res.error || '<none>'));
+                            // Fall back to getDisplayMedia if getSources not available
+                            break;
+                        }
+
+                        const sources = res.sources || [];
+                    log('Available sources: ' + (sources.map(s => s.name).join(', ') || '<none>'));
+
+                    source = sources.find(s => {
+                        const name = (s.name || '').toLowerCase();
+                        return name.includes('ikemen') || name.includes('m.u.g.e.n') || name.includes('ikemen_go');
+                    });
+
+                    if (source) break;
+                    log(`Ikemen window not found, retry ${i + 1}/${maxRetries}...`);
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+
+                if (source) {
+                    log('Found source: ' + source.name + ' (id=' + source.id + ')');
+
+                    // Use the source.id as chromeMediaSourceId to capture only that window
+                    const constraints = {
                         audio: false,
                         video: {
                             mandatory: {
                                 chromeMediaSource: 'desktop',
-                                chromeMediaSourceId: ikemenWindow.id,
+                                chromeMediaSourceId: source.id,
                                 minWidth: 1280,
                                 maxWidth: 1920,
                                 minHeight: 720,
                                 maxHeight: 1080
                             }
                         }
-                    });
+                    };
 
-                    video.srcObject = stream;
-                    video.play();
+                    let stream;
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    } catch (err) {
+                        // Some Chromium builds require getDisplayMedia for window capture; fall back
+                        log('getUserMedia with chromeMediaSourceId failed: ' + (err && err.message ? err.message : err));
+                        stream = null;
+                    }
+                    if (!stream) {
+                        // fall back to prompt the user to pick the Ikemen window
+                        log('Falling back to getDisplayMedia to let user pick the Ikemen window');
+                        stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+                    }
+                    videoElement.srcObject = stream;
+                    videoElement.style.display = 'block';
+                    await videoElement.play();
+
+                    // Hide the button only after capture is running
+                    startButton.style.display = 'none';
+                    gameRunning = true;
+                    log('Game capture started successfully for: ' + source.name);
+                } else {
+                    // desktopCapturer/getSources not available or Ikemen not found — fall back to user-pick
+                    log('Falling back to getDisplayMedia — please pick the Ikemen GO window in the chooser');
+                    try {
+                        const dispStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+                        videoElement.srcObject = dispStream;
+                        videoElement.style.display = 'block';
+                        await videoElement.play();
+                        startButton.style.display = 'none';
+                        gameRunning = true;
+                        log('Display capture started (user-selected source)');
+                    } catch (err) {
+                        throw new Error('getDisplayMedia failed or user cancelled: ' + (err && err.message ? err.message : err));
+                    }
                 }
-            } catch (err) {
-                console.error('Error capturing game window:', err);
+            } catch (error) {
+                showError('Failed to capture game: ' + (error && error.message ? error.message : error));
+                log('Capture error: ' + (error && error.message ? error.message : error));
             }
-        });
+        }
+
+        // Event listeners
+        startButton.addEventListener('click', startGame);
+
+        // Set up IPC listeners if we're in Electron mode
+        if (electronAPI?.ipcRenderer?.on) {
+            electronAPI.ipcRenderer.on('game-started', () => {
+                log('Game process started via IPC');
+                captureGameWindow();
+            });
+
+            electronAPI.ipcRenderer.on('game-error', (message) => {
+                showError(message);
+                log('Game error via IPC: ' + message);
+            });
+
+            electronAPI.ipcRenderer.on('game-exit', () => {
+                log('Game exited via IPC');
+                videoElement.style.display = 'none';
+                startButton.style.display = 'block';
+                startButton.disabled = false;
+                startButton.textContent = 'Start Freestyle Training';
+                gameRunning = false;
+            });
+        }
+
+        // Log startup
+        log('Freestyle Training page loaded');
     </script>
 </body>
 </html>

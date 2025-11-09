@@ -276,46 +276,101 @@ FrameLabs.post('/api/user/:id/controller', async (req, res) => {
 
 FrameLabs.post('/launch-ikemen', async (req, res) => {
   try {
+    console.log('Received launch-ikemen request');
+    
     // Path to Ikemen GO executable
     const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+    console.log('Ikemen path:', ikemenPath);
 
-    // --- AUTO-DETECT SCREEN SIZE ---
-    let screenWidth, screenHeight;
-
-    try {
-      // ✅ Works if you're using Electron (recommended)
-      const primaryDisplay = screen.getPrimaryDisplay();
-      screenWidth = primaryDisplay.size.width;
-      screenHeight = primaryDisplay.size.height;
-    } catch {
-      // ✅ Fallback: use systeminformation (works in Node)
-      const si = await import('systeminformation');
-      const displays = await si.graphics();
-
-      let primary = displays.displays?.find(d => d.main) || displays.displays?.[0];
-
-      screenWidth = primary?.resolutionx || 1920; // default fallback
-      screenHeight = primary?.resolutiony || 1080; // default fallback
+    if (!fs.existsSync(ikemenPath)) {
+      console.error('Ikemen executable not found at:', ikemenPath);
+      return res.status(500).json({ error: 'Ikemen GO executable not found' });
     }
 
-    // --- Build args ---
+    // --- AUTO-DETECT SCREEN SIZE ---
+    let screenWidth = 1280, screenHeight = 720;
+
+    try {
+      const si = await import('systeminformation');
+      const displays = await si.graphics();
+      let primary = displays.displays?.find(d => d.main) || displays.displays?.[0];
+      if (primary?.resolutionx && primary?.resolutiony) {
+        screenWidth = primary.resolutionx;
+        screenHeight = primary.resolutiony;
+      }
+      console.log('Detected screen size:', screenWidth, 'x', screenHeight);
+    } catch (err) {
+      console.warn('Failed to detect screen size, using default:', err);
+    }
+
+    // --- Build args (windowed mode) ---
     const args = [
-      '-fullscreen', '1',
+      '-windowed', '1',
       '-screenwidth', screenWidth.toString(),
       '-screenheight', screenHeight.toString(),
       '-zoom', '1'
     ];
 
-    // --- Launch process ---
-    const ikemenProcess = spawn(ikemenPath, args, { cwd: path.dirname(ikemenPath) });
+    console.log('Launching with args:', args.join(' '));
 
-    ikemenProcess.stdout.on('data', data => console.log(`Ikemen GO stdout: ${data}`));
-    ikemenProcess.stderr.on('data', data => console.error(`Ikemen GO stderr: ${data}`));
-    ikemenProcess.on('close', code => console.log(`Ikemen GO exited with code ${code}`));
+    // Use PowerShell Start-Process to launch minimized
+    const argsString = args.map(a => String(a).replace(/'/g, "''")).join(' ');
+    const psCommand = `
+      $process = Start-Process -FilePath '${ikemenPath}' -ArgumentList '${argsString}' -WorkingDirectory '${path.dirname(ikemenPath)}' -WindowStyle Minimized -PassThru;
+      $process.Id
+    `;
+
+    console.log('Executing PowerShell command to launch game');
+    const ps = spawn('powershell.exe', ['-NoProfile', '-Command', psCommand], {
+      cwd: path.dirname(ikemenPath)
+    });
+
+    let launchedPid = null;
+    let errorOutput = '';
+
+    ps.stdout.on('data', data => {
+      const text = data.toString().trim();
+      console.log('PowerShell stdout:', text);
+      const parsed = parseInt(text, 10);
+      if (!isNaN(parsed)) launchedPid = parsed;
+    });
+
+    ps.stderr.on('data', data => {
+      const text = data.toString().trim();
+      console.error('PowerShell stderr:', text);
+      errorOutput += text + '\n';
+    });
+
+    // Wait for process to exit
+    await new Promise((resolve, reject) => {
+      ps.on('close', code => {
+        console.log('PowerShell exit code:', code);
+        if (code === 0 && launchedPid) {
+          resolve();
+        } else {
+          reject(new Error(`Failed to launch game (exit code ${code}): ${errorOutput}`));
+        }
+      });
+      
+      // Timeout after 5 seconds
+      setTimeout(() => {
+        reject(new Error('Timed out waiting for game to launch'));
+      }, 5000);
+    });
+
+    console.log('Game launched successfully with PID:', launchedPid);
+    res.json({ 
+      message: 'Ikemen GO launched successfully',
+      pid: launchedPid,
+      screenSize: { width: screenWidth, height: screenHeight }
+    });
 
   } catch (err) {
     console.error('Error launching Ikemen GO:', err);
-    res.status(500).json({ error: 'Failed to launch Ikemen GO' });
+    res.status(500).json({ 
+      error: 'Failed to launch Ikemen GO',
+      details: err.message
+    });
   }
 });
 
