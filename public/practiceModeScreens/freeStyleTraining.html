@@ -1,1 +1,54 @@
-<iframe src="" width="1920" height="1080" frameborder="0"></iframe>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Freestyle Training</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+        #game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        webview {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <webview id="game-view" allowfullscreen></webview>
+    </div>
+    <script>
+        const { ipcRenderer } = require('electron');
+        const gameView = document.getElementById('game-view');
+
+        ipcRenderer.on('game-stream', (event, stream) => {
+            // Set the source when we receive the game stream
+            if (stream) {
+                gameView.src = `game-stream://${stream}`;
+            }
+        });
+
+        // Handle game input focus
+        gameView.addEventListener('did-finish-load', () => {
+            gameView.focus();
+        });
+
+        // Keep focus on the game when clicking
+        gameView.addEventListener('click', () => {
+            gameView.focus();
+        });
+    </script>
+</body>
+</html>

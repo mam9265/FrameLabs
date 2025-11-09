@@ -2,10 +2,12 @@
   "name": "framelabs",
   "version": "1.0.0",
   "description": "The Official FrameLabs GitHub Repository",
-  "main": "index.js",
+  "main": "electron/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "swagger": "node swagger.js"
+    "swagger": "node swagger.js",
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "repository": {
     "type": "git",
@@ -22,7 +24,6 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
-    "electron": "^39.1.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.20.0",
@@ -35,6 +36,8 @@
     "systeminformation": "^5.27.11"
   },
   "devDependencies": {
-    "@types/swagger-ui-express": "^4.1.8"
+    "@types/swagger-ui-express": "^4.1.8",
+    "electron": "^39.1.1",
+    "electron-builder": "^26.0.12"
   }
 }
