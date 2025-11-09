@@ -22,10 +22,20 @@
     </style>
 </head>
 <body>
-    <div id="game-container"></div>
+    <div id="game-container">
+        <div id="error-message" style="color: white; display: none;"></div>
+    </div>
     <script>
         const { ipcRenderer } = require('electron');
         const { desktopCapturer } = require('electron');
+        
+        // Handle any game startup errors
+        ipcRenderer.on('game-error', (event, message) => {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = `Error starting game: ${message}`;
+            errorDiv.style.display = 'block';
+            console.error('Game error:', message);
+        });
 
         ipcRenderer.on('game-started', async () => {
             try {

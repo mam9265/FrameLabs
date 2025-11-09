@@ -22,19 +22,46 @@ function createWindow() {
     // Wait for the page to load before starting Ikemen GO
     mainWindow.webContents.on('did-finish-load', () => {
         // Start Ikemen-GO process
-        const ikemenPath = path.join(__dirname, '../Ikemen-GO/Ikemen_GO.exe');
-        ikemenProcess = spawn(ikemenPath, [], {
-            windowsHide: false // We need the window to be visible to capture it
+        const ikemenExe = path.join(__dirname, '../Ikemen-GO/Ikemen_GO.exe');
+        console.log('Launching Ikemen GO using:', ikemenExe);
+
+        // Change working directory to Ikemen-GO folder to ensure DLLs are found
+        const ikemenDir = path.join(__dirname, '../Ikemen-GO');
+        
+        // Use PowerShell to start the process
+        ikemenProcess = spawn('powershell.exe', [
+            '-Command',
+            `Start-Process -FilePath '${ikemenExe}' -WorkingDirectory '${ikemenDir}' -NoNewWindow -PassThru`
+        ], {
+            windowsHide: false,
+            cwd: ikemenDir,
+            env: process.env
+        });
+
+        ikemenProcess.stdout.on('data', (data) => {
+            console.log(`PowerShell stdout: ${data}`);
+        });
+
+        ikemenProcess.stderr.on('data', (data) => {
+            console.error(`PowerShell stderr: ${data}`);
         });
 
         ikemenProcess.on('error', (err) => {
-            console.error('Failed to start Ikemen-GO:', err);
+            console.error('Failed to start PowerShell:', err);
+            mainWindow.webContents.send('game-error', err.message);
         });
 
-        // Give the process a moment to create its window
-        setTimeout(() => {
-            mainWindow.webContents.send('game-started');
-        }, 2000);
+        ikemenProcess.on('exit', (code, signal) => {
+            if (code === 0) {
+                // PowerShell started successfully, now wait for the game window
+                setTimeout(() => {
+                    mainWindow.webContents.send('game-started');
+                }, 3000);
+            } else {
+                console.error(`PowerShell process exited with code ${code} and signal ${signal}`);
+                mainWindow.webContents.send('game-error', `Failed to start game (exit code ${code})`);
+            }
+        });
     });
 
     mainWindow.on('closed', () => {
