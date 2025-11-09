@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
+require('@electron/remote/main').initialize();
 
 let mainWindow;
 let ikemenProcess;
@@ -12,46 +13,51 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            webSecurity: false
+            webviewTag: true,
+            enableRemoteModule: true
         }
     });
+
+    require('@electron/remote/main').enable(mainWindow.webContents);
 
     // Load the freestyle training page
     mainWindow.loadFile(path.join(__dirname, '../public/practiceModeScreens/freestyleTraining.html'));
 
     // Wait for the page to load before starting Ikemen GO
     mainWindow.webContents.on('did-finish-load', () => {
+        // Start Ikemen-GO process
         const ikemenExe = path.join(__dirname, '../Ikemen-GO/Ikemen_GO.exe');
+        console.log('Launching Ikemen GO using:', ikemenExe);
+
+        // Change working directory to Ikemen-GO folder to ensure DLLs are found
         const ikemenDir = path.join(__dirname, '../Ikemen-GO');
         
-        console.log('Launching Ikemen GO from:', ikemenDir);
-        
-        // Start Ikemen GO process directly
-        ikemenProcess = spawn(ikemenExe, [], {
+        // Start the game process with PowerShell but minimized
+        ikemenProcess = spawn('powershell.exe', [
+            '-Command',
+            `$process = Start-Process -FilePath '${ikemenExe}' -WorkingDirectory '${ikemenDir}' -WindowStyle Minimized -PassThru; $process.Id`
+        ], {
             cwd: ikemenDir,
             env: process.env,
             stdio: 'pipe'
         });
 
-        // Handle process events
         ikemenProcess.stdout.on('data', (data) => {
-            console.log(`Ikemen stdout: ${data}`);
-            mainWindow.webContents.send('game-log', data.toString());
+            console.log(`PowerShell stdout: ${data}`);
         });
 
         ikemenProcess.stderr.on('data', (data) => {
-            console.error(`Ikemen stderr: ${data}`);
-            mainWindow.webContents.send('game-log', data.toString());
+            console.error(`PowerShell stderr: ${data}`);
         });
 
         ikemenProcess.on('error', (err) => {
-            console.error('Failed to start Ikemen GO:', err);
+            console.error('Failed to start PowerShell:', err);
             mainWindow.webContents.send('game-error', err.message);
         });
 
         ikemenProcess.on('spawn', () => {
             console.log('Game process spawned');
-            // Give the game a moment to create its window
+            // Wait a moment for the window to appear
             setTimeout(() => {
                 mainWindow.webContents.send('capture-game-window');
             }, 2000);
@@ -66,10 +72,10 @@ function createWindow() {
     });
 
     mainWindow.on('closed', () => {
+        mainWindow = null;
         if (ikemenProcess) {
             ikemenProcess.kill();
         }
-        mainWindow = null;
     });
 }
 

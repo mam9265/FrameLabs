@@ -127,11 +127,10 @@
                 } else {
                     throw new Error('Game window not found');
                 }
+            } catch (err) {
+                log('Capture error: ' + err.message);
+                showError(err.message);
             }
-                } catch (err) {
-                    log('Capture error: ' + err.message);
-                    showError(err.message);
-                }
         }
 
         function showError(message) {
