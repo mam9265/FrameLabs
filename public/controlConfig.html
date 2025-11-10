@@ -4,11 +4,74 @@
   <meta charset="UTF-8" />
   <title>Controller Config</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background-color: #005b91; color: #9be0e3; }
-    .container { display: flex; width: 1000px; gap: 12px; }
-    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
-    button { background-color: #2a006b; color: #9be0e3; border: none; cursor: pointer; }
-    button:hover { background-color: #3a008b; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #005b91;
+      color: #9be0e3;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    form {
+      background-color: #003d64;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      width: 600px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+    }
+
+    input, select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #888;
+      background-color: #002d4d;
+      color: #9be0e3;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    hr {
+      margin: 20px 0;
+      border: 1px solid #0078b3;
+    }
+
+    button {
+      background-color: #2a006b;
+      color: #9be0e3;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #3a008b;
+    }
+
+    .back-button {
+      margin-top: 20px;
+      background-color: #004266;
+    }
+
+    .back-button:hover {
+      background-color: #005c88;
+    }
   </style>
 </head>
 <body>
@@ -16,72 +79,125 @@
   <h2>Controller Config</h2>
   
   <form id="ConfigForm">
-    
-    <label for="games">Choose a game:</label>
-    <select name="configSelect" id="configSelect">
+    <label for="configSelect">Choose Config:</label>
+    <select id="configSelect">
       <option value="new">NEW CONFIG</option>
-      required
     </select>
 
-    <label for="configName">CONFIG NAME: <input type="text" id="configName" name="CONFIGNAME"> </label>
+    <label for="configName">Config Name:</label>
+    <input type="text" id="configName" name="CONFIGNAME" required />
+
     <hr>
 
-    <!-- buttons 1-4 -->
-    <label for="button1">button 1: <input type="text" id="button1" name="B1"> </label>
-    <label for="button2">button 2: <input type="text" id="button2" name="B2"> </label>
-    <label for="button3">button 3: <input type="text" id="button3" name="B3"> </label>
-    <label for="button4">button 4: <input type="text" id="button4" name="B4"> </label>
-    <br>
+    <label>Button 1: <input type="text" id="button1" name="B1"></label>
+    <label>Button 2: <input type="text" id="button2" name="B2"></label>
+    <label>Button 3: <input type="text" id="button3" name="B3"></label>
+    <label>Button 4: <input type="text" id="button4" name="B4"></label>
+    <label>Button 5: <input type="text" id="button5" name="B5"></label>
+    <label>Button 6: <input type="text" id="button6" name="B6"></label>
+    <label>Button 7: <input type="text" id="button7" name="B7"></label>
+    <label>Button 8: <input type="text" id="button8" name="B8"></label>
 
-    <!-- buttons 5-8 -->
-    <label for="button5">button 5: <input type="text" id="button5" name="B5"> </label>
-    <label for="button6">button 6: <input type="text" id="button6" name="B6"> </label>
-    <label for="button7">button 7: <input type="text" id="button7" name="B7"> </label>
-    <label for="button8">button 8: <input type="text" id="button8" name="B8"> </label>
     <hr>
 
-    <!-- movement -->
-    <label for="up">Up: <input type="text" id="up" name="UP"> </label>
-    <label for="left">Left: <input type="text" id="left" name="LEFT"> </label>
-    <label for="down">Down: <input type="text" id="down" name="DOWN"> </label>
-    <label for="right">Right: <input type="text" id="right" name="RIGHT"> </label>
+    <label>Up: <input type="text" id="up" name="UP"></label>
+    <label>Left: <input type="text" id="left" name="LEFT"></label>
+    <label>Down: <input type="text" id="down" name="DOWN"></label>
+    <label>Right: <input type="text" id="right" name="RIGHT"></label>
+
     <hr>
 
-    <label for="back">Back: <input type="text" id="back" name="BACK"> </label>
-    <label for="menu">Menu: <input type="text" id="menu" name="MENU"> </label>
-    <label for="start">Start: <input type="text" id="start" name="START"> </label>
+    <label>Back: <input type="text" id="back" name="BACK"></label>
+    <label>Menu: <input type="text" id="menu" name="MENU"></label>
+    <label>Start: <input type="text" id="start" name="START"></label>
+
     <hr>
 
-    <button type="Save">Save Config</button>
+    <button type="button" id="saveBtn">Save Config</button>
   </form>
 
   <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
 
   <script>
-
     const fs = require("fs");
-    const configForm = ".\Ikemen-GO\save\config.json"
+    const path = require("path");
+    const configPath = path.join(__dirname, "Ikemen-GO", "save", "config.json");
 
-    //Getting data from form
-    const button1 = document.getElementById("button1");
-    const button2 = document.getElementById("button2");
-    const button3 = document.getElementById("button3");
-    const button4 = document.getElementById("button4");
-    const button5 = document.getElementById("button5");
-    const button6 = document.getElementById("button6");
-    const button7 = document.getElementById("button7");
-    const button8 = document.getElementById("button8");
-    const up = document("up");
-    const left = document("left");
-    const down = document("down");
-    const right = document("right");
-    const back = document("back");
-    const menu = document("MENU");
-    const start = document("start");
+    const configSelect = document.getElementById("configSelect");
+    const saveBtn = document.getElementById("saveBtn");
 
-    
+    // Load existing configs
+    if (fs.existsSync(configPath)) {
+      const configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
+      Object.keys(configs).forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        configSelect.appendChild(opt);
+      });
+    }
 
+    // Load selected config
+    configSelect.addEventListener("change", () => {
+      const name = configSelect.value;
+      if (name === "new") {
+        document.getElementById("ConfigForm").reset();
+        document.getElementById("configName").value = "";
+        return;
+      }
+
+      const configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
+      const cfg = configs[name];
+      for (const key in cfg) {
+        if (document.getElementById(key.toLowerCase())) {
+          document.getElementById(key.toLowerCase()).value = cfg[key];
+        }
+      }
+      document.getElementById("configName").value = name;
+    });
+
+    // Save config
+    saveBtn.addEventListener("click", () => {
+      const name = document.getElementById("configName").value.trim();
+      if (!name) return alert("Please enter a config name!");
+
+      const data = {
+        B1: button1.value,
+        B2: button2.value,
+        B3: button3.value,
+        B4: button4.value,
+        B5: button5.value,
+        B6: button6.value,
+        B7: button7.value,
+        B8: button8.value,
+        UP: up.value,
+        LEFT: left.value,
+        DOWN: down.value,
+        RIGHT: right.value,
+        BACK: back.value,
+        MENU: menu.value,
+        START: start.value
+      };
+
+      let configs = {};
+      if (fs.existsSync(configPath)) {
+        configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
+      }
+
+      configs[name] = data;
+      fs.writeFileSync(configPath, JSON.stringify(configs, null, 2));
+
+      alert(`Controller config "${name}" saved successfully!`);
+      if (![...configSelect.options].some(o => o.value === name)) {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        configSelect.appendChild(opt);
+      }
+      configSelect.value = name;
+    });
   </script>
 
 </body>
 </html>
+

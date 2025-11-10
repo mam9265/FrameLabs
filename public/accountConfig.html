@@ -1,54 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Account Config</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background-color: #005b91; color: #9be0e3; }
-    form { display: flex; flex-direction: column; width: 300px; gap: 12px; }
-    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
-    button { background-color: #2a006b; color: #9be0e3; border: none; cursor: pointer; }
-    button:hover { background-color: #3a008b; }
+    body {
+      background-color: #005b91;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      font-size: 60px;
+      letter-spacing: 3px;
+      margin-bottom: 60px;
+    }
+
+    .config-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .config-card {
+      background-color: #2a006b;
+      border-radius: 40px;
+      width: 400px;
+      padding: 40px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      color: #9be0e3;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .config-card:hover {
+      background-color: #3a008b;
+      transform: scale(1.02);
+    }
+
+    label {
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #9be0e3;
+      color: #2a006b;
+      font-weight: bold;
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #9be0e3;
+      color: #2a006b;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      padding: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      background-color: #b3f0f3;
+      transform: scale(1.05);
+    }
+
+    .back-button {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+    }
+
+    .back-button:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
-  <h2>Account Config</h2>
-  
-  <form id="ConfigForm">
+  <h1>ACCOUNT CONFIG</h1>
 
-    <!--
-    -->
+  <div class="config-container">
+    <form id="ConfigForm" class="config-card">
 
-    <!--Placeholder function for getting account info to display on page-->
-    <script>
-        function getInformation() {}
-    </script>
+      <label for="username">Username:</label>
+      <input id="username" name="username" type="text" required>
 
-    <label for="username">Username:</label>
-    <textarea id="username" name="username" rows="1" required></textarea>
+      <label for="email">Email:</label>
+      <input id="email" name="email" type="email" required>
 
-    <label for="email">Email:  </label>
-    <textarea id="email" name="email" rows="1" required></textarea>
+      <button type="button" onclick="changePicture()">Change Picture</button>
+      <button type="button" onclick="changePassword()">Change Password</button>
 
-    <button type="pictureChange">Change Picture</button>
+      <label for="skill">Choose a skill level that best represents you:</label>
+      <select name="skill" id="skill" required>
+        <option value="baby">VERY NEW</option>
+        <option value="child">NEWER</option>
+        <option value="average">AVERAGE</option>
+        <option value="lord">ABOVE AVERAGE</option>
+        <option value="king">COMPETITIVE</option>
+        <option value="force">AMONG THE BEST</option>
+        <option value="god">MR MARTIN</option>
+      </select>
 
-    <button type="passwordChange">Change Password</button>
+      <button type="submit">Save Config</button>
+    </form>
+  </div>
 
-    <label for="skill">Choose a skill level that best represents you:</label>
-    <select name="skill" id="skill">
-      <option value="baby">VERY NEW</option>
-      <option value="child">NEWER</option>
-      <option value="average">AVERAGE</option>
-      <option value="lord">ABOVE AVERAGE</option>
-      <option value="king">COMPETITIVE</option>
-      <option value="force">AMONG THE BEST</option>
-      <option value="god">MR MARTIN</option>
-      required
-    </select>
+  <button class="back-button" onclick="window.location.href='homePage.html'">⟵ MAIN MENU</button>
 
-    <button type="Save">Save Config</button>
-    <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
-  </form>
-
+  <script>
+    function changePicture() {
+      alert("Change picture function coming soon!");
+    }
+    function changePassword() {
+      alert("Change password function coming soon!");
+    }
+  </script>
 </body>
 </html>
