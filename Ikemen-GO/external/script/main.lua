@@ -4156,30 +4156,43 @@ else
     if os.getenv("AUTOTRAIN") == "1" then
         print("Auto-training mode enabled.")
 
-        local triggered = false
+        if main.t_itemname and type(main.t_itemname.training) == "function" then
+            print("Launching training mode automatically.")
 
-        -- Hook into the menu loop to ensure everything is initialized
-        hook.add("main.f_menuLoop", "autotraining", function()
-            if triggered then return end
-
-            -- Check if the training mode function exists
-            if main.t_gameMode and type(main.t_gameMode.training) == "function" then
-                triggered = true
-
-                -- Optional: set default stage and characters if desired
-                -- main.t_pIn[1] = 1
-                -- main.t_pIn[2] = 2
-                -- main.forceChar[1] = main.t_charDef["kfm"]
-                -- main.forceChar[2] = main.t_charDef["kfm"]
-                -- setStage("stages/training.def")
-
-                main.t_gameMode.training()
-                print("Training mode started automatically!")
+            if type(main.f_default) == "function" then
+                main.f_default()
             end
-        end)
+
+            local startFunc = main.t_itemname.training()
+
+            if motif and main.group and motif[main.group] then
+                main.f_fadeReset('fadeout', motif[main.group])
+            end
+
+            if type(main.f_unlock) == "function" then
+                main.f_unlock(false)
+            end
+
+            if type(startFunc) == "function" then
+                startFunc()
+            end
+
+            if type(main.f_default) == "function" then
+                main.f_default()
+            end
+
+            if type(main.f_unlock) == "function" then
+                main.f_unlock(false)
+            end
+
+            main.menu.loop()
+            return
+        else
+            print("Training mode entry not found, falling back to default menu.")
+        end
     end
 
-    -- Always run the main menu loop
+    -- Default behaviour (or fallback)
     main.menu.loop()
 end
 

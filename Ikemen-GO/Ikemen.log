@@ -1,4 +1,5 @@
-external/script/main.lua:4163: attempt to call a non-function object
+external/script/main.lua:2904: attempt to index a non-table object(nil) with key '2'
 stack traceback:
-	external/script/main.lua:4163: in main chunk
+	external/script/main.lua:2904: in function 'training'
+	external/script/main.lua:4161: in main chunk
 	[G]: ?

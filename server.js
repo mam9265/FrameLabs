@@ -311,6 +311,50 @@ FrameLabs.post('/launch-training-ikemen', (req, res) => {
   }
 });
 
+FrameLabs.post('/launch-ikemen', (req, res) => {
+  const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+  const cwd = path.dirname(ikemenPath);
+
+  if (!fs.existsSync(ikemenPath)) {
+    console.error(`Ikemen executable not found at path: ${ikemenPath}`);
+    return res.status(404).json({ error: 'Ikemen executable not found' });
+  }
+
+  console.log('Received request to launch Ikemen GO with payload:', req.body);
+
+  try {
+    const ikemenProcess = spawn(ikemenPath, [], {
+      cwd,
+      env: { ...process.env, AUTOTRAIN: '1' },
+      detached: false,
+    });
+
+    ikemenProcess.stdout.on('data', (data) => {
+      console.log(`Ikemen: ${data.toString().trim()}`);
+    });
+
+    ikemenProcess.stderr.on('data', (data) => {
+      console.error(`Ikemen Error: ${data.toString().trim()}`);
+    });
+
+    ikemenProcess.on('error', (err) => {
+      console.error('Failed to start Ikemen GO:', err);
+    });
+
+    ikemenProcess.on('exit', (code, signal) => {
+      console.log(`Ikemen GO exited with code ${code} (signal: ${signal})`);
+    });
+
+    res.status(200).json({
+      message: 'Ikemen GO launched in training mode!',
+      pid: ikemenProcess.pid,
+    });
+  } catch (err) {
+    console.error('Unexpected error launching Ikemen GO:', err);
+    res.status(500).json({ error: 'Failed to launch Ikemen GO' });
+  }
+});
+
 
 //Return all the Community Guides
 FrameLabs.get('/api/community/guide', async (req, res) => {
