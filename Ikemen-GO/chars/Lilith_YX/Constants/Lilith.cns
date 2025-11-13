@@ -1,0 +1,1679 @@
+;---------------------------------------------------------------------------
+;Lili's Properties n' Stuff
+;---------------------------------------------------------------------------
+[Data]
+life              = 900
+power             = 3000
+attack            = 100
+defence           = 100
+fall.defence_up   = 50
+liedown.time      = 20
+airjuggle         = 30
+sparkno           = 2
+guard.sparkno     = 40
+KO.echo           = 0
+IntPersistIndex   = 31
+FloatPersistIndex = 40
+
+[Size]
+xscale           = 1
+yscale           = 1
+ground.back      = 20
+ground.front     = 18
+air.back         = 17
+air.front        = 16
+height           = 75
+attack.dist      = 160
+proj.attack.dist = 90
+proj.doscale     = 0
+head.pos         = 6,-80
+mid.pos          = 5,-55
+shadowoffset     = 1
+draw.offset      = 0,0
+
+[Velocity]
+walk.fwd     = 3.35
+walk.back    = -2.75
+run.fwd      = 5,0
+run.back     = -4.5,0
+jump.neu     = 0,-10
+jump.back    = -3.75
+jump.fwd     = 3.85
+runjump.back = -5,-8.1
+runjump.fwd  = 6,-8.1
+airjump.neu  = 0,-13.1
+airjump.back = -4.55
+airjump.fwd  = 4.5
+
+[Movement]
+airjump.num     = 0
+airjump.height  = 35
+yaccel          = 0.6
+stand.friction  = .85
+crouch.friction = .82
+
+[Quotes]
+victory1 = "This whole new world before me.. it's all so amazing!"
+victory2 = "I don't like to be alone. Will you play with me forever?"
+victory3 = "I feel something is melting inside, so light and great..."
+victory4 = "I'm very hungry! Could you please give me something to eat?"
+victory5 = "You're so funny, lying there all lifeless like that! Teehee!"
+victory6 = "Are you done already? How disappointing, I wanted to play more.."
+victory7 = "You have such beautiful eyes... can I please have them?"
+victory8 = "That was a lot of fun! Let's play again sometime, ok?"
+;Vs. Morrigan
+victory50 = "I do not want to be merged with you. I want to be free!"
+victory51 = "I am not just a fragment of you. I am.. Lilith!"
+;Vs. Hsien-Ko
+victory52 = "Looks like all those weapons weren't enough to help you win! Heehee!"
+;Perfect Victory
+victory60 = "That was very boring! Did you not want to play with me...?"
+
+;-------------------------------------------------------------------------------
+;Statedefs----------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+;Dash Forward
+[Statedef 100]
+type = S
+physics = N
+anim = 100
+sprpriority = 1
+ctrl = 0
+
+[State 100, 3]
+type = VarSet
+trigger1 = Time = 0
+var(5) = 1
+
+[State 100, 3]
+type = CtrlSet
+trigger1 = Time = 5
+value = 1
+
+[State 100, 1] ;Dash Sound
+type = PlaySnd
+trigger1 = Time = 1
+value = 30,3
+
+[State 100, 3]
+type = VelSet
+trigger1 = Time = 1
+x = 6
+
+[State 100, 6] ;Dash Sparks
+type = explod
+trigger1 = Time%3 = 0
+id = 100
+anim = 10040+(random%2)
+bindtime = 1
+sprpriority = 5
+pos = -20-(random%21),-20-(random%61)
+ownpal = 1
+
+[State 100, 6] ;Slide Dust
+type = explod
+trigger1 = Time%4 = 0
+id = 100
+anim = 4018
+bindtime = 1
+sprpriority = 5
+pos = -5,0
+ownpal = 1
+
+[State 100, 8] ;Sliding
+type = StateTypeSet
+trigger1 = Time = 20
+physics = S
+
+[State 100, 9] ;Prevent run from canceling into walk
+type = AssertSpecial
+trigger1 = 1
+flag = NoWalk
+
+[State 100, 10] ;Prevent from turning
+type = AssertSpecial
+trigger1 = 1
+flag = NoAutoTurn
+
+[State 100, 11]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+
+;Dash Backwards
+[Statedef 105]
+type = S
+physics = N
+anim = 105
+sprpriority = 1
+ctrl = 0
+
+[State 100, 3]
+type = CtrlSet
+trigger1 = Time = 5
+value = 1
+
+[State 105, 1] ;Dash Sound
+type = PlaySnd
+trigger1 = Time = 1
+value = 30,3
+
+[State 105, 3]
+type = VelSet
+trigger1 = Time = 1
+x = -5
+
+[State 100, 8] ;Sliding
+type = StateTypeSet
+trigger1 = Time = 20
+physics = S
+
+[State 100, 6] ;Dash Sparks
+type = explod
+trigger1 = Time%3 = 0
+id = 100
+anim = 10040+(random%2)
+bindtime = 1
+sprpriority = 5
+pos = 30-(random%21),-20-(random%61)
+ownpal = 1
+
+[State 100, 6] ;Slide Dust
+type = explod
+trigger1 = Time%4 = 0
+id = 100
+anim = 4018
+bindtime = 1
+sprpriority = 5
+pos = 5,0
+ownpal = 1
+
+[State 105, 9] ;Prevent run from canceling into walk
+type = AssertSpecial
+trigger1 = 1
+flag = NoWalk
+
+[State 105, 10] ;Prevent from turning
+type = AssertSpecial
+trigger1 = 1
+flag = NoAutoTurn
+
+[State 105, 11]
+type = ChangeState
+trigger1 = AnimTime = 0
+trigger1 = Var(59) = 0
+value = 0
+
+[State 105, 11]
+type = ChangeState
+trigger1 = AnimTime = 0
+trigger1 = Var(59) = 1
+value = 0
+ctrl = 1
+
+;Loss by Time Over
+[Statedef 170]
+type = S
+ctrl = 0
+anim = 170
+velset = 0,0
+
+[State 181, 1]
+type = PlaySnd
+trigger1 = AnimElem = 3
+value = 10,29
+channel = 0
+
+[State 170, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+;Win Pose Decider
+[Statedef 180]
+type = S
+
+[State 180, Quote]
+type = victoryquote
+trigger1 = !time
+value = 1 + (random%8)
+
+[State 180, Quote]
+type = victoryquote
+triggerall = numenemy
+trigger1 = enemy, name = "Morrigan"||enemy, name = "Morrigan Aensland"
+value = 50+(random%2)
+
+[State 180, Quote]
+type = victoryquote
+triggerall = numenemy
+trigger1 = enemy, name = "Hsien-Ko"||enemy, name = "Lei-Lei"
+value = 52
+
+[State 180, Quote]
+type = victoryquote
+triggerall = numenemy
+trigger1 = WinPerfect
+value = 60
+
+[State 180, Random Var]
+type = ChangeState
+trigger1 = Time = 0
+value = 181+(random%6)
+
+;Win Pose 1: Dress Change 1
+[Statedef 181]
+type = S
+ctrl = 0
+anim = 181
+velset = 0,0
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10181
+
+[State 181, 3] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10183
+
+[State 181, 4] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10185
+
+[State 181, 5] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10187
+
+[State 181, 6] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10189
+
+[State 181, 7] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10191
+
+[State 181, 8] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10193
+
+[State 181, 9] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10195
+
+[State 181, 1]
+type = PlaySnd
+trigger1 = AnimElem = 13
+value = 10,0
+
+;Win Pose 2: Dress Change 2
+[Statedef 182]
+type = S
+ctrl = 0
+anim = 182
+velset = 0,0
+
+[State 182, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10181
+
+[State 181, 3] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10183
+
+[State 181, 4] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10185
+
+[State 181, 5] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10187
+
+[State 181, 6] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10189
+
+[State 181, 7] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10191
+
+[State 181, 8] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10193
+
+[State 181, 9] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10195
+
+[State 182, 1]
+type = PlaySnd
+trigger1 = AnimElem = 13
+value = 10,1
+
+;Win Pose 3: Dress Change 3
+[Statedef 183]
+type = S
+ctrl = 0
+anim = 183
+velset = 0,0
+
+[State 183, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10181
+
+[State 181, 3] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10183
+
+[State 181, 4] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10185
+
+[State 181, 5] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10187
+
+[State 181, 6] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10189
+
+[State 181, 7] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10191
+
+[State 181, 8] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10193
+
+[State 181, 9] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10195
+
+[State 183, 1]
+type = PlaySnd
+trigger1 = AnimElem = 13
+value = 10,1
+
+;Win Pose 4: Dress Change 4
+[Statedef 184]
+type = S
+ctrl = 0
+anim = 184
+velset = 0,0
+
+[State 184, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10181
+
+[State 181, 3] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10183
+
+[State 181, 4] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10185
+
+[State 181, 5] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10187
+
+[State 181, 6] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10189
+
+[State 181, 7] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10191
+
+[State 181, 8] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10193
+
+[State 181, 9] ;Bat
+type = Helper
+trigger1 = AnimElem = 11
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10195
+
+[State 184, 1]
+type = PlaySnd
+trigger1 = AnimElem = 13
+value = 10,2
+
+;Win Pose 5: Cheer
+[Statedef 185]
+type = S
+ctrl = 0
+anim = 185
+velset = 0,0
+
+[State 185, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 185, 1]
+type = PlaySnd
+trigger1 = AnimElem = 1
+value = 10,6
+
+[State 185, 1]
+type = PlaySnd
+trigger1 = AnimElem = 8
+value = 10,14
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10181
+
+[State 181, 3] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10183
+
+[State 181, 4] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10185
+
+[State 181, 5] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10187
+
+[State 181, 6] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10189
+
+[State 181, 7] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10191
+
+[State 181, 8] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10193
+
+[State 181, 9] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 0,-60
+stateno = 10195
+
+;Win Pose 6: Float
+[Statedef 186]
+type = S
+ctrl = 0
+anim = 186
+velset = 0,0
+sprpriority = 2
+
+[State 186, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 181, Assert]
+type = AssertSpecial
+trigger1 = Time <= 300
+flag = RoundNotOver
+
+[State 186, 1]
+type = PlaySnd
+trigger1 = AnimElem = 8
+value = 10,3
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = -15,-60
+stateno = 10500
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = -20,-50
+stateno = 10501
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = -25,-40
+stateno = 10502
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = -25,-30
+stateno = 10503
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 5,-60
+stateno = 10504
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 6,-50
+stateno = 10505
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 7,-40
+stateno = 10506
+
+[State 181, 2] ;Bat
+type = Helper
+trigger1 = Time = 0
+ID = 2000
+name = "Bat"
+pos = 7,-30
+stateno = 10507
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+;Intro
+[Statedef 190]
+type = A
+physics = N
+ctrl = 0
+anim = 190
+velset = 0,0
+
+[State 190, 1]
+type = ChangeAnim
+trigger1 = RoundState = 0
+value = 190
+
+[State 191, 10]
+type = ScreenBound
+trigger1 = 1
+movecamera = 0,0
+
+[State 190, 1]
+type = PosAdd
+trigger1 = Time = 0
+y = -45
+
+[State 190, 1]
+type = VelAdd
+trigger1 = Time >= 119
+trigger1 = Anim = 190
+y = 0.15
+
+[State 190, 2]
+type = PlaySnd
+trigger1 = AnimElem = 2
+trigger1 = Anim = 190
+value = 30,2
+
+[State vsav2 EasterEgg]
+type = PlaySnd
+trigger1 = !AILevel
+trigger1 = Anim = 190
+trigger1 = AnimElem = 3
+trigger1 = command = "holdstart"
+trigger2 = AILevel
+trigger2 = Anim = 190
+trigger2 = AnimElem = 3
+trigger2 = Random < 50
+value = 10,4
+
+;[State 190, 1]
+;type = VelAdd
+;trigger1 = Time >= 99
+;trigger1 = Anim = 190
+;y = 0.4
+
+[State 190, 4]
+type = ChangeAnim
+trigger1 = Anim = 190
+trigger1 = Vel Y > 0 && Pos Y + Vel y >= 0
+value = 191
+
+[State 190, 1]
+type = VelSet
+trigger1 = Anim = 191
+trigger1 = AnimElem = 1
+y = 0
+
+[State 190, 1]
+type = PosSet
+trigger1 = Anim = 191
+trigger1 = AnimElem = 1
+y = 0
+
+[State 195, 3]
+type = PlaySnd
+trigger1 = Anim = 191
+trigger1 = AnimElem = 1
+value = 30,0
+
+[State 190, 3]
+type = AssertSpecial
+trigger1 = 1
+flag = Intro
+
+[State 190, 4]
+type = ChangeState
+trigger1 = AnimTime = 0
+trigger1 = Anim = 191
+value = 0
+
+;Taunt
+[Statedef 195]
+type = S
+ctrl = 0
+anim = 195
+velset = 0,0
+movetype = I
+physics = S
+sprpriority = 2
+
+[State 195, 2]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+ctrl = 1
+
+[State 195, 3]
+type = PlaySnd
+trigger1 = AnimElem = 3
+value = 10,5
+channel = 0
+
+[State 195, Breath]
+type = Explod
+trigger1 = AnimElem = 5
+anim = 10196
+facing = 1
+pos = 0,0
+postype = p1
+sprpriority = 4
+
+[State 195, Thought Bubble]
+type = Helper
+trigger1 = AnimElem = 4
+name = "Thought Bubble"
+ID = 199
+stateno = 199
+facing = 1
+pos = 0,0
+postype = p1
+
+[State 195, 3]
+type = PowerAdd
+trigger1 = AnimElem = 7
+value = 225
+
+;Taunt 2
+[Statedef 196]
+type = S
+ctrl = 0
+anim = 196
+velset = 0,0
+movetype = I
+physics = S
+sprpriority = 2
+
+[State 195, 3]
+type = PlaySnd
+trigger1 = AnimElem = 3
+value = 10,6
+channel = 0
+
+[State 195, 3]
+type = PowerAdd
+trigger1 = AnimElem = 5
+value = 175
+
+[State 195, 2]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+ctrl = 1
+
+;Taunt Bubble
+[Statedef 199]
+type = S
+movetype= I
+physics = N
+velset = 0,0
+ctrl = 0
+anim = 10195
+sprpriority = 3
+
+[State 10197, No Shadow]
+type = AssertSpecial
+trigger1 = 1
+flag = NoShadow
+
+[State 196, Thought Bubble Food]
+type = Helper
+trigger1 = AnimElem = 3
+name = "Food"
+ID = 10197
+stateno = 10197
+facing = 1
+pos = 0,0
+postype = p1
+
+[State 196, BindToParent]
+type = BindToParent
+trigger1 = parent, stateno = 195
+facing = 1
+
+[State 196, Destroy Self]
+type = DestroySelf
+trigger1 = AnimTime = 0
+trigger2 = parent, movetype = H
+
+;Taunt Food
+[Statedef 10197]
+type = S
+movetype= I
+physics = N
+velset = 0,0
+ctrl = 0
+anim = 10197+(random%7)
+sprpriority = 4
+
+[State 10197, No Shadow]
+type = AssertSpecial
+trigger1 = 1
+flag = NoShadow
+
+[State 10197, BindToParent]
+type = BindToParent
+trigger1 = parent, stateno = 199
+facing = 1
+
+[State 10197, Destroy Self]
+type = DestroySelf
+trigger1 = AnimTime = 0
+trigger2 = root, stateno != 195
+
+;SO MUCH BAT
+
+; Bat
+[Statedef 10181]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10181, 1]
+type = PosAdd
+trigger1 = 1
+x = 3*cos(2*pi/16*1)
+y = 1.5*sin(2*pi/16*1)
+
+[State 10181, 2]
+type = ChangeState
+trigger1 = Time = 30
+value = 10182+(2*(random%8))
+
+; Bat
+[Statedef 10182]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10182, 1]
+type = PosAdd
+trigger1 = time % 4 = 0
+x = sin(2*pi/20*time/6)
+y = sin(2*pi/30*time/6)
+
+;Bat
+[Statedef 10183]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10183, 1]
+type = PosAdd
+trigger1 = 1
+x = 3*cos(2*pi/16*3)
+y = 1.5*sin(2*pi/16*3)
+
+[State 10183, 2]
+type = ChangeState
+trigger1 = Time = 30
+value = 10182+(2*(random%8))
+
+; Bat
+[Statedef 10184]
+type = A
+movetype = I
+physics = N
+anim = 18000
+sprpriority = 3
+
+[State 10184, 1]
+type = PosAdd
+trigger1 = time % 4 = 0
+x = sin(2*pi/30*time/6)
+y = -sin(2*pi/20*time/6)
+
+;Bat
+[Statedef 10185]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10185, 1]
+type = PosAdd
+trigger1 = 1
+x = 3*cos(2*pi/16*5)
+y = 1.5*sin(2*pi/16*5)
+
+[State 10185, 2]
+type = ChangeState
+trigger1 = Time = 30
+value = 10182+(2*(random%8))
+
+; Bat
+[Statedef 10186]
+type = A
+movetype = I
+physics = N
+anim = 18001
+sprpriority = 3
+
+[State 10186, 1]
+type = PosAdd
+trigger1 = time % 4 = 0
+x = -sin(2*pi/20*time/6)
+y = sin(2*pi/30*time/6)
+
+;Bat
+[Statedef 10187]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10187, 1]
+type = PosAdd
+trigger1 = 1
+x = 3*cos(2*pi/16*7)
+y = 1.5*sin(2*pi/16*7)
+
+[State 10187, 2]
+type = ChangeState
+trigger1 = Time = 30
+value = 10182+(2*(random%8))
+
+;Bat
+[Statedef 10188]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10188, 1]
+type = PosAdd
+trigger1 = time % 4 = 0
+x = -sin(2*pi/30*time/6)
+y = -sin(2*pi/20*time/6)
+
+;Bat
+[Statedef 10189]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10189, 1]
+type = PosAdd
+trigger1 = 1
+x = 3*cos(2*pi/16*9)
+y = 1.5*sin(2*pi/16*9)
+
+[State 10189, 2]
+type = ChangeState
+trigger1 = Time = 30
+value = 10182+(2*(random%8))
+
+;Bat
+[Statedef 10190]
+type = A
+movetype = I
+physics = N
+anim = 18000
+sprpriority = 3
+
+[State 10190, 1]
+type = PosAdd
+trigger1 = time % 4 = 0
+x = -sin(2*pi/20*time/6)
+y = sin(2*pi/30*time/6)
+
+;Bat
+[Statedef 10191]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10191, 1]
+type = PosAdd
+trigger1 = 1
+x = 3*cos(2*pi/16*11)
+y = 1.5*sin(2*pi/16*11)
+
+[State 10191, 2]
+type = ChangeState
+trigger1 = Time = 30
+value = 10182+(2*(random%8))
+
+;Bat
+[Statedef 10192]
+type = A
+movetype = I
+physics = N
+anim = 18001
+sprpriority = 3
+
+[State 10192, 1]
+type = PosAdd
+trigger1 = time % 4 = 0
+x = -sin(2*pi/30*time/6)
+y = -sin(2*pi/20*time/6)
+
+;Bat
+[Statedef 10193]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10193, 1]
+type = PosAdd
+trigger1 = 1
+x = 3*cos(2*pi/16*13)
+y = 1.5*sin(2*pi/16*13)
+
+[State 10193, 2]
+type = ChangeState
+trigger1 = Time = 30
+value = 10182+(2*(random%8))
+
+;Bat
+[Statedef 10194]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10194, 1]
+type = PosAdd
+trigger1 = time % 4 = 0
+x = sin(2*pi/20*time/6)
+y = sin(2*pi/30*time/6)
+
+;Bat
+[Statedef 10195]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10195, 1]
+type = PosAdd
+trigger1 = 1
+x = 3*cos(2*pi/16*15)
+y = 1.5*sin(2*pi/16*15)
+
+[State 10195, 2]
+type = ChangeState
+trigger1 = Time = 30
+value = 10182+(2*(random%8))
+
+;Bat
+[Statedef 10196]
+type = A
+movetype = I
+physics = N
+anim = 18000
+sprpriority = 3
+
+[State 10196, 1]
+type = PosAdd
+trigger1 = time % 4 = 0
+x = -sin(2*pi/30*time/6)
+y = sin(2*pi/20*time/6)
+
+; Float Bat L1/1
+[Statedef 10500]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 0
+x = 0.02
+y = 0.48
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 40
+x = 0
+y = 0
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+; Float Bat L2/3
+[Statedef 10501]
+type = A
+movetype = I
+physics = N
+anim = 18001
+sprpriority = 3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 0
+x = 0.42
+y = 0.25
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 40
+x = 0
+y = 0
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+; Float Bat L3/1
+[Statedef 10502]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 0
+x = -0.01
+y = -0.05
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 40
+x = 0
+y = 0
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+; Float Bat L4/2
+[Statedef 10503]
+type = A
+movetype = I
+physics = N
+anim = 18000
+sprpriority = 3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 0
+x = -0.23
+y = -0.34
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 40
+x = 0
+y = 0
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+; Float Bat R1/3
+[Statedef 10504]
+type = A
+movetype = I
+physics = N
+anim = 18001
+sprpriority = 3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 0
+x = 0.08
+y = 0.5
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 40
+x = 0
+y = 0
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+; Float Bat R2/2
+[Statedef 10505]
+type = A
+movetype = I
+physics = N
+anim = 18000
+sprpriority = 3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 0
+x = 0.3
+y = 0.25
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 40
+x = 0
+y = 0
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+; Float Bat R3/1
+[Statedef 10506]
+type = A
+movetype = I
+physics = N
+anim = 180
+sprpriority = 3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 0
+x = 0.55
+y = -0.022
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 40
+x = 0
+y = 0
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+; Float Bat R4/2
+[Statedef 10507]
+type = A
+movetype = I
+physics = N
+anim = 18000
+sprpriority = 3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 0
+x = 0.81
+y = -0.3
+
+[State 10500, 1]
+type = VelSet
+trigger1 = Time = 40
+x = 0
+y = 0
+
+[State 10500, 1]
+type = PosAdd
+trigger1 = Time > 72
+y = sin(2*pi/20*time/6)
+
+[Statedef -2]
+
+[State -2, Hurt Sound]
+type = PlaySnd
+triggerall = time = 1
+triggerall = alive
+trigger1 = stateno = 5000
+trigger2 = stateno = 5010
+trigger3 = stateno = 5020
+value = 20,0+(random%2)
+channel = 0
+
+[State Reset The Rascal]
+type = VarSet
+trigger1 = numenemy
+trigger1 = enemynear,movetype != H || enemynear,ctrl || enemynear,stateno = 5120
+trigger2 = !numtarget
+trigger3 = numtarget
+trigger3 = target, stateno = 5205
+var(18) = 0
+ignorehitpause = 1
+
+[State SuperJump Var Reset]
+type = VarSet
+trigger1 = statetype!=A
+trigger1 = stateno != [600,650]
+trigger1 = stateno != 40
+trigger2 = movetype = H
+trigger3 = stateno = 3050
+var(11)= 0
+ignorehitpause = 1
+
+[State 100, 3]
+type = VarSet
+triggerall = var(15) > 0
+trigger1 = StateNo != [3000,3202]
+var(15) = 0
+
+[State 100, 3]
+type = VarSet
+triggerall = var(6) > 0
+trigger1 = ctrl
+var(6) = 0
+
+[State 100, 3]
+type = VarSet
+triggerall = var(4) > 0
+trigger1 = MoveType != A
+var(4) = 0
+
+[State 100, 3]
+type = VarSet
+triggerall = var(5) = 1
+trigger1 = (StateNo != [100,105]) && MoveType != A
+var(5) = 0
+
+[State Movehitoner (From None's Beavis)]
+type = VarSet
+trigger1 = numenemy
+var(31) = ifelse(movehit=1&&(enemynear,movereversed!=[1,2]),var(31)+1,0)
+ignorehitpause = 1
+
+[State moveguardoner]
+type = VarSet
+trigger1 = numenemy
+var(32) = ifelse(moveguarded = 1,var(32)+1,0)
+ignorehitpause = 1
+
+[State Hitto]
+type = PlaySnd
+trigger1 = var(31) = 1
+value = 1,var(16)
+channel = 2
+ignorehitpause = 1
+[State Gaado]
+type = PlaySnd
+trigger1 = var(32) = 1
+value = 1,9
+channel = 2
+ignorehitpause = 1
+
+[State 1015, Afterimage Kill]
+type = AfterImage
+trigger1 = MoveType = H
+time = 0
+
+[State -2, ExplodKill]
+type = RemoveExplod
+trigger1 = StateNo != 8000
+id = 8001
+
+[State -2, Dampener p1]
+type = VarSet
+trigger1 = movehit = 1 || projhit = 1
+fvar(10) = (fvar(10))*0.9
+
+[State -2, Dampener p2]
+type = VarSet
+triggerall = numenemy
+trigger1 = enemynear,ctrl || enemynear,movetype != H || enemynear, stateno = 5120
+fvar(10) = 1
+ignorehitpause = 1
+
+[State -2, Dampener p3]
+type = VarSet
+trigger1 = fvar(10) <= 0.15
+fvar(10) = 0.15
+ignorehitpause = 1
+
+[State -2, Dampener p4]
+type = AttackMulSet
+trigger1 = 1
+value = fvar(10)
+ignorehitpause = 1
+
+[State hit player]
+type = VarSet
+triggerall = stateno = [3000,3099]
+trigger1 = fvar(10)<0.75
+fvar(10) = 0.75
+ignorehitpause = 1
+[State hit player]
+type = VarSet
+triggerall = stateno = [3100,3299]
+trigger1 = fvar(10)<0.6
+fvar(10) = 0.6
+ignorehitpause = 1
+
+[State 752, 1]
+type = VarSet
+trigger1 = p2statetype = L
+trigger1 = Var(59) = 1
+v = 2
+value = 0
+
+[Statedef -3]
+
+[State -3, Landing Sound]
+type = PlaySnd
+triggerall = Time = 1
+trigger1 = stateno = 52
+value = 30, 0
+
+[State Sparkles]
+type = Explod
+triggerall = var(11)=1
+trigger1 = Time%4 = 0
+id = 10040
+anim = 10040+(random%2)
+ontop = 1
+bindtime = 1
+postype = p1
+pos = -20+(random%41),-50
+ownpal = 1
+
+[State Hit wall]
+type = PlaySnd
+triggerall = NumTarget(1300)
+trigger1 = Target(1300), Vel X = -2
+trigger1 = Target(1300), Vel Y = -4
+value = 30,9
+channel = 1
+
+[State Hit wall]
+type = EnvShake
+triggerall = NumTarget(1300)
+trigger1 = Target(1300), Vel X = -2
+trigger1 = Target(1300), Vel Y = -4
+time = 7
+ampl = -2
+freq = 90
+
+[State Hit wall]
+type = PlaySnd
+triggerall = NumTarget(2300)
+trigger1 = Target(2300), Vel X = -3
+trigger1 = Target(2300), Vel Y = -10
+value = 30,9
+channel = 1
+
+[State Hit wall]
+type = EnvShake
+triggerall = NumTarget(2300)
+trigger1 = Target(2300), Vel X = -3
+trigger1 = Target(2300), Vel Y = -10
+time = 7
+ampl = -2
+freq = 90
+
+[State Wallbounce Explod]
+type = Explod
+triggerall = NumTarget(1300)
+trigger1 = Target(1300), Vel X = -2
+trigger1 = Target(1300), Vel Y = -4
+anim = 7900
+pos = 0,ceil((-1*(Target(1300),Pos Y))+55)
+postype = Back
+bindtime = 1
+ownpal = 1
+facing = -1
+sprpriority = 3
+[State Wallbounce Explod]
+type = Explod
+triggerall = NumTarget(2300)
+trigger1 = Target(2300), Vel X = -3
+trigger1 = Target(2300), Vel Y = -10
+anim = 7900
+pos = 0,ceil((-1*(Target(2300),Pos Y))+45)
+postype = Back
+bindtime = 1
+ownpal = 1
+facing = -1
+sprpriority = 3
+
+[State Hooverboard]
+type = DisplayToClipboard
+trigger1 = 1
+text = "LiliVar(4): %d"
+params = Var(4)

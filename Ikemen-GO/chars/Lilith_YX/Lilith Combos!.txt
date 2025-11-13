@@ -1,0 +1,133 @@
+Inspired by Street Fighter EX Plus Alpha's Expert mode, which gave you a set of char's combos 
+as a challenge, I've left a challenge for Lilith! Try your hardest to best these combos, 
+and hone your skills! Any moves or terms you may not understand may be detailed in the movelist.
+
+1: Basic Chain
+
+;One of Lilith's most important annd generally safe chains.
+
+-Crouch LP
+-Crouch MP
+-Crouch MK
+-Crouch HP
+
+2: Renda Cancel Combos
+
+;A Renda bonus is the added frame advantage when you repeat a weaker normal with itself.
+
+-Stand LP x2
+-Shining Blade
+
+AND
+
+-Crouch LK x2
+-Merry Turn
+
+3: Knockdown Jump-In Chain
+
+;A nifty and simple combo to get out some good damage and knockdown.
+However, you must time it well, and make sure there is good spacing!
+
+-Air LP
+-Air MP
+-Crouch LP
+-Crouch MP
+-Crouch MK
+-Crouch HP
+-Crouch HK
+
+4: Dashing Frame-Link Combo
+
+;Technically, you can't chain Lilith's normals backwards, but with good timing 
+and because of Lilith's frame advantage, you can pull it off artificially!
+
+-Dashing MP
+-Crouch LK
+-Crouch MK
+-Crouch HK
+
+5: Chain to Super Combo 1
+
+;Here's some useful ones, and only at the cost of one bar! 
+This'll get you good damage, and will be very useful in the long run.
+
+-Air HP
+-Stand MP
+-Mirage Blade
+
+AND 
+
+-Air HK
+-Crouch MK
+-Splendor Love
+
+6: Chain to Super Combo 2
+
+;Now here's the super scary command super, or as Lilith dubs it, Luminous Illusion! 
+Hefty input, and a seeming nightmare to combo into, but with practice, it becomes muscle memory! 
+Also, Renda bonus is your friend here.
+
+-Air LP
+-Air MP
+-Crouch MK
+-Crouch HP
+-Luminous Illusion
+
+7: Adorable Archery
+
+;Remember Luminous Illusion? Here's a fun little combo that hits hard! This'll be a cinch if 
+you've mastered Luminous Illusion's tricky input.
+
+-ES Mystic Arrow
+-Luminous Illusion (in air)
+
+8: Super-Cancelling
+
+;Street Fighter EX's trademark technique! It was one of my favorite parts of the game, and hopefully I pulled it off well!
+With two bars, you can dish out major damage with this one.
+
+-Air HP
+-Stand MP
+-Mirage Blade
+-Luminous Illusion
+
+9: Super-Cancelling 2
+
+;Now let's make it a triple Super Combo! Don't worry, assuming you've mastered the inputs, this'll have a great big payoff! 
+..Assuming you have the bars to execute it.
+
+-Air LP
+-Air MP
+-Crouch MK
+-Mirage Blade
+-Splendor Love
+-Luminous Illusion (in air)
+
+10: Lilith's Bread and Butter
+
+;Last but definitely not least, we have a big Lilith combo straight from Vampire Savior! 
+This one will take some great timing and quick finger work, so prepare yourself, and good luck! 
+Note: This has a much higher rate of success when the opponent is cornered.
+
+-ES Soul Flash
+-Air LP
+-Air MP
+-Crouch LP
+-Crouch MP
+-Crouch MK
+-Crouch HP
+-Luminous Illusion
+
+EXTRA: Useful Tricks
+
+1. Bypass an opponent's projectile with Merry Turn!
+
+2. Counter an opponent's poke with ES Shining Blade!
+
+3. Grab an opponent stunned by ES Soul Flash with Mystic Arrow!
+
+4. Attack an opponent from behind using Lilith's Super Jump!
+
+5. Pull off a tick throw with a Dashing Light Attack!
+
+

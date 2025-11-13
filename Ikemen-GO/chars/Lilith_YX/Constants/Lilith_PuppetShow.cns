@@ -1,0 +1,3715 @@
+;Gloomy Puppet Show!
+[Statedef 8000]
+type = S
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+anim = 8000
+sprpriority = 1
+hitcountpersist = 1
+
+[State 3151, 3]
+type = Width
+trigger1 = Time > 8 && Time <= 70
+player = 24,-14
+ignorehitpause = 1
+
+[State 4000, Hyper Charge]
+type = Explod
+trigger1 = Time = 0
+anim = 15009
+supermovetime = 27
+bindtime = -1
+pos = -2,-58
+postype = p1
+ontop = 1
+
+[State 4000, SuperPause]
+type = SuperPause
+trigger1 = Time = 0
+time = 45
+anim = -1
+sound = S2,5
+pos = 0,0
+movetime = 7
+darken = 1
+p2defmul = 1
+poweradd = -3000
+unhittable = 1
+
+[State Heyy!]
+type = PlaySnd
+trigger1 = Time = 0
+value = 10,22
+channel = 0
+
+[State Hand Hat]
+type = Explod
+trigger1 = Time = 0
+id = 8001
+anim = 8001
+sprpriority = 2
+bindtime = 16
+pos = 0,0
+postype = p1
+supermovetime = 7
+
+[State IT'S RAININ' Hats]
+type = Helper
+trigger1 = AnimElem = 4
+name = "Showtime Hat"
+stateno = 8001
+id = 8001
+pos = 65,-70
+postype = p1
+
+[State Sussess??]
+type = ChangeState
+triggerall = NumHelper(8001)
+triggerall = Anim = 8000
+trigger1 = Helper(8001),NumTarget(8001)
+value = 8005
+
+[State TIME TO CLOC]
+type = StateTypeSet
+trigger1 = NumHelper(8001) = 0
+movetype = I
+
+[State u r failer]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+ctrl = 1
+
+;Showtime Hat: Thrown
+[Statedef 8001]
+type = A
+movetype = A
+physics = N
+ctrl = 0
+velset = 3,-6
+anim = 8009
+sprpriority = 2
+hitcountpersist = 1
+
+[State 1005, HitOverride]
+type = hitoverride
+trigger1 = 1
+time = -1
+attr = SCA, AA, AP, AT
+stateno = 8004
+ignorehitpause = 1
+
+[State 1005, HB]
+type = hitby
+trigger1 = 1
+time = -1
+value = SCA, NP, SP, HP
+ignorehitpause = 1
+
+[State Gravy]
+type = VelAdd
+trigger1 = Time >= 0
+y = 0.4
+
+[State 1020, 6]
+type = HitDef
+trigger1 = Time = 0
+id = 8001
+attr = A, HP
+damage = 15,0
+hitflag = MA
+guardflag = 
+pausetime = 0,0
+sparkno = -1
+guard.sparkno = -1
+sparkxy = 10,-5
+hitsound   = S1,1
+guardsound = S1,9
+ground.velocity = 0
+air.velocity = 0,0
+fall.yvelocity = -4
+getpower = 0
+p1stateno = 8002
+p2stateno = 8500
+fall = 1
+fall.recover = 0
+kill = 0
+p2facing = 1
+
+[State Poof]
+type = ChangeState
+trigger1 = Vel Y > 0 && Pos Y + Vel y >= 0
+value = 8003
+
+[State DangerPoof]
+type = ChangeState
+trigger1 = Root, MoveType = H
+trigger2 = Root, StateNo != 8000
+value = 8004
+
+;Showtime Hat: Bind
+[Statedef 8002]
+type = A
+movetype = A
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 9999
+sprpriority = 2
+hitcountpersist = 1
+
+[State 0, TargetVelSet]
+type = TargetVelSet
+triggerall = NumTarget(8001)
+trigger1 = Target(8001), StateNo = 8500
+trigger1 = Target(8001), Time = 1
+trigger1 = parent,backedgebodydist <= 10
+x = -5
+ID = 8001
+
+[State BarSeto]
+type = VarSet
+trigger1 = Time = 0
+v = 13
+value = Target(8001),ID
+
+[State IT'S RAININ' Hats again..]
+type = Helper
+trigger1 = Time = 0
+name = "Showtime Hat"
+stateno = 8004
+id = 8004
+pos = 0,0
+
+[State 0, PosSet]
+type = PosSet
+trigger1 = Numtarget(8001)
+trigger1 = Target(8001), StateNo != 8520
+x = (target(8001),pos X)
+y = (target(8001),pos Y)
+
+[State Curtain]
+type = Explod
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 18
+anim = 8050
+id = 8050
+pos = 0,-210
+bindtime = 1
+sprpriority = 3
+
+[State Stage]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8101
+id = 8101
+name = "Puppet Stage"
+pos = 0,0
+
+[State Spotlights]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8102
+id = 8102
+name = "Spotlights"
+pos = 0,0
+
+[State Spotlight Shine]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8103
+id = 8103
+name = "Spotlight Shine"
+pos = 0,0
+
+[State Spotlight Bat 1]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8110
+id = 8110
+name = "Spotlight Bat 1"
+pos = -60,-150
+postype = p2
+[State Spotlight Bat 2]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8111
+id = 8111
+name = "Spotlight Bat 2"
+pos = -60,-110
+postype = p2
+[State Spotlight Bat 3]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8112
+id = 8112
+name = "Spotlight Bat 3"
+pos = -60,-70
+postype = p2
+[State Spotlight Bat 4]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8113
+id = 8113
+name = "Spotlight Bat 4"
+facing = -1
+pos = 60,-150
+postype = p2
+[State Spotlight Bat 5]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8114
+id = 8114
+name = "Spotlight Bat 5"
+facing = -1
+pos = 60,-110
+postype = p2
+[State Spotlight Bat 6]
+type = Helper
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+stateno = 8115
+id = 8115
+name = "Spotlight Bat 6"
+facing = -1
+pos = 60,-70
+postype = p2
+
+[State puttem up]
+type = TargetState
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time = 52
+value = 8501
+
+[State Walk F.]
+type = TargetState
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time >= 137
+trigger1 = Root, Command = "x"
+value = 8502
+[State Crouch-Stand]
+type = TargetState
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time >= 137
+trigger1 = Root, Command = "y"
+value = 8503
+[State Air Rec.]
+type = TargetState
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time >= 137
+trigger1 = Root, Command = "z"
+value = 8504
+[State Walk B.]
+type = TargetState
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time >= 137
+trigger1 = Root, Command = "a"
+value = 8505
+[State Jump N.]
+type = TargetState
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time >= 137
+trigger1 = Root, Command = "b"
+value = 8506
+[State Dizzy!]
+type = TargetState
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, Time >= 137
+trigger1 = Root, Command = "c"
+value = 8507
+
+[State Await Results]
+type = TargetState
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = 8200
+trigger1 = Root, Time = [0,1]
+value = 8508
+
+[State Shock!]
+type = TargetState
+triggerall = NumTarget(8001)
+triggerall = Target(8001), StateNo != 8520
+trigger1 = Root, StateNo = 8200
+trigger1 = Root, Anim = [8005,8008]
+trigger1 = Root, AnimElem = 12
+value = 8510
+[State Burn!]
+type = TargetState
+triggerall = NumTarget(8001)
+triggerall = Target(8001), StateNo != 8520
+trigger1 = Root, StateNo = 8200
+trigger1 = Root, Anim = [8006,8008]
+trigger1 = Root, AnimElem = 22
+value = 8511
+[State Freeze!]
+type = TargetState
+triggerall = NumTarget(8001)
+triggerall = Target(8001), StateNo != 8520
+trigger1 = Root, StateNo = 8200
+trigger1 = Root, Anim = [8007,8008]
+trigger1 = Root, AnimElem = 32
+value = 8512
+
+[State Shock Sound!]
+type = PlaySnd
+triggerall = NumTarget(8001)
+triggerall = Target(8001), StateNo != 8520
+trigger1 = Root, StateNo = 8200
+trigger1 = Root, Anim = [8005,8008]
+trigger1 = Root, AnimElem = 12
+value = 8510,0
+[State Burn Sound!]
+type = PlaySnd
+triggerall = NumTarget(8001)
+triggerall = Target(8001), StateNo != 8520
+trigger1 = Root, StateNo = 8200
+trigger1 = Root, Anim = [8006,8008]
+trigger1 = Root, AnimElem = 22
+value = 8510,1
+[State Freeze Sound!]
+type = PlaySnd
+triggerall = NumTarget(8001)
+triggerall = Target(8001), StateNo != 8520
+trigger1 = Root, StateNo = 8200
+trigger1 = Root, Anim = [8007,8008]
+trigger1 = Root, AnimElem = 32
+value = 8510,2
+
+[State Fall Away]
+type = TargetState
+triggerall = NumTarget(8001)
+triggerall = Root, StateNo = 8200
+trigger1 = Root, Anim = 8004
+trigger1 = Root, AnimElem = 7
+trigger2 = Root, Anim = 8005
+trigger2 = Root, AnimElem = 13
+trigger3 = Root, Anim = 8006
+trigger3 = Root, AnimElem = 23
+value = 8520
+
+[State Icy Buddy]
+type = Helper
+triggerall = NumTarget(8001)
+trigger1 = Root, StateNo = 8200
+trigger1 = Root, Anim = [8007,8008]
+trigger1 = Root, AnimElem = 32
+stateno = 8530
+name = "Ice Buddy"
+
+[State BurnExplod]
+type = Explod
+triggerall = NumTarget(8001)
+trigger1 = Target(8001), StateNo = 8511
+trigger1 = Target(8001), Time = 0
+anim = 8500
+id = 8500
+pos = 0,0
+postype = p2
+bindtime = 38
+sprpriority = 3
+
+[State DestroySelf]
+type = DestroySelf
+triggerall = NumTarget(8001)
+trigger1 = Target(8001), StateNo = 8520
+trigger1 = Target(8001), Time >= 1
+trigger2 = Target(8001), StateNo = 8512
+trigger2 = Target(8001), Time >= 1
+trigger3 = Root, StateNo !=[8000,8200]
+
+;Showtime Hat: Fail
+[Statedef 8003]
+type = A
+movetype = A
+physics = N
+ctrl = 0
+velset = 1.5,-4
+anim = 8010
+sprpriority = 2
+hitcountpersist = 1
+
+[State PosSet]
+type = PosSet
+trigger1 = Time = 0
+y = 0
+
+[State Gravy]
+type = VelAdd
+trigger1 = Time <= 24
+y = 0.3
+
+[State PoofVel]
+type = VelSet
+trigger1 = AnimElem = 9
+x = 0
+y = 0
+
+[State ded]
+type = DestroySelf
+trigger1 = AnimTime = 0
+
+;Showtime Hat: Up
+[Statedef 8004]
+type = A
+movetype = A
+physics = N
+ctrl = 0
+velset = 0.25,-6
+anim = 8010
+sprpriority = 2
+hitcountpersist = 1
+
+[State Hitspark cus yes]
+type = Explod
+trigger1 = Parent,NumTarget(8001)
+trigger1 = Time = 0
+anim = 15004
+id = 15004
+pos = 0,0
+postype = p1
+bindtime = 1
+sprpriority = 4
+
+[State Gravy]
+type = VelAdd
+trigger1 = Time <= 24
+y = 0.3
+
+[State PoofVel]
+type = VelSet
+trigger1 = AnimElem = 9
+x = 0
+y = 0
+
+[State ded]
+type = DestroySelf
+trigger1 = AnimTime = 0
+
+;Hat Success! Flip
+[Statedef 8005]
+type = A
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+anim = 8002
+sprpriority = 1
+hitcountpersist = 1
+
+[State b0rf]
+type = AssertSpecial
+trigger1 = 1
+flag = nomusic
+flag2 = timerfreeze
+
+[State 0, VarRandom]
+type = VarRandom
+trigger1 = Time = 0
+v = 10
+range = 0,1000
+
+[State WHERE U GOTTA BE Var]
+type = VarSet
+trigger1 = Time = 0
+fv = 5
+value = (facing*(helper(8001),pos X - pos X) - 130) * 0.0796
+
+[state hope it work]
+type = velset
+trigger1 = !time
+x = 0.16010476*(P2Dist X - 130)
+[state shitti as]
+type = velmul
+trigger1 = time>0
+x = 0.85
+
+[State Porpoise]
+type = PosSet
+trigger1 = AnimElem = 6
+y = 0
+
+[State Velpoise]
+type = VelSet
+trigger1 = AnimElem = 6
+x = 0
+y = 0
+
+[State Jingle1]
+type = ChangeState
+triggerall = Var(10) <= 250
+trigger1 = AnimTime = 0
+value = 8010
+
+[State Jingle2]
+type = ChangeState
+triggerall = Var(10) > 250
+triggerall = Var(10) <= 500
+trigger1 = AnimTime = 0
+value = 8011
+
+[State Jingle3]
+type = ChangeState
+triggerall = Var(10) > 500
+triggerall = Var(10) <= 750
+trigger1 = AnimTime = 0
+value = 8012
+
+[State Jingle4]
+type = ChangeState
+triggerall = Var(10) > 750
+triggerall = Var(10) <= 850
+trigger1 = AnimTime = 0
+value = 8013
+
+[State Jingle5]
+type = ChangeState
+triggerall = Var(10) > 850
+triggerall = Var(10) <= 950
+trigger1 = AnimTime = 0
+value = 8014
+
+[State Jingle6]
+type = ChangeState
+triggerall = Var(10) > 950
+triggerall = Var(10) <= 1000
+trigger1 = AnimTime = 0
+value = 8015
+
+;Showtime! Jingle 1
+[Statedef 8010]
+type = A
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+anim = 8003
+sprpriority = 1
+hitcountpersist = 1
+
+[State b0rf]
+type = AssertSpecial
+trigger1 = 1
+flag = nomusic
+flag2 = timerfreeze
+
+[State Poof!]
+type = Explod
+trigger1 = Time = [0,5]
+anim = 8020
+id = 8020
+pos = 0,-50
+random = 40,60
+bindtime = 120
+sprpriority = 3
+
+[State Poof Sound]
+type = PlaySnd
+trigger1 = Time = 0
+value = 8000,11
+
+[State Curtain String]
+type = Helper
+trigger1 = Time = 0
+stateno = 8100
+name = "Curtain String"
+pos = 0,-210
+postype = p1
+
+[State "Showtime!"]
+type = PlaySnd
+trigger1 = AnimElem = 2
+value = 10,23
+channel = 0
+
+[State Ready.. Go!]
+type = Explod
+trigger1 = Time = 52
+anim = ifelse(facing = 1,8150,8151)
+id = ifelse(facing = 1,8150,8151)
+pos = 0,0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 4
+
+[State Jingle 1]
+type = PlaySnd
+trigger1 = Time = 52
+value = 8000,0
+channel = 4
+abspan = 0
+loop = 1
+
+[State HUD]
+type = Explod
+trigger1 = Time = 52
+anim = 8250
+id = 8250
+pos = ifelse(facing = 1,-18,28),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 4
+
+[State HUD-WP]
+type = Explod
+trigger1 = Time = [52,56]
+trigger2 = Time = [94,100]
+trigger3 = Time = [108,114]
+trigger4 = Time = [152,156]
+trigger5 = Time = [166,172]
+trigger6 = Time = [210,216]
+trigger7 = Time = [224,230]
+trigger8 = Time = [268,274]
+trigger9 = Time = [282,290]
+trigger10 = Time = [326,332]
+trigger11 = Time = [340,346]
+trigger12 = Time = [384,390]
+trigger13 = Time = [398,404]
+anim = 8251
+id = 8251
+pos = ifelse(facing = 1,-18,28),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State HUD-MP]
+type = Explod
+trigger1 = Time = [79,85]
+trigger2 = Time = [137,143]
+trigger3 = Time = [195,201]
+trigger4 = Time = [253,259]
+trigger5 = Time = [311,317]
+trigger6 = Time = [369,375]
+anim = 8251
+id = 8251
+pos = ifelse(facing = 1,-2,12),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State WP VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,156]
+trigger2 = Time = [166,172]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [268,274]
+trigger6 = Time = [282,290]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [384,390]
+trigger10 = Time = [398,404]
+v = 12
+value = ifelse(command = "x",7,5)
+
+[State WP ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,156]
+trigger2 = Time = [166,172]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [268,274]
+trigger6 = Time = [282,290]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [384,390]
+trigger10 = Time = [398,404]
+value = 8000,9
+
+[State MP VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [195,201]
+trigger3 = Time = [253,259]
+trigger4 = Time = [311,317]
+trigger5 = Time = [369,375]
+v = 12
+value = ifelse(command = "y",7,5)
+
+[State MP ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [195,201]
+trigger3 = Time = [253,259]
+trigger4 = Time = [311,317]
+trigger5 = Time = [369,375]
+value = 8000,9
+
+[State Fail]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time != [152,156]
+trigger1 = Time != [166,172]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [268,274]
+trigger1 = Time != [282,290]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [384,390]
+trigger1 = Time != [398,404]
+trigger1 = Time != [137,143]
+trigger1 = Time != [195,201]
+trigger1 = Time != [253,259]
+trigger1 = Time != [311,317]
+trigger1 = Time != [369,375]
+v = 12
+value = -5
+
+[State Remove Bubble]
+type = RemoveExplod
+trigger1 = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = NumExplod(8160) >= 1
+id = 8160
+
+[State Good! Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time = [152,156]
+trigger2 = Time = [166,172]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [268,274]
+trigger6 = Time = [282,290]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [384,390]
+trigger10 = Time = [398,404]
+trigger11 = Time = [137,143]
+trigger12 = Time = [195,201]
+trigger13 = Time = [253,259]
+trigger14 = Time = [311,317]
+trigger15 = Time = [369,375]
+anim = ifelse(facing = 1,8166,8165)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State Good! Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,156]
+trigger2 = Time = [166,172]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [268,274]
+trigger6 = Time = [282,290]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [384,390]
+trigger10 = Time = [398,404]
+trigger11 = Time = [137,143]
+trigger12 = Time = [195,201]
+trigger13 = Time = [253,259]
+trigger14 = Time = [311,317]
+trigger15 = Time = [369,375]
+anim = ifelse(facing = 1,8165,8166)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time != [152,156]
+trigger1 = Time != [166,172]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [268,274]
+trigger1 = Time != [282,290]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [384,390]
+trigger1 = Time != [398,404]
+trigger1 = Time != [137,143]
+trigger1 = Time != [195,201]
+trigger1 = Time != [253,259]
+trigger1 = Time != [311,317]
+trigger1 = Time != [369,375]
+anim = ifelse(facing = 1,8161,8160)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time != [152,156]
+trigger1 = Time != [166,172]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [268,274]
+trigger1 = Time != [282,290]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [384,390]
+trigger1 = Time != [398,404]
+trigger1 = Time != [137,143]
+trigger1 = Time != [195,201]
+trigger1 = Time != [253,259]
+trigger1 = Time != [311,317]
+trigger1 = Time != [369,375]
+anim = ifelse(facing = 1,8160,8161)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+
+[State Safety Measure]
+type = VarSet
+trigger1 = Var(12) < 0
+v = 12
+value = 0
+
+[State GONG]
+type = PlaySnd
+trigger1 = AnimElem = 10
+value = 8000,10
+
+[State Results]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 8200
+
+;Showtime! Jingle 2
+[Statedef 8011]
+type = A
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+anim = 8003
+sprpriority = 1
+hitcountpersist = 1
+
+[State b0rf]
+type = AssertSpecial
+trigger1 = 1
+flag = nomusic
+flag2 = timerfreeze
+
+[State Poof!]
+type = Explod
+trigger1 = Time = [0,5]
+anim = 8020
+id = 8020
+pos = 0,-50
+random = 40,60
+bindtime = 120
+sprpriority = 3
+
+[State Poof Sound]
+type = PlaySnd
+trigger1 = Time = 0
+value = 8000,11
+
+[State Curtain String]
+type = Helper
+trigger1 = Time = 0
+stateno = 8100
+name = "Curtain String"
+pos = 0,-210
+postype = p1
+
+[State "Showtime!"]
+type = PlaySnd
+trigger1 = AnimElem = 2
+value = 10,23
+channel = 0
+
+[State Ready.. Go!]
+type = Explod
+trigger1 = Time = 52
+anim = ifelse(facing = 1,8150,8151)
+id = ifelse(facing = 1,8150,8151)
+pos = 0,0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 4
+
+[State Jingle 2]
+type = PlaySnd
+trigger1 = Time = 52
+value = 8000,1
+channel = 4
+abspan = 0
+loop = 1
+
+[State HUD]
+type = Explod
+trigger1 = Time = 52
+anim = 8250
+id = 8250
+pos = ifelse(facing = 1,-18,28),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 4
+
+[State HUD-WK]
+type = Explod
+trigger1 = Time = [52,56]
+trigger2 = Time = [72,78]
+trigger3 = Time = [94,100]
+trigger4 = Time = [108,114]
+trigger5 = Time = [166,172]
+trigger6 = Time = [188,194]
+trigger7 = Time = [210,216]
+trigger8 = Time = [224,230]
+trigger9 = Time = [282,288]
+trigger10 = Time = [304,310]
+trigger11 = Time = [326,332]
+trigger12 = Time = [340,346]
+trigger13 = Time = [398,404]
+anim = 8252
+id = 8252
+pos = ifelse(facing = 1,-18,28),-129
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State HUD-SP]
+type = Explod
+trigger1 = Time = [137,145]
+trigger2 = Time = [253,259]
+trigger3 = Time = [369,375]
+anim = 8251
+id = 8251
+pos = ifelse(facing = 1,14,-4),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State WK VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [166,172]
+trigger2 = Time = [188,194]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [282,288]
+trigger6 = Time = [304,310]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [398,404]
+v = 12
+value = ifelse(command = "a",8,6)
+
+[State WK ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [166,172]
+trigger2 = Time = [188,194]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [282,288]
+trigger6 = Time = [304,310]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [398,404]
+value = 8000,9
+
+[State SP VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,145]
+trigger2 = Time = [253,259]
+trigger3 = Time = [369,375]
+v = 12
+value = ifelse(command = "z",8,6)
+
+[State SP ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,145]
+trigger2 = Time = [253,259]
+trigger3 = Time = [369,375]
+value = 8000,9
+
+[State Fail]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [398,404]
+trigger1 = Time != [137,145]
+trigger1 = Time != [253,259]
+trigger1 = Time != [369,375]
+v = 12
+value = -6
+
+[State Remove Bubble]
+type = RemoveExplod
+trigger1 = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = NumExplod(8160) >= 1
+id = 8160
+
+[State Good! Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time = [166,172]
+trigger2 = Time = [188,194]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [282,288]
+trigger6 = Time = [304,310]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [398,404]
+trigger10 = Time = [137,145]
+trigger11 = Time = [253,259]
+trigger12 = Time = [369,375]
+anim = ifelse(facing = 1,8166,8165)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State Good! Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time = [166,172]
+trigger2 = Time = [188,194]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [282,288]
+trigger6 = Time = [304,310]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [398,404]
+trigger10 = Time = [137,145]
+trigger11 = Time = [253,259]
+trigger12 = Time = [369,375]
+anim = ifelse(facing = 1,8165,8166)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [398,404]
+trigger1 = Time != [137,145]
+trigger1 = Time != [253,259]
+trigger1 = Time != [369,375]
+anim = ifelse(facing = 1,8161,8160)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [398,404]
+trigger1 = Time != [137,145]
+trigger1 = Time != [253,259]
+trigger1 = Time != [369,375]
+anim = ifelse(facing = 1,8160,8161)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+
+[State Safety Measure]
+type = VarSet
+trigger1 = Var(12) < 0
+v = 12
+value = 0
+
+[State GONG]
+type = PlaySnd
+trigger1 = AnimElem = 10
+value = 8000,10
+
+[State Results]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 8200
+
+;Showtime! Jingle 3
+[Statedef 8012]
+type = A
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+anim = 8003
+sprpriority = 1
+hitcountpersist = 1
+
+[State b0rf]
+type = AssertSpecial
+trigger1 = 1
+flag = nomusic
+flag2 = timerfreeze
+
+[State Poof!]
+type = Explod
+trigger1 = Time = [0,5]
+anim = 8020
+id = 8020
+pos = 0,-50
+random = 40,60
+bindtime = 120
+sprpriority = 3
+
+[State Poof Sound]
+type = PlaySnd
+trigger1 = Time = 0
+value = 8000,11
+
+[State Curtain String]
+type = Helper
+trigger1 = Time = 0
+stateno = 8100
+name = "Curtain String"
+pos = 0,-210
+postype = p1
+
+[State "Showtime!"]
+type = PlaySnd
+trigger1 = AnimElem = 2
+value = 10,23
+channel = 0
+
+[State Ready.. Go!]
+type = Explod
+trigger1 = Time = 52
+anim = ifelse(facing = 1,8150,8151)
+id = ifelse(facing = 1,8150,8151)
+pos = 0,0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 4
+
+[State Jingle 3]
+type = PlaySnd
+trigger1 = Time = 52
+value = 8000,2
+channel = 4
+abspan = 0
+loop = 1
+
+[State HUD]
+type = Explod
+trigger1 = Time = 52
+anim = 8250
+id = 8250
+pos = ifelse(facing = 1,-18,28),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 4
+
+[State HUD-MP]
+type = Explod
+trigger1 = Time = [79,85]
+trigger2 = Time = [152,158]
+trigger3 = Time = [195,201]
+trigger4 = Time = [268,274]
+trigger5 = Time = [311,317]
+trigger6 = Time = [384,390]
+anim = 8251
+id = 8251
+pos = ifelse(facing = 1,-2,12),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State HUD-MK]
+type = Explod
+trigger1 = Time = [52,56]
+trigger2 = Time = [101,107]
+trigger3 = Time = [108,114]
+trigger4 = Time = [123,129]
+trigger5 = Time = [166,172]
+trigger6 = Time = [217,223]
+trigger7 = Time = [224,230]
+trigger8 = Time = [239,245]
+trigger9 = Time = [282,288]
+trigger10 = Time = [333,339]
+trigger11 = Time = [340,346]
+trigger12 = Time = [355,361]
+trigger13 = Time = [398,404]
+anim = 8252
+id = 8252
+pos = ifelse(facing = 1,-2,12),-129
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State MP VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,158]
+trigger2 = Time = [195,201]
+trigger3 = Time = [268,274]
+trigger4 = Time = [311,317]
+trigger5 = Time = [384,390]
+v = 12
+value = ifelse(command = "y",7,5)
+
+[State MP ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,158]
+trigger2 = Time = [195,201]
+trigger3 = Time = [268,274]
+trigger4 = Time = [311,317]
+trigger5 = Time = [384,390]
+value = 8000,9
+
+[State MK VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [166,172]
+trigger2 = Time = [217,223]
+trigger3 = Time = [224,230]
+trigger4 = Time = [239,245]
+trigger5 = Time = [282,288]
+trigger6 = Time = [333,339]
+trigger7 = Time = [340,346]
+trigger8 = Time = [355,361]
+trigger9 = Time = [398,404]
+v = 12
+value = ifelse(command = "b",7,5)
+
+[State MK ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [166,172]
+trigger2 = Time = [217,223]
+trigger3 = Time = [224,230]
+trigger4 = Time = [239,245]
+trigger5 = Time = [282,288]
+trigger6 = Time = [333,339]
+trigger7 = Time = [340,346]
+trigger8 = Time = [355,361]
+trigger9 = Time = [398,404]
+value = 8000,9
+
+[State Fail]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time != [152,158]
+trigger1 = Time != [195,201]
+trigger1 = Time != [268,274]
+trigger1 = Time != [311,317]
+trigger1 = Time != [384,390]
+trigger1 = Time != [166,172]
+trigger1 = Time != [217,223]
+trigger1 = Time != [224,230]
+trigger1 = Time != [239,245]
+trigger1 = Time != [282,288]
+trigger1 = Time != [333,339]
+trigger1 = Time != [340,346]
+trigger1 = Time != [355,361]
+trigger1 = Time != [398,404]
+v = 12
+value = -5
+
+[State Remove Bubble]
+type = RemoveExplod
+trigger1 = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = NumExplod(8160) >= 1
+id = 8160
+
+[State Good! Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time = [152,158]
+trigger2 = Time = [195,201]
+trigger3 = Time = [268,274]
+trigger4 = Time = [311,317]
+trigger5 = Time = [384,390]
+trigger6 = Time = [166,172]
+trigger7 = Time = [217,223]
+trigger8 = Time = [224,230]
+trigger9 = Time = [239,245]
+trigger10 = Time = [282,288]
+trigger11 = Time = [333,339]
+trigger12 = Time = [340,346]
+trigger13 = Time = [355,361]
+trigger14 = Time = [398,404]
+anim = ifelse(facing = 1,8166,8165)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State Good! Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,158]
+trigger2 = Time = [195,201]
+trigger3 = Time = [268,274]
+trigger4 = Time = [311,317]
+trigger5 = Time = [384,390]
+trigger6 = Time = [166,172]
+trigger7 = Time = [217,223]
+trigger8 = Time = [224,230]
+trigger9 = Time = [239,245]
+trigger10 = Time = [282,288]
+trigger11 = Time = [333,339]
+trigger12 = Time = [340,346]
+trigger13 = Time = [355,361]
+trigger14 = Time = [398,404]
+anim = ifelse(facing = 1,8165,8166)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time != [152,158]
+trigger1 = Time != [195,201]
+trigger1 = Time != [268,274]
+trigger1 = Time != [311,317]
+trigger1 = Time != [384,390]
+trigger1 = Time != [166,172]
+trigger1 = Time != [217,223]
+trigger1 = Time != [224,230]
+trigger1 = Time != [239,245]
+trigger1 = Time != [282,288]
+trigger1 = Time != [333,339]
+trigger1 = Time != [340,346]
+trigger1 = Time != [355,361]
+trigger1 = Time != [398,404]
+anim = ifelse(facing = 1,8161,8160)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time != [152,158]
+trigger1 = Time != [195,201]
+trigger1 = Time != [268,274]
+trigger1 = Time != [311,317]
+trigger1 = Time != [384,390]
+trigger1 = Time != [166,172]
+trigger1 = Time != [217,223]
+trigger1 = Time != [224,230]
+trigger1 = Time != [239,245]
+trigger1 = Time != [282,288]
+trigger1 = Time != [333,339]
+trigger1 = Time != [340,346]
+trigger1 = Time != [355,361]
+trigger1 = Time != [398,404]
+anim = ifelse(facing = 1,8160,8161)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+
+[State Safety Measure]
+type = VarSet
+trigger1 = Var(12) < 0
+v = 12
+value = 0
+
+[State GONG]
+type = PlaySnd
+trigger1 = AnimElem = 10
+value = 8000,10
+
+[State Results]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 8200
+
+;Showtime! Jingle 4
+[Statedef 8013]
+type = A
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+anim = 8003
+sprpriority = 1
+hitcountpersist = 1
+
+[State b0rf]
+type = AssertSpecial
+trigger1 = 1
+flag = nomusic
+flag2 = timerfreeze
+
+[State Poof!]
+type = Explod
+trigger1 = Time = [0,5]
+anim = 8020
+id = 8020
+pos = 0,-50
+random = 40,60
+bindtime = 120
+sprpriority = 3
+
+[State Poof Sound]
+type = PlaySnd
+trigger1 = Time = 0
+value = 8000,11
+
+[State Curtain String]
+type = Helper
+trigger1 = Time = 0
+stateno = 8100
+name = "Curtain String"
+pos = 0,-210
+postype = p1
+
+[State "Showtime!"]
+type = PlaySnd
+trigger1 = AnimElem = 2
+value = 10,23
+channel = 0
+
+[State Ready.. Go!]
+type = Explod
+trigger1 = Time = 52
+anim = ifelse(facing = 1,8150,8151)
+id = ifelse(facing = 1,8150,8151)
+pos = 0,0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 4
+
+[State Jingle 4]
+type = PlaySnd
+trigger1 = Time = 52
+value = 8000,3
+channel = 4
+abspan = 0
+loop = 1
+
+[State HUD]
+type = Explod
+trigger1 = Time = 52
+anim = 8250
+id = 8250
+pos = ifelse(facing = 1,-18,28),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 4
+
+[State HUD-WK]
+type = Explod
+trigger1 = Time = [52,56]
+trigger2 = Time = [94,100]
+trigger3 = Time = [108,114]
+trigger4 = Time = [137,143]
+trigger5 = Time = [166,172]
+trigger6 = Time = [210,216]
+trigger7 = Time = [224,230]
+trigger8 = Time = [253,259]
+trigger9 = Time = [282,288]
+trigger10 = Time = [326,332]
+trigger11 = Time = [340,346]
+trigger12 = Time = [369,375]
+trigger13 = Time = [398,404]
+anim = 8252
+id = 8252
+pos = ifelse(facing = 1,-18,28),-129
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State HUD-MK]
+type = Explod
+trigger1 = Time = [72,78]
+trigger2 = Time = [123,129]
+trigger3 = Time = [159,165]
+trigger4 = Time = [188,194]
+trigger5 = Time = [239,245]
+trigger6 = Time = [275,281]
+trigger7 = Time = [304,310]
+trigger8 = Time = [355,361]
+trigger9 = Time = [391,397]
+anim = 8252
+id = 8252
+pos = ifelse(facing = 1,-2,12),-129
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State WK VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [253,259]
+trigger6 = Time = [282,288]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [369,375]
+trigger10 = Time = [398,404]
+v = 12
+value = ifelse(command = "a",6,4)
+
+[State WK ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [253,259]
+trigger6 = Time = [282,288]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [369,375]
+trigger10 = Time = [398,404]
+value = 8000,9
+
+[State MK VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [159,165]
+trigger2 = Time = [188,194]
+trigger3 = Time = [239,245]
+trigger4 = Time = [275,281]
+trigger5 = Time = [304,310]
+trigger6 = Time = [355,361]
+trigger7 = Time = [391,397]
+v = 12
+value = ifelse(command = "b",6,4)
+
+[State MK ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [159,165]
+trigger2 = Time = [188,194]
+trigger3 = Time = [239,245]
+trigger4 = Time = [275,281]
+trigger5 = Time = [304,310]
+trigger6 = Time = [355,361]
+trigger7 = Time = [391,397]
+value = 8000,9
+
+[State Fail]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [159,165]
+trigger1 = Time != [188,194]
+trigger1 = Time != [239,245]
+trigger1 = Time != [275,281]
+trigger1 = Time != [304,310]
+trigger1 = Time != [355,361]
+trigger1 = Time != [391,397]
+v = 12
+value = -4
+
+[State Remove Bubble]
+type = RemoveExplod
+trigger1 = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = NumExplod(8160) >= 1
+id = 8160
+
+[State Good! Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [253,259]
+trigger6 = Time = [282,288]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [369,375]
+trigger10 = Time = [398,404]
+trigger11 = Time = [159,165]
+trigger12 = Time = [188,194]
+trigger13 = Time = [239,245]
+trigger14 = Time = [275,281]
+trigger15 = Time = [304,310]
+trigger16 = Time = [355,361]
+trigger17 = Time = [391,397]
+anim = ifelse(facing = 1,8166,8165)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State Good! Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [210,216]
+trigger4 = Time = [224,230]
+trigger5 = Time = [253,259]
+trigger6 = Time = [282,288]
+trigger7 = Time = [326,332]
+trigger8 = Time = [340,346]
+trigger9 = Time = [369,375]
+trigger10 = Time = [398,404]
+trigger11 = Time = [159,165]
+trigger12 = Time = [188,194]
+trigger13 = Time = [239,245]
+trigger14 = Time = [275,281]
+trigger15 = Time = [304,310]
+trigger16 = Time = [355,361]
+trigger17 = Time = [391,397]
+anim = ifelse(facing = 1,8165,8166)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [159,165]
+trigger1 = Time != [188,194]
+trigger1 = Time != [239,245]
+trigger1 = Time != [275,281]
+trigger1 = Time != [304,310]
+trigger1 = Time != [355,361]
+trigger1 = Time != [391,397]
+anim = ifelse(facing = 1,8161,8160)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [210,216]
+trigger1 = Time != [224,230]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [326,332]
+trigger1 = Time != [340,346]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [159,165]
+trigger1 = Time != [188,194]
+trigger1 = Time != [239,245]
+trigger1 = Time != [275,281]
+trigger1 = Time != [304,310]
+trigger1 = Time != [355,361]
+trigger1 = Time != [391,397]
+anim = ifelse(facing = 1,8160,8161)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+
+[State Safety Measure]
+type = VarSet
+trigger1 = Var(12) < 0
+v = 12
+value = 0
+
+[State GONG]
+type = PlaySnd
+trigger1 = AnimElem = 10
+value = 8000,10
+
+[State Results]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 8200
+
+;Showtime! Jingle 5
+[Statedef 8014]
+type = A
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+anim = 8003
+sprpriority = 1
+hitcountpersist = 1
+
+[State b0rf]
+type = AssertSpecial
+trigger1 = 1
+flag = nomusic
+flag2 = timerfreeze
+
+[State Poof!]
+type = Explod
+trigger1 = Time = [0,5]
+anim = 8020
+id = 8020
+pos = 0,-50
+random = 40,60
+bindtime = 120
+sprpriority = 3
+
+[State Poof Sound]
+type = PlaySnd
+trigger1 = Time = 0
+value = 8000,11
+
+[State Curtain String]
+type = Helper
+trigger1 = Time = 0
+stateno = 8100
+name = "Curtain String"
+pos = 0,-210
+postype = p1
+
+[State "Showtime!"]
+type = PlaySnd
+trigger1 = AnimElem = 2
+value = 10,23
+channel = 0
+
+[State Ready.. Go!]
+type = Explod
+trigger1 = Time = 52
+anim = ifelse(facing = 1,8150,8151)
+id = ifelse(facing = 1,8150,8151)
+pos = 0,0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 4
+
+[State Jingle 5]
+type = PlaySnd
+trigger1 = Time = 52
+value = 8000,4
+channel = 4
+abspan = 0
+loop = 1
+
+[State HUD]
+type = Explod
+trigger1 = Time = 52
+anim = 8250
+id = 8250
+pos = ifelse(facing = 1,-18,28),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 4
+
+[State HUD-MK]
+type = Explod
+trigger1 = Time = [52,56]
+trigger2 = Time = [72,78]
+trigger3 = Time = [94,100]
+trigger4 = Time = [137,143]
+trigger5 = Time = [166,172]
+trigger6 = Time = [188,194]
+trigger7 = Time = [210,216]
+trigger8 = Time = [253,259]
+trigger9 = Time = [282,288]
+trigger10 = Time = [304,310]
+trigger11 = Time = [326,332]
+trigger12 = Time = [369,375]
+trigger13 = Time = [398,404]
+anim = 8252
+id = 8252
+pos = ifelse(facing = 1,-2,12),-129
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State HUD-SP]
+type = Explod
+trigger1 = Time = [79,85]
+trigger2 = Time = [108,114]
+trigger3 = Time = [130,136]
+trigger4 = Time = [152,158]
+trigger5 = Time = [195,201]
+trigger6 = Time = [224,230]
+trigger7 = Time = [246,252]
+trigger8 = Time = [268,274]
+trigger9 = Time = [311,317]
+trigger10 = Time = [340,346]
+trigger11 = Time = [362,368]
+trigger12 = Time = [384,390]
+anim = 8251
+id = 8251
+pos = ifelse(facing = 1,14,-4),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State MK VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [188,194]
+trigger4 = Time = [210,216]
+trigger5 = Time = [253,259]
+trigger6 = Time = [282,288]
+trigger7 = Time = [304,310]
+trigger8 = Time = [326,332]
+trigger9 = Time = [369,375]
+trigger10 = Time = [398,404]
+v = 12
+value = ifelse(command = "b",6,4)
+
+[State MK ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [188,194]
+trigger4 = Time = [210,216]
+trigger5 = Time = [253,259]
+trigger6 = Time = [282,288]
+trigger7 = Time = [304,310]
+trigger8 = Time = [326,332]
+trigger9 = Time = [369,375]
+trigger10 = Time = [398,404]
+value = 8000,9
+
+[State SP VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,158]
+trigger2 = Time = [195,201]
+trigger3 = Time = [224,230]
+trigger4 = Time = [246,252]
+trigger5 = Time = [268,274]
+trigger6 = Time = [311,317]
+trigger7 = Time = [340,346]
+trigger8 = Time = [362,368]
+trigger9 = Time = [384,390]
+v = 12
+value = ifelse(command = "z",6,4)
+
+[State SP ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,158]
+trigger2 = Time = [195,201]
+trigger3 = Time = [224,230]
+trigger4 = Time = [246,252]
+trigger5 = Time = [268,274]
+trigger6 = Time = [311,317]
+trigger7 = Time = [340,346]
+trigger8 = Time = [362,368]
+trigger9 = Time = [384,390]
+value = 8000,9
+
+[State Fail]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [210,216]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [326,332]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [152,158]
+trigger1 = Time != [195,201]
+trigger1 = Time != [224,230]
+trigger1 = Time != [246,252]
+trigger1 = Time != [268,274]
+trigger1 = Time != [311,317]
+trigger1 = Time != [340,346]
+trigger1 = Time != [362,368]
+trigger1 = Time != [384,390]
+v = 12
+value = -4
+
+[State Remove Bubble]
+type = RemoveExplod
+trigger1 = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = NumExplod(8160) >= 1
+id = 8160
+
+[State Good! Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [188,194]
+trigger4 = Time = [210,216]
+trigger5 = Time = [253,259]
+trigger6 = Time = [282,288]
+trigger7 = Time = [304,310]
+trigger8 = Time = [326,332]
+trigger9 = Time = [369,375]
+trigger10 = Time = [398,404]
+trigger11 = Time = [152,158]
+trigger12 = Time = [195,201]
+trigger13 = Time = [224,230]
+trigger14 = Time = [246,252]
+trigger15 = Time = [268,274]
+trigger16 = Time = [311,317]
+trigger17 = Time = [340,346]
+trigger18 = Time = [362,368]
+trigger19 = Time = [384,390]
+anim = ifelse(facing = 1,8166,8165)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State Good! Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [188,194]
+trigger4 = Time = [210,216]
+trigger5 = Time = [253,259]
+trigger6 = Time = [282,288]
+trigger7 = Time = [304,310]
+trigger8 = Time = [326,332]
+trigger9 = Time = [369,375]
+trigger10 = Time = [398,404]
+trigger11 = Time = [152,158]
+trigger12 = Time = [195,201]
+trigger13 = Time = [224,230]
+trigger14 = Time = [246,252]
+trigger15 = Time = [268,274]
+trigger16 = Time = [311,317]
+trigger17 = Time = [340,346]
+trigger18 = Time = [362,368]
+trigger19 = Time = [384,390]
+anim = ifelse(facing = 1,8165,8166)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [210,216]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [326,332]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [152,158]
+trigger1 = Time != [195,201]
+trigger1 = Time != [224,230]
+trigger1 = Time != [246,252]
+trigger1 = Time != [268,274]
+trigger1 = Time != [311,317]
+trigger1 = Time != [340,346]
+trigger1 = Time != [362,368]
+trigger1 = Time != [384,390]
+anim = ifelse(facing = 1,8161,8160)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [210,216]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [326,332]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [152,158]
+trigger1 = Time != [195,201]
+trigger1 = Time != [224,230]
+trigger1 = Time != [246,252]
+trigger1 = Time != [268,274]
+trigger1 = Time != [311,317]
+trigger1 = Time != [340,346]
+trigger1 = Time != [362,368]
+trigger1 = Time != [384,390]
+anim = ifelse(facing = 1,8160,8161)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+
+[State Safety Measure]
+type = VarSet
+trigger1 = Var(12) < 0
+v = 12
+value = 0
+
+[State GONG]
+type = PlaySnd
+trigger1 = AnimElem = 10
+value = 8000,10
+
+[State Results]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 8200
+
+;Showtime! Jingle 6
+[Statedef 8015]
+type = A
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+anim = 8003
+sprpriority = 1
+hitcountpersist = 1
+
+[State b0rf]
+type = AssertSpecial
+trigger1 = 1
+flag = nomusic
+flag2 = timerfreeze
+
+[State Poof!]
+type = Explod
+trigger1 = Time = [0,5]
+anim = 8020
+id = 8020
+pos = 0,-50
+random = 40,60
+bindtime = 120
+sprpriority = 3
+
+[State Poof Sound]
+type = PlaySnd
+trigger1 = Time = 0
+value = 8000,11
+
+[State Curtain String]
+type = Helper
+trigger1 = Time = 0
+stateno = 8100
+name = "Curtain String"
+pos = 0,-210
+postype = p1
+
+[State "Showtime!"]
+type = PlaySnd
+trigger1 = AnimElem = 2
+value = 10,23
+channel = 0
+
+[State Ready.. Go!]
+type = Explod
+trigger1 = Time = 52
+anim = ifelse(facing = 1,8150,8151)
+id = ifelse(facing = 1,8150,8151)
+pos = 0,0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 4
+
+[State Jingle 6]
+type = PlaySnd
+trigger1 = Time = 52
+value = 8000,5
+channel = 4
+abspan = 0
+loop = 1
+
+[State HUD]
+type = Explod
+trigger1 = Time = 52
+anim = 8250
+id = 8250
+pos = ifelse(facing = 1,-18,28),-145
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 4
+
+[State HUD-MK]
+type = Explod
+trigger1 = Time = [52,56]
+trigger2 = Time = [72,78]
+trigger3 = Time = [79,85]
+trigger4 = Time = [108,114]
+trigger5 = Time = [130,136]
+trigger6 = Time = [137,143]
+trigger7 = Time = [166,172]
+trigger8 = Time = [188,194]
+trigger9 = Time = [195,201]
+trigger10 = Time = [224,230]
+trigger11 = Time = [246,252]
+trigger12 = Time = [253,259]
+trigger13 = Time = [282,288]
+trigger14 = Time = [304,310]
+trigger15 = Time = [311,317]
+trigger16 = Time = [340,346]
+trigger17 = Time = [362,368]
+trigger18 = Time = [369,375]
+trigger19 = Time = [398,404]
+anim = 8252
+id = 8252
+pos = ifelse(facing = 1,-2,12),-129
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State HUD-SK]
+type = Explod
+trigger1 = Time = [86,92]
+trigger2 = Time = [101,107]
+trigger3 = Time = [115,121]
+trigger4 = Time = [152,158]
+trigger5 = Time = [202,208]
+trigger6 = Time = [217,223]
+trigger7 = Time = [231,237]
+trigger8 = Time = [268,274]
+trigger9 = Time = [319,325]
+trigger10 = Time = [333,339]
+trigger11 = Time = [348,354]
+trigger12 = Time = [384,390]
+anim = 8252
+id = 8252
+pos = ifelse(facing = 1,14,-4),-129
+facing = ifelse(facing = 1,1,-1)
+bindtime = 100
+sprpriority = 5
+
+[State MK VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [188,194]
+trigger4 = Time = [195,201]
+trigger5 = Time = [224,230]
+trigger6 = Time = [246,252]
+trigger7 = Time = [253,259]
+trigger8 = Time = [282,288]
+trigger9 = Time = [304,310]
+trigger10 = Time = [311,317]
+trigger11 = Time = [340,346]
+trigger12 = Time = [362,368]
+trigger13 = Time = [369,375]
+trigger14 = Time = [398,404]
+v = 12
+value = ifelse(command = "b",5,3)
+
+[State MK ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [188,194]
+trigger4 = Time = [195,201]
+trigger5 = Time = [224,230]
+trigger6 = Time = [246,252]
+trigger7 = Time = [253,259]
+trigger8 = Time = [282,288]
+trigger9 = Time = [304,310]
+trigger10 = Time = [311,317]
+trigger11 = Time = [340,346]
+trigger12 = Time = [362,368]
+trigger13 = Time = [369,375]
+trigger14 = Time = [398,404]
+value = 8000,9
+
+[State SK VarAdd]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,158]
+trigger2 = Time = [202,208]
+trigger3 = Time = [217,223]
+trigger4 = Time = [231,237]
+trigger5 = Time = [268,274]
+trigger6 = Time = [319,325]
+trigger7 = Time = [333,339]
+trigger8 = Time = [348,354]
+trigger9 = Time = [384,390]
+v = 12
+value = ifelse(command = "c",5,3)
+
+[State SK ClapSnd]
+type = PlaySnd
+triggerall = Time >= 137
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time = [152,158]
+trigger2 = Time = [202,208]
+trigger3 = Time = [217,223]
+trigger4 = Time = [231,237]
+trigger5 = Time = [268,274]
+trigger6 = Time = [319,325]
+trigger7 = Time = [333,339]
+trigger8 = Time = [348,354]
+trigger9 = Time = [384,390]
+value = 8000,9
+
+[State Fail]
+type = VarAdd
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [195,201]
+trigger1 = Time != [224,230]
+trigger1 = Time != [246,252]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [311,317]
+trigger1 = Time != [340,346]
+trigger1 = Time != [362,368]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [152,158]
+trigger1 = Time != [202,208]
+trigger1 = Time != [217,223]
+trigger1 = Time != [231,237]
+trigger1 = Time != [268,274]
+trigger1 = Time != [319,325]
+trigger1 = Time != [333,339]
+trigger1 = Time != [348,354]
+trigger1 = Time != [384,390]
+v = 12
+value = -3
+
+[State Remove Bubble]
+type = RemoveExplod
+trigger1 = command = "x" || command = "y" || command = "z"||command = "a" || command = "b" || command = "c"
+trigger1 = NumExplod(8160) >= 1
+id = 8160
+
+[State Good! Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [188,194]
+trigger4 = Time = [195,201]
+trigger5 = Time = [224,230]
+trigger6 = Time = [246,252]
+trigger7 = Time = [253,259]
+trigger8 = Time = [282,288]
+trigger9 = Time = [304,310]
+trigger10 = Time = [311,317]
+trigger11 = Time = [340,346]
+trigger12 = Time = [362,368]
+trigger13 = Time = [369,375]
+trigger14 = Time = [398,404]
+trigger15 = Time = [152,158]
+trigger16 = Time = [202,208]
+trigger17 = Time = [217,223]
+trigger18 = Time = [231,237]
+trigger19 = Time = [268,274]
+trigger20 = Time = [319,325]
+trigger21 = Time = [333,339]
+trigger22 = Time = [348,354]
+trigger23 = Time = [384,390]
+anim = ifelse(facing = 1,8166,8165)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State Good! Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time = [137,143]
+trigger2 = Time = [166,172]
+trigger3 = Time = [188,194]
+trigger4 = Time = [195,201]
+trigger5 = Time = [224,230]
+trigger6 = Time = [246,252]
+trigger7 = Time = [253,259]
+trigger8 = Time = [282,288]
+trigger9 = Time = [304,310]
+trigger10 = Time = [311,317]
+trigger11 = Time = [340,346]
+trigger12 = Time = [362,368]
+trigger13 = Time = [369,375]
+trigger14 = Time = [398,404]
+trigger15 = Time = [152,158]
+trigger16 = Time = [202,208]
+trigger17 = Time = [217,223]
+trigger18 = Time = [231,237]
+trigger19 = Time = [268,274]
+trigger20 = Time = [319,325]
+trigger21 = Time = [333,339]
+trigger22 = Time = [348,354]
+trigger23 = Time = [384,390]
+anim = ifelse(facing = 1,8165,8166)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble XYZ]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "x" || command = "y" || command = "z"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [195,201]
+trigger1 = Time != [224,230]
+trigger1 = Time != [246,252]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [311,317]
+trigger1 = Time != [340,346]
+trigger1 = Time != [362,368]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [152,158]
+trigger1 = Time != [202,208]
+trigger1 = Time != [217,223]
+trigger1 = Time != [231,237]
+trigger1 = Time != [268,274]
+trigger1 = Time != [319,325]
+trigger1 = Time != [333,339]
+trigger1 = Time != [348,354]
+trigger1 = Time != [384,390]
+anim = ifelse(facing = 1,8161,8160)
+id = 8160
+pos = 60,ifelse(command = "x",-30,ifelse(command = "y",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+[State ... Bubble ABC]
+type = Explod
+triggerall = Time >= 137
+triggerall = Var(12) >= 0
+triggerall = command = "a" || command = "b" || command = "c"
+trigger1 = Time != [137,143]
+trigger1 = Time != [166,172]
+trigger1 = Time != [188,194]
+trigger1 = Time != [195,201]
+trigger1 = Time != [224,230]
+trigger1 = Time != [246,252]
+trigger1 = Time != [253,259]
+trigger1 = Time != [282,288]
+trigger1 = Time != [304,310]
+trigger1 = Time != [311,317]
+trigger1 = Time != [340,346]
+trigger1 = Time != [362,368]
+trigger1 = Time != [369,375]
+trigger1 = Time != [398,404]
+trigger1 = Time != [152,158]
+trigger1 = Time != [202,208]
+trigger1 = Time != [217,223]
+trigger1 = Time != [231,237]
+trigger1 = Time != [268,274]
+trigger1 = Time != [319,325]
+trigger1 = Time != [333,339]
+trigger1 = Time != [348,354]
+trigger1 = Time != [384,390]
+anim = ifelse(facing = 1,8160,8161)
+id = 8160
+pos = -60,ifelse(command = "a",-30,ifelse(command = "b",-60,-90))
+facing = ifelse(facing = 1,-1,1)
+bindtime = 1
+sprpriority = 5
+postype = p2
+
+[State Safety Measure]
+type = VarSet
+trigger1 = Var(12) < 0
+v = 12
+value = 0
+
+[State GONG]
+type = PlaySnd
+trigger1 = AnimElem = 10
+value = 8000,10
+
+[State Results]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 8200
+
+;Showtime! Results
+[Statedef 8200]
+type = A
+movetype = A
+physics = N
+juggle = 0
+ctrl = 0
+velset = 0,0
+sprpriority = 1
+hitcountpersist = 1
+
+[State Cleaner]
+type = VarSet
+triggerall = Time = 0
+trigger1 = Var(12) > 100
+var(12) = 100
+
+[State Remove Bubble]
+type = RemoveExplod
+trigger1 = Time = 0
+id = 8160
+
+[State b0rf]
+type = AssertSpecial
+trigger1 = 1
+flag = nomusic
+flag2 = timerfreeze
+
+[State Kill HUD]
+type = RemoveExplod
+trigger1 = Time = 0
+id = 8250
+
+[State Cut The Music!]
+type = StopSnd
+trigger1 = Time = 0
+channel = 4
+
+[State Failed! 0-24]
+type = ChangeAnim
+triggerall = Var(12) <= 24
+trigger1 = Time = 0
+value = 8004
+
+[State Okay.. 25-49]
+type = ChangeAnim
+triggerall = Var(12) > 24
+triggerall = Var(12) <= 49
+trigger1 = Time = 0
+value = 8005
+
+[State Good. 50-74]
+type = ChangeAnim
+triggerall = Var(12) > 49
+triggerall = Var(12) <= 74
+trigger1 = Time = 0
+value = 8006
+
+[State Great! 75-94]
+type = ChangeAnim
+triggerall = Var(12) > 74
+triggerall = Var(12) <= 94
+trigger1 = Time = 0
+value = 8007
+
+[State Amazing!! 95+]
+type = ChangeAnim
+triggerall = Var(12) > 95
+trigger1 = Time = 0
+value = 8008
+
+[State Voice Fail]
+type = PlaySnd
+triggerall = Anim = 8004
+trigger1 = AnimElem = 6
+value = 10,24
+[State Crowd Fail]
+type = PlaySnd
+triggerall = Anim = 8004
+trigger1 = AnimElem = 6
+value = 8000,6
+
+[State Voice Okay]
+type = PlaySnd
+triggerall = Anim = 8005
+trigger1 = AnimElem = 6
+value = 10,25
+[State Crowd Okay]
+type = PlaySnd
+triggerall = Anim = 8005
+trigger1 = AnimElem = 6
+value = 8000,7
+
+[State Voice Good]
+type = PlaySnd
+triggerall = Anim = 8006
+trigger1 = AnimElem = 6
+value = 10,26
+[State Crowd Good]
+type = PlaySnd
+triggerall = Anim = 8006
+trigger1 = AnimElem = 6
+value = 8000,7
+
+[State Voice Great]
+type = PlaySnd
+triggerall = Anim = 8007
+trigger1 = AnimElem = 6
+value = 10,27
+[State Crowd Good]
+type = PlaySnd
+triggerall = Anim = 8007
+trigger1 = AnimElem = 6
+value = 8000,8
+
+[State Voice Amazing]
+type = PlaySnd
+triggerall = Anim = 8008
+trigger1 = AnimElem = 6
+value = 10,28
+[State Crowd Okay]
+type = PlaySnd
+triggerall = Anim = 8008
+trigger1 = AnimElem = 6
+value = 8000,8
+
+[State Points 100]
+type = Explod
+triggerall = Anim = [8004,8008]
+trigger1 = AnimElem = 6
+trigger1 = Var(12) >= 100
+anim = 8200+var(12)/100
+id = 3
+pos = ifelse(facing = 1,-18,74),0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 3
+[State Points 010]
+type = Explod
+triggerall = Anim = [8004,8008]
+trigger1 = AnimElem = 6
+anim = 8200+(var(12)-100*(var(12)/100))/10
+id = 2
+pos = ifelse(facing = 1,-9,65),0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 3
+[State Points 001]
+type = Explod
+triggerall = Anim = [8004,8008]
+trigger1 = AnimElem = 6
+anim = 8200+var(12)%10
+id = 1
+pos = ifelse(facing = 1,0,56),0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 3
+[State Points]
+type = Explod
+triggerall = Anim = [8004,8008]
+trigger1 = AnimElem = 6
+anim = 8210
+id = 110
+pos = ifelse(facing = 1,0,56),0
+facing = ifelse(facing = 1,1,-1)
+bindtime = 9999
+sprpriority = 3
+
+[State Poof!]
+type = Explod
+trigger1 = Anim = 8004
+trigger1 = Time = [113,117]
+trigger2 = Anim = 8005
+trigger2 = Time = [125,129]
+trigger3 = Anim = 8006
+trigger3 = Time = [158,162]
+trigger4 = Anim = [8007,8008]
+trigger4 = Time = [208,212]
+anim = 8020
+id = 8020
+pos = 0,-50
+random = 40,60
+bindtime = 120
+sprpriority = 3
+
+[State Kill 100]
+type = RemoveExplod
+trigger1 = Anim = 8004
+trigger1 = Time = 113
+trigger2 = Anim = 8005
+trigger2 = Time = 125
+trigger3 = Anim = 8006
+trigger3 = Time = 158
+trigger4 = Anim = [8007,8008]
+trigger4 = Time = 208
+id = 3
+[State Kill 10]
+type = RemoveExplod
+trigger1 = Anim = 8004
+trigger1 = Time = 113
+trigger2 = Anim = 8005
+trigger2 = Time = 125
+trigger3 = Anim = 8006
+trigger3 = Time = 158
+trigger4 = Anim = [8007,8008]
+trigger4 = Time = 208
+id = 2
+[State Kill 1]
+type = RemoveExplod
+trigger1 = Anim = 8004
+trigger1 = Time = 113
+trigger2 = Anim = 8005
+trigger2 = Time = 125
+trigger3 = Anim = 8006
+trigger3 = Time = 158
+trigger4 = Anim = [8007,8008]
+trigger4 = Time = 208
+id = 1
+[State Kill Pts]
+type = RemoveExplod
+trigger1 = Anim = 8004
+trigger1 = Time = 113
+trigger2 = Anim = 8005
+trigger2 = Time = 125
+trigger3 = Anim = 8006
+trigger3 = Time = 158
+trigger4 = Anim = [8007,8008]
+trigger4 = Time = 208
+id = 110
+
+[State Poof Snd]
+type = PlaySnd
+trigger1 = Anim = 8004
+trigger1 = Time = 113
+trigger2 = Anim = 8005
+trigger2 = Time = 125
+trigger3 = Anim = 8006
+trigger3 = Time = 158
+trigger4 = Anim = [8007,8008]
+trigger4 = Time = 208
+value = 8000,11
+
+[State Reset Points]
+type = VarSet
+trigger1 = AnimTime = 0
+v = 12
+value = 0
+
+[State Finish]
+type = ChangeState
+trigger1 = AnimTime = 0
+value = 0
+ctrl = 1
+
+;Lilith's Curtain String
+[Statedef 8100]
+type = A
+physics = N
+ctrl = 0
+velset = 0,6
+anim = 8051
+sprpriority = 2
+hitcountpersist = 1
+
+[State VelSet]
+type = VelSet
+trigger1 = Time = 35
+y = 0
+
+[State VelSet]
+type = VelSet
+trigger1 = Root, StateNo = [8010,8015]
+trigger1 = Root, AnimElem = 12
+y = -9
+
+[State Sudoku]
+type = DestroySelf
+trigger1 = Time >= 311
+
+;Puppet Stage
+[Statedef 8101]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8055
+sprpriority = 1
+hitcountpersist = 1
+
+[State No Kurinji]
+type = Turn
+trigger1 = Time = 0
+trigger1 = Facing = -1
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Spotlights
+[Statedef 8102]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8057
+sprpriority = 1
+hitcountpersist = 1
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Spotlight Shine
+[Statedef 8103]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8056
+sprpriority = 2
+hitcountpersist = 1
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Spotlight Bat 1
+[Statedef 8110]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8100
+sprpriority = 2
+hitcountpersist = 1
+
+[State Offset]
+type = Offset
+trigger1 = 1
+x = ceil(20*Cos(0.4*time/pi))
+y = ceil(15*Sin(0.4*time/pi))
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Spotlight Bat 2
+[Statedef 8111]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8100
+sprpriority = 2
+hitcountpersist = 1
+
+[State Offset]
+type = Offset
+trigger1 = 1
+x = -ceil(20*Cos(0.4*time/pi))
+y = ceil(15*Sin(0.4*time/pi))
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Spotlight Bat 3
+[Statedef 8112]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8100
+sprpriority = 2
+hitcountpersist = 1
+
+[State Offset]
+type = Offset
+trigger1 = 1
+x = ceil(20*Cos(0.4*time/pi))
+y = ceil(15*Sin(0.4*time/pi))
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Spotlight Bat 4
+[Statedef 8113]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8100
+sprpriority = 2
+hitcountpersist = 1
+
+[State Offset]
+type = Offset
+trigger1 = 1
+x = ceil(20*Cos(0.4*time/pi))
+y = ceil(15*Sin(0.4*time/pi))
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Spotlight Bat 5
+[Statedef 8114]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8100
+sprpriority = 2
+hitcountpersist = 1
+
+[State Offset]
+type = Offset
+trigger1 = 1
+x = -ceil(20*Cos(0.4*time/pi))
+y = ceil(15*Sin(0.4*time/pi))
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Spotlight Bat 6
+[Statedef 8115]
+type = S
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 8100
+sprpriority = 2
+hitcountpersist = 1
+
+[State Offset]
+type = Offset
+trigger1 = 1
+x = ceil(30*Cos(0.4*time/pi))
+y = ceil(15*Sin(0.4*time/pi))
+
+[State DestroySelf]
+type = DestroySelf
+trigger1 = Root, NumHelper(8001) = 0
+
+;Hit By Showtime Hat
+[Statedef 8500]
+type = A
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+trigger1 = Pos Y < 0
+value = 5040
+
+[State VelAddGravity]
+type = VelAdd
+trigger1 = Anim = 5040
+y = 0.4
+
+[State Land]
+type = ChangeAnim
+trigger1 = Anim = 5040
+trigger1 = Vel Y > 0 && Pos Y + Vel y >= 0
+trigger2 = Time = 0
+trigger2 = Pos Y >= 0
+value = 5300
+
+[State PosSet]
+type = PosSet
+trigger1 = Anim = 5300
+trigger1 = AnimElem = 1
+y = 0
+
+[State STAPET]
+type = VelSet
+trigger1 = p2dist x >= 129
+x = 0
+
+[State VelSet]
+type = VelSet
+trigger1 = Anim = 5300
+trigger1 = AnimElem = 1
+x = 0
+y = 0
+
+[State VelSet]
+type = StateTypeSet
+trigger1 = Anim = 5300
+trigger1 = AnimElem = 1
+statetype = S
+
+[State SafetyMeasure]
+type = SelfState
+trigger1 = Anim = 5300
+trigger1 = Time >= 100
+value = 5050
+
+;On Stage: Start
+[Statedef 8501]
+type = S
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 0
+
+[State On Stage]
+type = PosAdd
+trigger1 = Time = 0
+y = -40
+
+;On Stage: Walk F.
+[Statedef 8502]
+type = S
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 20
+
+;On Stage: Crouch-Stand
+[Statedef 8503]
+type = S
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 10
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Anim = 10
+trigger1 = AnimTime = 0
+value = 12
+
+[State Back To Stand]
+type = ChangeAnim
+trigger1 = Anim = 12
+trigger1 = AnimTime = 0
+value = 0
+
+;On Stage: Air Rec.
+[Statedef 8504]
+type = S
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 5040
+
+[State Back To Stand]
+type = ChangeAnim
+trigger1 = Anim = 5040
+trigger1 = Time = 15
+value = 0
+
+;On Stage: Walk B.
+[Statedef 8505]
+type = S
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 21
+
+;On Stage: Jump N.
+[Statedef 8506]
+type = S
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 41
+
+[State Back To Stand]
+type = ChangeAnim
+trigger1 = Anim = 41
+trigger1 = Time = 30
+value = 0
+
+;On Stage: Dizzy
+[Statedef 8507]
+type = S
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 5300
+
+;On Stage: Judgement
+[Statedef 8508]
+type = S
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State ChangeAnim]
+type = ChangeAnim
+triggerall = SelfAnimExist(5500) = 1
+trigger1 = Time = 0
+value = 5500
+
+[State ChangeAnim]
+type = ChangeAnim
+triggerall = SelfAnimExist(5500) = 0
+trigger1 = Time = 0
+value = 0
+
+;Results: Shocked
+[Statedef 8510]
+type = A
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State LifeAdd]
+type = LifeAdd
+trigger1 = Time = 0
+value = -250
+
+[State ChangeAnim]
+type = ChangeAnim
+triggerall = SelfAnimExist(7696) = 1
+trigger1 = Time = 0
+value = 7696
+
+[State ChangeAnim2]
+type = ChangeAnim2
+triggerall = SelfAnimExist(7696) = 0
+trigger1 = Time = 0
+value = 8520
+
+[State Shocked]
+type = PalFX
+triggerall = SelfAnimExist(7696) = 0
+trigger1 = Time%4 = 0
+time = 2
+add = 256,256,0
+mul = 256,256,0
+sinadd = 0,0,0,1
+invertall = 0
+color = 0
+
+;Results: Burnt
+[Statedef 8511]
+type = A
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = 0,0
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State LifeAdd]
+type = LifeAdd
+trigger1 = Time = 0
+value = -200
+
+[State ChangeAnim]
+type = ChangeAnim
+triggerall = SelfAnimExist(7697) = 1
+trigger1 = Time = 0
+value = 7697
+
+[State ChangeAnim2]
+type = ChangeAnim2
+triggerall = SelfAnimExist(7697) = 0
+trigger1 = Time = 0
+value = 8521
+
+[State Burnt]
+type = PalFX
+trigger1 = SelfAnimExist(7697) = 0
+time = 1
+add = 64,64,64
+mul = 96,96,96
+sinadd = 0,0,0,1
+invertall = 0
+color = 256
+
+;Results: Frozen
+[Statedef 8512]
+type = A
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = -3,-6
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State spooki gost]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State ChangeAnim2]
+type = ChangeAnim2
+trigger1 = Time = 0
+value = 9999
+
+[State Gravyton]
+type = VelAdd
+trigger1 = Time >= 0
+y = 0.4
+
+[State LifeAdd]
+type = LifeAdd
+trigger1 = Vel Y > 0 && Pos Y + Vel y >= 0
+value = -150
+
+[State Tsuzu]
+type = SelfState
+trigger1 = Vel Y > 0 && Pos Y + Vel y >= 0
+value = 5100
+
+;Results: Fall
+[Statedef 8520]
+type = A
+movetype = H
+physics = N
+ctrl = 0
+sprpriority = 1
+velset = -3,-6
+
+[State LifeAdd]
+type = LifeAdd
+trigger1 = PrevStateNo != [8510,8511]
+trigger1 = Time = 0
+value = -100
+
+[State ESTASICOCAIN]
+type = ScreenBound
+trigger1 = 1
+movecamera = 1,0
+value = 1
+
+[State NotHitBy]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+
+[State Burnt]
+type = PalFX
+trigger1 = PrevStateNo = [8510,8511]
+time = 1
+add = 64,64,64
+mul = 96,96,96
+sinadd = 0,0,0,1
+invertall = 0
+color = 256
+
+[State ChangeAnim]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 5050
+
+[State Gravyton]
+type = VelAdd
+trigger1 = Time >= 0
+y = 0.4
+
+[State Tsuzu]
+type = SelfState
+trigger1 = Anim = 5050
+trigger1 = Pos Y + Vel Y >= Const(movement.air.gethit.groundlevel)
+value = 5100
+
+;Ice Buddy
+[Statedef 8530]
+type = A
+movetype = I
+physics = N
+ctrl = 0
+anim = 8510
+sprpriority = 2
+
+[State ID Catch]
+type = VarSet
+trigger1 = !Time
+var(0) = (parent,var(13))
+[State Pas]
+type = PosSet
+trigger1 = PlayerIDExist(var(0))
+x = (playerID(var(0)),pos X)
+y = (playerID(var(0)),pos Y)
+
+[State Gravyton]
+type = VelAdd
+trigger1 = Time >= 0
+y = 0.4
+
+[State Poseidon]
+type = PosSet
+trigger1 = pos y >= 0
+y = 0
+
+[State kersplod]
+type = ChangeState
+trigger1 = pos y >= 0
+value = 8531
+
+;Ice Buddy DIES
+[Statedef 8531]
+type = A
+movetype = I
+physics = N
+ctrl = 0
+velset = 0,0
+anim = 9999
+sprpriority = 2
+
+[State Ice Breakers]
+type = PlaySnd
+trigger1 = Time = 0
+value = 8510,3
+
+[State Shard 1]
+type = Explod
+trigger1 = Time = 0
+anim = 8511+(random%2)
+id = 8511
+pos = -10,-5
+bindtime = 1
+vel = -3,-5
+accel = 0,0.4
+sprpriority = 3
+
+[State Shard 2]
+type = Explod
+trigger1 = Time = 0
+anim = 8511+(random%2)
+id = 8511
+pos = -5,-10
+bindtime = 1
+vel = -1.5,-6.5
+accel = 0,0.4
+sprpriority = 3
+
+[State Shard 3]
+type = Explod
+trigger1 = Time = 0
+anim = 8511+(random%2)
+id = 8511
+pos = 0,-25
+bindtime = 1
+vel = 0,-7
+accel = 0,0.4
+sprpriority = 3
+
+[State Shard 4]
+type = Explod
+trigger1 = Time = 0
+anim = 8511+(random%2)
+id = 8511
+pos = 5,-10
+bindtime = 1
+vel = 1.5,-6.5
+accel = 0,0.4
+sprpriority = 3
+
+[State Shard 5]
+type = Explod
+trigger1 = Time = 0
+anim = 8511+(random%2)
+id = 8511
+pos = 10,-5
+bindtime = 1
+vel = 3,-5
+accel = 0,0.4
+sprpriority = 3
+
+[State ded]
+type = DestroySelf
+trigger1 = NumExplod = 0

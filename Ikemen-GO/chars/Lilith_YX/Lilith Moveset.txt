@@ -1,0 +1,87 @@
+Thank you for downloading Lilith!
+Hope you enjoy!
+
+Programming done by Yamori X
+
+VERY Special thanks to Midori for being awesome
+
+Thank you Jesuszilla for Blur Frame method thingy
+and other feedback
+
+Sprites and sounds are owned by Capcom
+
+This Lilith's Version: v6.4
+
+======================================================
+========================= Key ========================
+======================================================
+
+P = Punch
+K = Kick
+
+LP = Light Punch
+MP = Medium Punch
+HP = Heavy Punch
+LK = Light Kick
+MK = Medium Kick
+HK = Heavy Kick
+
+F = Towards Opponent
+B = Away from Opponent
+D = Down
+U = Up
+
+AP = Possible in air and on ground
+IA = Only done in the air
+
+ES = Has an enhanced version that costs 1/2 a bar of
+     power and requires an input of two punches/kicks
+     instead of one
+
+======================================================
+====================== YX Tech =======================
+======================================================
+
+Guard-Push = 2P while guarding
+
+Guard-Breaker = P + K of same strength
+*NOTE: Needs 1 bar of power!
+
+Grapple = F/B + P (near opponent)
+
+Air Grapple = F/B + P (near opponent + in air)
+
+======================================================
+================== Special Attacks ===================
+======================================================
+
+Playful Twirl = F + HK
+
+Gleaming Upper = DF + HP
+
+Gleeful Dive = (IA) D + HK
+*NOTE: Can hit enemies lying down (a la vsav)
+
+Soul Flash (ES) = (AP) QCF + P
+
+Shining Blade (ES) = F,D,DF + P
+
+Merry Turn (ES) = (AP) QCB + K
+
+Mystic Arrow (ES) = HCB + P
+
+======================================================
+==================== Super Combos ====================
+======================================================
+
+Mirage Blade (Lv1) = 2QCF + P
+
+Splendor Love (Lv1) = 2QCF + K
+
+Luminous Illusion (Lv1) = (AP) LP,LP,F,LK,HP
+
+Gloomy Puppet Show! (Lv3) = F,HP,MP,LP,F
+*NOTE: On hit, Lilith will initiate a little rhythm
+       mini-game! Try to match the inputs on-screen 
+       in the right rhythm, and earn more points for 
+       more damage!
