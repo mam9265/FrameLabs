@@ -4151,10 +4151,53 @@ main.txt_loading = nil
 --sleep(1)
 
 if motif.attract_mode.enabled == 1 then
-	main.f_attractMode()
+    main.f_attractMode()
 else
-	main.menu.loop()
+    if os.getenv("AUTOTRAIN") == "1" then
+        print("Auto-training mode enabled.")
+
+        if main.t_itemname and type(main.t_itemname.training) == "function" then
+            print("Launching training mode automatically.")
+
+            if type(main.f_default) == "function" then
+                main.f_default()
+            end
+
+            local startFunc = main.t_itemname.training()
+
+            if motif and main.group and motif[main.group] then
+                main.f_fadeReset('fadeout', motif[main.group])
+            end
+
+            if type(main.f_unlock) == "function" then
+                main.f_unlock(false)
+            end
+
+            if type(startFunc) == "function" then
+                startFunc()
+            end
+
+            if type(main.f_default) == "function" then
+                main.f_default()
+            end
+
+            if type(main.f_unlock) == "function" then
+                main.f_unlock(false)
+            end
+
+            main.menu.loop()
+            return
+        else
+            print("Training mode entry not found, falling back to default menu.")
+        end
+    end
+
+    -- Default behaviour (or fallback)
+    main.menu.loop()
 end
+
+
+
 
 -- Debug Info
 --main.motifData = nil

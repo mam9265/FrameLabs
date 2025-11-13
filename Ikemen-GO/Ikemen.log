@@ -1,7 +1,5 @@
-external/script/main.lua:4034: <game end>
+external/script/main.lua:2904: attempt to index a non-table object(nil) with key '2'
 stack traceback:
-	[G]: in function 'refresh'
-	external/script/main.lua:4034: in function 'f_menuCommonDraw'
-	external/script/main.lua:3101: in function 'loop'
-	external/script/main.lua:4156: in main chunk
+	external/script/main.lua:2904: in function 'training'
+	external/script/main.lua:4161: in main chunk
 	[G]: ?

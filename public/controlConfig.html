@@ -4,74 +4,11 @@
   <meta charset="UTF-8" />
   <title>Controller Config</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #005b91;
-      color: #9be0e3;
-      margin: 0;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
-
-    form {
-      background-color: #003d64;
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #000;
-      width: 600px;
-    }
-
-    label {
-      display: block;
-      margin: 10px 0;
-    }
-
-    input, select {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #888;
-      background-color: #002d4d;
-      color: #9be0e3;
-      width: 100%;
-      margin-top: 4px;
-    }
-
-    hr {
-      margin: 20px 0;
-      border: 1px solid #0078b3;
-    }
-
-    button {
-      background-color: #2a006b;
-      color: #9be0e3;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 20px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background-color: #3a008b;
-    }
-
-    .back-button {
-      margin-top: 20px;
-      background-color: #004266;
-    }
-
-    .back-button:hover {
-      background-color: #005c88;
-    }
+    body { font-family: Arial, sans-serif; margin: 40px; background-color: #005b91; color: #9be0e3; }
+    .container { display: flex; width: 1000px; gap: 12px; }
+    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
+    button { background-color: #2a006b; color: #9be0e3; border: none; cursor: pointer; }
+    button:hover { background-color: #3a008b; }
   </style>
 </head>
 <body>
@@ -89,14 +26,18 @@
 
     <hr>
 
-    <label>Button 1: <input type="text" id="button1" name="B1"></label>
-    <label>Button 2: <input type="text" id="button2" name="B2"></label>
-    <label>Button 3: <input type="text" id="button3" name="B3"></label>
-    <label>Button 4: <input type="text" id="button4" name="B4"></label>
-    <label>Button 5: <input type="text" id="button5" name="B5"></label>
-    <label>Button 6: <input type="text" id="button6" name="B6"></label>
-    <label>Button 7: <input type="text" id="button7" name="B7"></label>
-    <label>Button 8: <input type="text" id="button8" name="B8"></label>
+    <!-- buttons 1-4 -->
+    <label for="button1">button 1: <input type="text" id="button1" name="B1"> </label>
+    <label for="button2">button 2: <input type="text" id="button2" name="B2"> </label>
+    <label for="button3">button 3: <input type="text" id="button3" name="B3"> </label>
+    <label for="button4">button 4: <input type="text" id="button4" name="B4"> </label>
+    <hr>
+
+     <!-- buttons 5-8 -->
+     <label for="button5">button 5: <input type="text" id="button5" name="B5"> </label>
+     <label for="button6">button 6: <input type="text" id="button6" name="B6"> </label>
+     <label for="button7">button 7: <input type="text" id="button7" name="B7"> </label>
+     <label for="button8">button 8: <input type="text" id="button8" name="B8"> </label>
 
     <hr>
 
