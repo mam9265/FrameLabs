@@ -1,0 +1,2234 @@
+[Remap]
+x = x
+y = y
+z = z
+a = a
+b = b
+c = c
+s = s
+
+;Default Values-----------------------------------------------------------------
+[Defaults]
+command.time = 15
+command.buffer.time = 1
+
+;Single Button------------------------------------------------------------------
+[Command]
+name = "a"
+command = a
+time = 1
+
+[Command]
+name = "b"
+command = b
+time = 1
+
+[Command]
+name = "c"
+command = c
+time = 1
+
+[Command]
+name = "x"
+command = x
+time = 1
+
+[Command]
+name = "y"
+command = y
+time = 1
+
+[Command]
+name = "z"
+command = z
+time = 1
+
+[Command]
+name = "start"
+command = s
+time = 1
+
+;Direction Related-----------------------------------------------------------------
+[Command]
+name = "holdfwd"
+command = /$F
+time = 1
+
+[Command]
+name = "holdback"
+command = /$B
+time = 1
+
+[Command]
+name = "holdup"
+command = /$U
+time = 1
+
+[Command]
+name = "holddown"
+command = /$D
+time = 1
+
+[Command]
+name = "holdstart"
+command = /s
+time = 1
+
+[Command]
+name = "FF"
+command = F, F
+time = 10
+
+[Command]
+name = "BB"
+command = B, B
+time = 10
+
+;-| Hold Button |----------------------------------------------------------
+
+[Command]
+name = "holda"
+command = /a
+time = 1
+
+[Command]
+name = "holdb"
+command = /b
+time = 1
+
+[Command]
+name = "holdc"
+command = /c
+time = 1
+
+[Command]
+name = "holdx"
+command = /x
+time = 1
+
+[Command]
+name = "holdy"
+command = /y
+time = 1
+
+[Command]
+name = "holdz"
+command = /z
+time = 1
+
+[Command]
+name = "holdstart"
+command = /s
+time = 1
+
+[Command]
+name = "3P"
+command = x+y+z
+time = 3
+
+[Command]
+name = "3K"
+command = a+b+c
+time = 3
+
+[Command]
+name = "Guard-Break"
+command = x+a
+time = 2
+[Command]
+name = "Guard-Break"
+command = y+b
+time = 2
+[Command]
+name = "Guard-Break"
+command = z+c
+time = 2
+
+;Miscellaneous------------------------------------------------------------------
+[command]
+name = "SuperJumping"
+command = ~$D,$U
+time = 5
+buffer.time = 2
+[Command]
+name = "SuperJumpingFail"
+command = ~12$D,$U
+time = 5
+buffer.time = 2
+
+[Command]
+name = "recovery"
+command = x+y
+time =1
+
+[Command]
+name = "recovery"
+command = x+z
+time = 1
+
+[Command]
+name = "recovery"
+command = y+z
+time = 1
+
+;Recovery roll
+[Command]
+name = "2k"
+command = a+b
+time = 1
+
+[Command]
+name = "2k"
+command = a+c
+time = 1
+
+[Command]
+name = "2k"
+command = b+c
+time = 1
+
+[Command]
+name = "twirl_kick"
+command = /F,c
+
+[Command]
+name = "LI_1"
+command = x
+time = 1
+[Command]
+name = "LI_2"
+command = $F
+time = 1
+[Command]
+name = "LI_3"
+command = a
+time = 1
+[Command]
+name = "LI_4"
+command = z
+time = 1
+[Command]
+name = "LI_4"
+command = ~z
+time = 1
+
+[Command]
+name = "GPS_1"
+command = $F
+time = 1
+[Command]
+name = "GPS_2"
+command = z
+time = 1
+[Command]
+name = "GPS_3"
+command = y
+time = 1
+[Command]
+name = "GPS_4"
+command = x
+time = 1
+[Command]
+name = "GPS_5"
+command = $F
+time = 1
+
+;Special Motions----------------------------------------------------------------
+[Command]
+name = "MirageBlade"
+command = ~D, DF, F, D, DF, F, x
+time = 20
+
+[Command]
+name = "MirageBlade"
+command = ~D, DF, F, D, DF, F, y
+time = 20
+
+[Command]
+name = "MirageBlade"
+command = ~D, DF, F, D, DF, F, z
+time = 20
+
+[Command]
+name = "MirageBlade"
+command = ~D, DF, F, D, DF, F, ~x
+time = 20
+
+[Command]
+name = "MirageBlade"
+command = ~D, DF, F, D, DF, F, ~y
+time = 20
+
+[Command]
+name = "MirageBlade"
+command = ~D, DF, F, D, DF, F, ~z
+time = 20
+
+
+
+[Command]
+name = "SplendorLove"
+command = ~D, DF, F, D, DF, F, a
+time = 20
+
+[Command]
+name = "SplendorLove"
+command = ~D, DF, F, D, DF, F, b
+time = 20
+
+[Command]
+name = "SplendorLove"
+command = ~D, DF, F, D, DF, F, c
+time = 20
+
+[Command]
+name = "SplendorLove"
+command = ~D, DF, F, D, DF, F, ~a
+time = 20
+
+[Command]
+name = "SplendorLove"
+command = ~D, DF, F, D, DF, F, ~b
+time = 20
+
+[Command]
+name = "SplendorLove"
+command = ~D, DF, F, D, DF, F, ~c
+time = 20
+
+
+
+[Command]
+name = "ES_ShiningBladeR"
+command = ~F, D, DF, ~x
+buffer.time = 3
+
+[Command]
+name = "ES_ShiningBladeR"
+command = ~F, D, DF, ~y
+buffer.time = 3
+
+[Command]
+name = "ES_ShiningBladeR"
+command = ~F, D, DF, ~z
+buffer.time = 3
+
+[Command]
+name = "ShiningBladeL"
+command = ~F, D, DF, x
+
+[Command]
+name = "ShiningBladeM"
+command = ~F, D, DF, y
+
+[Command]
+name = "ShiningBladeH"
+command = ~F, D, DF, z
+
+[Command]
+name = "ShiningBladeL"
+command = ~F, D, DF, ~x
+
+[Command]
+name = "ShiningBladeM"
+command = ~F, D, DF, ~y
+
+[Command]
+name = "ShiningBladeH"
+command = ~F, D, DF, ~z
+
+[Command]
+name = "ES_ShiningBlade"
+command = ~F, D, DF, x+y
+
+[Command]
+name = "ES_ShiningBlade"
+command = ~F, D, DF, x+z
+
+[Command]
+name = "ES_ShiningBlade"
+command = ~F, D, DF, y+z
+
+
+
+[Command]
+name = "ES_SoulFlashR"
+command = ~D, DF, F, ~x
+buffer.time = 3
+
+[Command]
+name = "ES_SoulFlashR"
+command = ~D, DF, F, ~y
+buffer.time = 3
+
+[Command]
+name = "ES_SoulFlashR"
+command = ~D, DF, F, ~z
+buffer.time = 3
+
+[Command]
+name = "SoulFlashL"
+command = ~D, DF, F, x
+
+[Command]
+name = "SoulFlashM"
+command = ~D, DF, F, y
+
+[Command]
+name = "SoulFlashH"
+command = ~D, DF, F, z
+
+[Command]
+name = "SoulFlashL"
+command = ~D, DF, F, ~x
+
+[Command]
+name = "SoulFlashM"
+command = ~D, DF, F, ~y
+
+[Command]
+name = "SoulFlashH"
+command = ~D, DF, F, ~z
+
+[Command]
+name = "ES_SoulFlash"
+command = ~D, DF, F, x+y
+
+[Command]
+name = "ES_SoulFlash"
+command = ~D, DF, F, x+z
+
+[Command]
+name = "ES_SoulFlash"
+command = ~D, DF, F, y+z
+
+
+
+[Command]
+name = "ES_MerryTurnR"
+command = ~D, DB, B, ~a
+buffer.time = 3
+
+[Command]
+name = "ES_MerryTurnR"
+command = ~D, DB, B, ~b
+buffer.time = 3
+
+[Command]
+name = "ES_MerryTurnR"
+command = ~D, DB, B, ~c
+buffer.time = 3
+
+[Command]
+name = "MerryTurnL"
+command = ~D, DB, B, a
+
+[Command]
+name = "MerryTurnM"
+command = ~D, DB, B, b
+
+[Command]
+name = "MerryTurnH"
+command = ~D, DB, B, c
+
+[Command]
+name = "MerryTurnL"
+command = ~D, DB, B, ~a
+
+[Command]
+name = "MerryTurnM"
+command = ~D, DB, B, ~b
+
+[Command]
+name = "MerryTurnH"
+command = ~D, DB, B, ~c
+
+[Command]
+name = "ES_MerryTurn"
+command = ~D, DB, B, a+b
+
+[Command]
+name = "ES_MerryTurn"
+command = ~D, DB, B, a+c
+
+[Command]
+name = "ES_MerryTurn"
+command = ~D, DB, B, b+c
+
+
+[Command]
+name = "ES_MysticArrowR"
+command = ~F, DF, D, DB, B, ~x
+buffer.time = 3
+
+[Command]
+name = "ES_MysticArrowR"
+command = ~F, DF, D, DB, B, ~y
+buffer.time = 3
+
+[Command]
+name = "ES_MysticArrowR"
+command = ~F, DF, D, DB, B, ~z
+buffer.time = 3
+
+[Command]
+name = "MysticArrowL"
+command = ~F, DF, D, DB, B, x
+
+[Command]
+name = "MysticArrowM"
+command = ~F, DF, D, DB, B, y
+
+[Command]
+name = "MysticArrowH"
+command = ~F, DF, D, DB, B, z
+
+[Command]
+name = "MysticArrowL"
+command = ~F, DF, D, DB, B, ~x
+
+[Command]
+name = "MysticArrowM"
+command = ~F, DF, D, DB, B, ~y
+
+[Command]
+name = "MysticArrowH"
+command = ~F, DF, D, DB, B, ~z
+
+[Command]
+name = "ES_MysticArrow"
+command = ~F, DF, D, DB, B, x+y
+
+[Command]
+name = "ES_MysticArrow"
+command = ~F, DF, D, DB, B, y+z
+
+[Command]
+name = "ES_MysticArrow"
+command = ~F, DF, D, DB, B, x+z
+
+
+
+[Statedef -1]
+
+[State -1, Negative Edge]; - Reset // Release // Hold
+type = null
+trigger1 = var(47)&4032
+trigger1 = (var(47):= 0)||1
+trigger2 = var(47)
+trigger2 = (var(47):= var(47) +64*(var(47)&1 && command != "holda") +128*(var(47)&2 && command != "holdb") +256*(var(47)&4 && command != "holdc") +512*(var(47)&8 && command != "holdx") +1024*(var(47)&16 && command != "holdy") +2048*(var(47)&32 && command != "holdz")) - var(47)
+trigger3 = var(47):= var(47)-(var(47)&63) + 1*(command = "holda") + 2*(command = "holdb") + 4*(command = "holdc") + 8*(command = "holdx") + 16*(command = "holdy") + 32*(command = "holdz")
+ignorehitpause = 1
+
+[State -1, buffer reset]
+type = VarSet
+trigger1 = stateno != [150,155]
+var(35) = 0
+[State -1, buffer for stuff]
+type = VarSet
+trigger1 = stateno = [150,155]
+trigger1 = command = "recovery"
+var(35) = 1
+
+;-------------------------------------------------------------------------------
+;Stuff--------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+[State -1, AI ON]  ; Turn the AI on when
+type = VarSet
+triggerAll = Var(59) < 1 ; it is not on yet and
+triggerAll = RoundState = 2
+trigger1 = AIlevel > 0 ; the fight has started and is not over yet and
+v = 59
+value = 1 ; value of 1 will mean the AI is on
+ignorehitpause = 1
+
+[State -1, AI OFF] ; Turn the AI off when
+type = VarSet
+trigger1 = var(59)>0  ; it is on and
+trigger1 = RoundState != 2  ; the round is not started yet or is already over
+trigger2 = !IsHelper
+trigger2 = AIlevel = 0  ; OR if we are a player, but  ; the computer is not in control
+v = 59
+value = 0 ; value of 0 will mean the AI is off. values other than 0 and 1 are not used in this example, we have only one AI mode, the normal one.
+ignorehitpause = 1
+
+;-------------------------------------------------------------------------------
+;AI Commands------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+;AI Guard (Standing)
+[State -1, AI Guard (Standing)]
+type = ChangeState
+value = 130
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = (random < (AILevel* 120))
+triggerall = ctrl
+triggerall = p2statetype != C
+trigger1 = inguarddist
+
+;AI Guard (Crouching)
+[State -1, AI Guard (Crouching)]
+type = ChangeState
+value = 131
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = (random < (AILevel* 120))
+triggerall = ctrl
+triggerall = p2statetype = C
+trigger1 = inguarddist
+
+;AI Guard (Air)
+[State -1, AI Guard (Air)]
+type = ChangeState
+value = 132
+triggerall = var(59) = 1
+triggerall = statetype = A
+triggerall = (random < (AILevel* 120))
+triggerall = ctrl
+trigger1 = inguarddist
+
+;AI Guard-push
+[State -1, AI Guard-push]
+type = ChangeState
+value = 160
+trigger1 = var(59) = 1
+trigger1 = (random < (AILevel* 4))
+trigger1 = stateno = 151 || stateno = 153 || stateno = 155
+
+;AI Splendor Love
+[State -1, AI Splendor Love]
+type = ChangeState
+value = 3100
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = power >= 1000
+triggerall = var(5) = 0
+triggerall = (random < (AILevel* 20))
+triggerall = p2bodydist x <= 60
+trigger1 = ctrl
+trigger1 = p2movetype = A && p2bodydist Y > -100
+trigger2 = (stateno = [210,215]) && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger3 = stateno = 410 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger4 = stateno = 240 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger5 = stateno = 440 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger6 = (stateno = [200,205]) && (movehit=[1,3]) && var(4) = 2 && p2statetype != A
+trigger7 = stateno = 400 && (movehit=[1,3]) && var(4) = 2 && p2statetype != A
+trigger8 = stateno = 3202 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger8 = p2bodydist x <= 60 && p2bodydist Y = [-40,40]
+trigger8 = AnimElem = 5
+
+;AI Mirage Blade
+[State -1, AI Mirage Blade]
+type = ChangeState
+value = 3200
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = power >= 1000
+triggerall = var(5) = 0
+triggerall = (random < (AILevel* 35))
+triggerall = p2bodydist x <= 50
+triggerall = ctrl
+trigger1 = p2movetype = A && p2bodydist Y > -100
+trigger2 = (stateno = [210,215]) && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger3 = stateno = 410 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger4 = stateno = 240 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger5 = stateno = 440 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger6 = (stateno = [200,205]) && (movehit=[1,3]) && p2statetype != A
+trigger7 = (stateno = 400||stateno = 430) && (movehit=[1,3]) && p2statetype != A
+
+;AI Luminous Illusion
+[State -1, AI Luminous Illusion]
+type = ChangeState
+value = 3000
+triggerall = statetype != A
+triggerall = var(59) = 1
+triggerall = (random < (AILevel* 25))
+triggerall = power >= 1000
+triggerall = p2bodydist x <= 50
+trigger1 = (stateno = [210,215]) && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger2 = stateno = 410 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger3 = stateno = 240 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger4 = stateno = 440 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger5 = (stateno = [200,205]) && (movehit=[1,3]) && var(4) = 2 && p2statetype != A
+trigger6 = stateno = 400 && (movehit=[1,3]) && var(4) = 2 && p2statetype != A
+trigger7 = stateno = 3202 && (movehit=[1,3]) && var(4) <= 1 && p2statetype != A
+trigger7 = AnimElem = 5||AnimElem = 6
+
+;AI Aerial Illusion
+[State -1, AI Aerial Illusion]
+type = ChangeState
+value = 3050
+triggerall = statetype = A
+triggerall = var(59) = 1
+triggerall = (random < (AILevel* 25))
+triggerall = power >= 1000
+trigger1 = p2bodydist x <= 60
+trigger1 = p2bodydist Y >= -45
+trigger1 = (stateno = [600,650]) && (movehit=[1,3])
+trigger1 = p2statetype = S
+trigger2 = ((stateno = 3102)&&(NumTarget)&&(time <= 18))
+
+;AI ES Soul Flash
+[State -1, AI ES Soul Flash]
+type = ChangeState
+value = 2000
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = power >= 500
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = (random < (AILevel* 1))
+trigger1 = p2bodydist x = [130,230]
+
+;AI ES Air Soul Flash
+[State -1, AI ES Air Soul Flash]
+type = ChangeState
+value = 2010
+triggerall = var(59) = 1
+triggerall = statetype = A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = power >= 500
+triggerall = pos y <= -50
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = (random < (AILevel* 1))
+trigger1 = p2bodydist x = [130,230]
+
+;AI ES Shining Blade
+[State -1, AI ES Shining Blade]
+type = ChangeState
+value = 2100
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = power >= 500
+triggerall = (random < (AILevel* 5))
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2movetype = A && p2bodydist x <= 80 && p2bodydist Y > -100
+trigger2 = stateno = 230 && (movehit=[1,3]) && p2statetype != A
+
+;AI ES Merry Turn
+[State -1, AI ES Merry Turn]
+type = ChangeState
+value = 2200
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = power >= 500
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2movetype = A && p2bodydist x <= 50
+trigger1 = p2bodydist y >= -75
+trigger1 = (random < (AILevel* 5))
+trigger2 = ctrl
+trigger2 = p2bodydist x = [80,130]
+trigger2 = p2movetype = A
+trigger2 = (random < (AILevel* 4))
+
+;AI ES Aerial Turn
+[State -1, AI ES Aerial Turn]
+type = ChangeState
+value = 2210
+triggerall = var(59) = 1
+triggerall = statetype = A
+triggerall = (random < (AILevel* 10))
+triggerall = power >= 500
+triggerall = pos y <= -15
+trigger1 = ctrl
+trigger1 = p2movetype = A && p2bodydist x <= 50
+trigger1 = p2bodydist y >= -75 && p2bodydist y <= -10
+trigger1 = (random < (AILevel* 5))
+
+;AI ES Mystic Arrow
+[State -1, AI ES Mystic Arrow]
+type = ChangeState
+value = 2300
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = (random < (AILevel* 1))
+triggerall = power >= 500
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2bodydist x = [170,200]
+trigger1 = p2statetype = C||p2statetype = S
+
+;AI Soul Flash L
+[State -1, AI Soul Flash L]
+type = ChangeState
+value = 1000
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = (random < (AILevel* 3))
+trigger1 = p2bodydist y >= -75
+trigger1 = enemy, vel y >= 0
+trigger1 = p2bodydist x = [100,200]
+trigger2 = (stateno = [210,215]) && (movehit=[1,3])
+
+;AI Soul Flash H
+[State -1, AI Soul Flash H]
+type = ChangeState
+value = 1002
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = var(5) = 0
+trigger1 = (stateno = [210,215]) && (movehit=[1,3])
+
+;AI Air Soul Flash L
+[State -1, AI Air Soul Flash L]
+type = ChangeState
+value = 1010
+triggerall = var(59) = 1
+triggerall = statetype = A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+trigger1 = ctrl
+trigger1 = (random < (AILevel* 3))
+trigger1 = p2bodydist y >= -75
+trigger1 = p2bodydist x = [150,250]
+trigger1 = pos y <= -20
+
+;AI Shining Blade L
+[State -1, AI Shining Blade L]
+type = ChangeState
+value = 1100
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2movetype = A && p2bodydist x <= 60 && p2bodydist Y > -100
+trigger1 = (random < (AILevel* 35))
+
+;AI Shining Blade H
+[State -1, AI Shining Blade H]
+type = ChangeState
+value = 1102
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2movetype = A && p2bodydist x <= 60 && p2bodydist Y > -100
+trigger1 = (random < (AILevel* 35))
+
+;AI Merry Turn L
+[State -1, AI Merry Turn L]
+type = ChangeState
+value = 1200
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = (random < (AILevel* 25))
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2movetype = A && p2bodydist x <= 50
+trigger1 = p2bodydist y >= -75
+
+;AI Merry Turn H
+[State -1, AI Merry Turn H]
+type = ChangeState
+value = 1202
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2bodydist x = [80,120]
+trigger1 = p2movetype = A
+trigger1 = (random < (AILevel* 10))
+
+;AI Mystic Arrow L
+[State -1, AI Mystic Arrow L]
+type = ChangeState
+value = 1300
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = (random < (AILevel* 2))
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2bodydist x = [90,105]
+trigger1 = p2statetype = C||p2statetype = S
+
+;AI Mystic Arrow H
+[State -1, AI Mystic Arrow H]
+type = ChangeState
+value = 1302
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = (random < (AILevel* 2))
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger1 = p2bodydist x = [170,200]
+trigger1 = p2statetype = C||p2statetype = S
+
+;AI Guard Breaker
+[State -1, AI Guard Breaker]
+type = ChangeState
+value = 900
+triggerall = var(59) = 1
+triggerall = stateno != [100,105]
+triggerall = power >= 1000
+triggerall = var(5) = 0
+trigger1 = statetype != A
+trigger1 = ctrl
+trigger1 = p2bodydist x = [70,100]
+trigger1 = p2movetype != A
+trigger1 = p2statetype != L && p2statetype != A
+trigger1 = (random < (AILevel* 4))
+
+;AI Gleaming Upper
+[State -1, AI Gleaming Upper]
+type = ChangeState
+value = 425
+triggerall = var(59) = 1
+triggerall = ctrl
+triggerall = statetype != A
+triggerall = p2statetype = A
+triggerall = var(5) = 0
+trigger1 = (random < (AILevel* 25))
+trigger1 = p2bodydist x = [55,110]
+trigger1 = p2bodydist y = [-140,-70]
+trigger1 = enemynear, vel x > 0
+
+;AI Playful Twirl
+[State -1, AI Playful Twirl]
+type = ChangeState
+value = 255
+triggerall = var(59) = 1
+triggerall = ctrl
+triggerall = statetype != A
+triggerall = p2statetype = A
+triggerall = var(5) = 0
+trigger1 = (random < (AILevel* 25))
+trigger1 = p2bodydist x = [50,100]
+trigger1 = p2bodydist y = [-145,-60]
+trigger1 = enemynear, vel x > 0
+
+;AI Dash Forward
+[State -1, AI Dash Forward]
+type = ChangeState
+value = 100
+triggerall = var(59) = 1
+triggerall = stateno != 100
+triggerall = stateno != 105
+triggerall = (random < (AILevel* 5))
+triggerall = ctrl
+trigger1 = statetype != A
+trigger1 = p2movetype != A
+trigger1 = !inguarddist
+trigger1 = p2bodydist x >= 75
+
+;AI Dash Backward
+[State -1, AI Dash Backward]
+type = ChangeState
+value = 105
+triggerall = var(59) = 1
+triggerall = stateno != 100
+triggerall = stateno != 105
+triggerall = (random < (AILevel* 100))
+triggerall = ctrl
+trigger1 = statetype = S
+trigger1 = p2statetype = L
+trigger1 = p2bodydist x < 35
+trigger1 = backedgedist > 50
+
+;AI Innocent Hug
+[State -1, AI Innocent Hug]
+type = ChangeState
+value = 700
+triggerall = var(59) = 1
+triggerall = p2life != 0
+triggerall = statetype != A
+triggerall = p2statetype != A && p2statetype != L
+triggerall = p2movetype != H
+triggerall = (random < (AILevel* 100))
+triggerall = ctrl
+trigger1 = p2bodydist X < 15
+
+;AI Childish Drop
+[State -1, AI Childish Drop]
+type = ChangeState
+value = 730
+triggerall = var(59) = 1
+triggerall = p2life != 0
+triggerall = statetype = A
+triggerall = p2statetype = A && p2statetype != L
+triggerall = p2movetype != H
+triggerall = (random < (AILevel* 100))
+triggerall = ctrl
+trigger1 = p2bodydist X < 15 && p2bodydist Y < 30 && p2bodydist Y > -30
+
+;AI Stand Light Punch
+[State -1, AI Stand Light Punch]
+type = ChangeState
+value = 200
+triggerall = var(59) = 1
+triggerall = statetype = S
+triggerall = p2statetype != L
+triggerall = (random < (AILevel* 25))
+triggerall = ctrl
+triggerall = p2bodydist x >= 20
+trigger1 = p2bodydist x <= 55
+trigger1 = p2statetype = S
+
+;AI Stand Light Punch (close)
+[State -1, AI Stand Light Punch (close)]
+type = ChangeState
+value = 205
+triggerall = var(59) = 1
+triggerall = statetype = S
+triggerall = p2statetype != L
+triggerall = (random < (AILevel* 25))
+triggerall = p2bodydist x < 20
+trigger1 = ctrl
+trigger1 = p2statetype = S
+trigger2 = stateno = 205 && (movecontact=[1,3])
+trigger2 = p2statetype != A
+trigger2 = var(4) <= 2
+
+;AI Stand Medium Punch
+[State -1, AI Stand Medium Punch]
+type = ChangeState
+value = 210
+triggerall = var(59) = 1
+triggerall = statetype = S
+triggerall = p2statetype != L
+triggerall = p2bodydist x >= 25
+trigger1 = ((stateno = [200,205])||stateno = 230) && (movecontact=[1,3]) && var(5) = 0
+trigger1 = p2statetype != A
+trigger2 = ctrl
+trigger2 = p2bodydist x <= 110
+trigger2 = p2bodydist y >= -60
+trigger2 = enemynear, vel y > 0
+trigger2 = (random < (AILevel* 25))
+
+;AI Stand Medium Punch (close)
+[State -1, AI Stand Medium Punch (close)]
+type = ChangeState
+value = 215
+triggerall = var(59) = 1
+triggerall = statetype = S
+triggerall = p2statetype != L
+triggerall = p2bodydist x < 25
+trigger1 = ((stateno = [200,205])||stateno = 230) && (movecontact=[1,3]) && var(5) = 0
+trigger1 = p2statetype != A
+trigger2 = ctrl
+trigger2 = p2bodydist y >= -70
+trigger2 = (random < (AILevel* 25))
+
+;AI Stand Heavy Punch
+[State -1, AI Stand Heavy Punch]
+type = ChangeState
+value = 220
+triggerall = var(59) = 1
+triggerall = statetype = S
+triggerall = p2statetype != L
+triggerall = p2bodydist x >= 25
+triggerall = stateno != 100
+trigger1 = ((stateno = [210,215])||stateno = 240) && (movecontact=[1,3]) && var(5) = 0
+trigger1 = p2statetype != A
+trigger2 = ctrl
+trigger2 = p2bodydist x <= 120
+trigger2 = p2bodydist y >= -60
+trigger2 = enemynear, vel y > 0
+trigger2 = (random < (AILevel* 5))
+
+;AI Stand Light Kick
+[State -1, AI Stand Light Kick]
+type = ChangeState
+value = 230
+triggerall = var(59) = 1
+triggerall = statetype = S
+triggerall = p2statetype != L
+triggerall = (random < (AILevel* 25))
+trigger1 = ctrl
+trigger1 = p2bodydist x <= 60
+trigger1 = p2statetype != A
+trigger2 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger2 = p2statetype != A
+
+;AI Stand Medium Kick
+[State -1, AI Stand Medium Kick]
+type = ChangeState
+value = 240
+triggerall = var(59) = 1
+triggerall = statetype = S
+triggerall = p2statetype != L
+trigger1 = ((stateno = [200,205])||stateno = 230) && (movecontact=[1,3]) && var(5) = 0
+trigger1 = p2statetype != A
+trigger2 = ctrl
+trigger2 = p2bodydist x <= 100
+trigger2 = p2bodydist y >= -60
+trigger2 = enemynear, vel y > 0
+trigger2 = (random < (AILevel* 25))
+
+;AI Stand Heavy Kick
+[State -1, AI Stand Heavy Kick]
+type = ChangeState
+value = 250
+triggerall = var(59) = 1
+triggerall = p2statetype != L
+triggerall = stateno != 100
+trigger1 = statetype = S
+trigger1 = ctrl
+trigger1 = p2bodydist x <= 115
+trigger1 = p2statetype = C
+trigger1 = (random < (AILevel* 15))
+
+;AI Crouch Light Punch
+[State -1, AI Crouch Light Punch]
+type = ChangeState
+value = 400
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = p2statetype != L
+triggerall = (random < (AILevel* 25))
+triggerall = p2statetype != A
+trigger1 = ctrl
+trigger1 = p2bodydist x <= 60
+trigger2 = (stateno = 400 && (movecontact=[1,3]))||((stateno = [200,205]) && (movecontact=[1,3]))
+trigger2 = var(4) <= 2
+
+;AI Crouch Medium Punch
+[State -1, AI Crouch Medium Punch]
+type = ChangeState
+value = 410
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = p2statetype != L
+triggerall = p2bodydist x <= 60
+triggerall = stateno != 100
+triggerall = p2statetype != A
+trigger1 = (stateno = 400 && (movecontact=[1,3]))
+trigger2 = ctrl
+trigger2 = (random < (AILevel* 25))
+
+;AI Crouch Heavy Punch
+[State -1, AI Crouch Heavy Punch]
+type = ChangeState
+value = 420
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = p2statetype != L
+triggerall = stateno != 100
+trigger1 = stateno = 410 && (movecontact=[1,3])
+trigger1 = (random < (AILevel* 15))
+trigger2 = stateno = 440 && (movecontact=[1,3])
+trigger2 = (random < (AILevel* 25))
+trigger3 = ctrl
+trigger3 = p2bodydist x <= 115
+trigger3 = p2statetype != A
+trigger3 = (random < (AILevel* 4))
+
+;AI Crouch Light Kick
+[State -1, AI Crouch Light Kick]
+type = ChangeState
+value = 430
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = p2statetype != L
+triggerall = (random < (AILevel* 25))
+trigger1 = ctrl
+trigger1 = p2statetype != A
+trigger1 = p2bodydist x <= 70
+
+;AI Crouch Medium Kick
+[State -1, AI Crouch Medium Kick]
+type = ChangeState
+value = 440
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = p2statetype != L
+triggerall = p2statetype != A
+trigger1 = (stateno = 410||stateno = 430) && (movecontact=[1,3])
+trigger2 = ctrl
+trigger2 = p2bodydist x <= 90
+trigger2 = (random < (AILevel* 15))
+
+;AI Crouch Heavy Kick
+[State -1, AI Crouch Heavy Kick]
+type = ChangeState
+value = 450
+triggerall = var(59) = 1
+triggerall = statetype != A
+triggerall = p2statetype != L
+triggerall = p2statetype != A
+triggerall = stateno != 100
+triggerall = p2statetype != A
+trigger1 = (stateno = 420||stateno = 440) && (movehit=[1,3])
+trigger2 = ctrl
+trigger2 = p2bodydist x <= 140
+trigger2 = (random < (AILevel* 5))
+
+;AI Air Light Punch
+[State -1, AI Air Light Punch]
+type = ChangeState
+value = 600
+triggerall = statetype = A
+triggerall = var(59) = 1
+triggerall = (random < (AILevel* 100))
+triggerall = ctrl && !NumTarget
+trigger1 = (p2bodydist x = [20,65]) && (p2bodydist y = [-70,65])
+trigger1 = vel y > 0 && p2statetype != A||p2statetype = A
+
+;AI Air Medium Punch
+[State -1, AI Air Medium Punch]
+type = ChangeState
+value = 610
+triggerall = statetype = A
+triggerall = var(59) = 1
+trigger1 = stateno = 600 && (movecontact=[1,3]) && p2statetype != A
+trigger2 = ctrl && !NumTarget
+trigger2 = (p2bodydist x = [20,55]) && (p2bodydist y = [-60,65])
+trigger2 = vel y > 0 && p2statetype != A||p2statetype = A
+trigger2 = (random < (AILevel* 100))
+
+;AI Air Heavy Punch
+[State -1, AI Air Heavy Punch]
+type = ChangeState
+value = 620
+triggerall = statetype = A
+triggerall = var(59) = 1
+trigger1 = stateno = 610 && (movecontact=[1,3])
+trigger2 = stateno = 640 && (movecontact=[1,3])
+trigger3 = ctrl && !NumTarget
+trigger3 = (p2bodydist x = [20,100]) && (p2bodydist y = [0,110])
+trigger3 = vel y >= -0.5 && p2statetype != A||p2statetype = A
+trigger3 = (random < (AILevel* 100))
+
+;AI Air Light Kick
+[State -1, AI Air Light Kick]
+type = ChangeState
+value = 630
+triggerall = statetype = A
+triggerall = var(59) = 1
+triggerall = (random < (AILevel* 100))
+trigger1 = stateno = 600 && (movecontact=[1,3])
+trigger2 = ctrl && !NumTarget
+trigger2 = (p2bodydist x = [20,50]) && (p2bodydist y = [-90,75])
+trigger2 = vel y > 0 && p2statetype != A||p2statetype = A
+trigger2 = (random < (AILevel* 100))
+
+;AI Air Medium Kick
+[State -1, AI Air Medium Kick]
+type = ChangeState
+value = 640
+triggerall = statetype = A
+triggerall = var(59) = 1
+trigger1 = stateno = 630 && (movecontact=[1,3]) && p2statetype = A
+trigger2 = stateno = 600 && (movecontact=[1,3]) && p2statetype != A
+trigger3 = ctrl && !NumTarget
+trigger3 = vel y > 0 && p2statetype != A||p2statetype = A
+trigger3 = (p2bodydist x = [-20,60]) && (p2bodydist y = [-50,50])
+trigger3 = (random < (AILevel* 100))
+
+;AI Air Heavy Kick
+[State -1, AI Air Heavy Kick]
+type = ChangeState
+value = 650
+triggerall = statetype = A
+triggerall = var(59) = 1
+trigger1 = stateno = 610 && (movecontact=[1,3])
+trigger2 = stateno = 640 && (movecontact=[1,3])
+trigger3 = stateno = 620 && (movecontact=[1,3])
+trigger4 = ctrl && !NumTarget
+trigger4 = vel y > 0 && p2statetype != A||p2statetype = A
+trigger4 = (p2bodydist x = [30,90]) && (p2bodydist y = [-70,50])
+trigger4 = (random < (AILevel* 100))
+
+;-------------------------------------------------------------------------------
+;CMD Super Detection------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+[State G.P.S. CMD Status second F, Finished]
+type = VarAdd
+trigger1 = var(21) = 4 && command = "GPS_5"
+trigger1 = var(22):=13
+var(21) = 1
+ignorehitpause = 1
+[State G.P.S CMD Status X]
+type = VarAdd
+trigger1 = var(21) = 3 && command = "GPS_4"
+trigger1 = var(22):=13
+var(21) = 1
+ignorehitpause = 1
+[State G.P.S CMD Status Y]
+type = VarAdd
+trigger1 = var(21) = 2 && command = "GPS_3"
+trigger1 = var(22):=13
+var(21) = 1
+ignorehitpause = 1
+[State G.P.S CMD Status Z]
+type = VarAdd
+trigger1 = var(21) = 1 && command = "GPS_2"
+trigger1 = var(22):=13
+var(21) = 1
+ignorehitpause = 1
+[State G.P.S CMD Status first F]
+type = VarAdd
+trigger1 = var(21) = 0 && command = "GPS_1"
+trigger1 = var(22):=13
+var(21) = 1
+ignorehitpause = 1
+
+
+[State L.I. CMD Status Z, finished]
+type = VarAdd
+trigger1 = var(7) = 4 && command = "LI_4"
+trigger1 = var(8):=13
+var(7) = 1
+ignorehitpause = 1
+[State L.I. CMD Status A]
+type = VarAdd
+trigger1 = var(7) = 3 && command = "LI_3"
+trigger1 = var(8):=13
+var(7) = 1
+ignorehitpause = 1
+[State L.I. CMD Status forward]
+type = VarAdd
+trigger1 = var(7) = 2 && command = "LI_2" ;directionals do not reset the timer
+var(7) = 1
+ignorehitpause = 1
+[State L.I. CMD Status second X]
+type = VarAdd
+trigger1 = var(7) = 1 && command = "LI_1"
+trigger1 = var(8):=13
+var(7) = 1
+ignorehitpause = 1
+[State L.I. CMD Status first X]
+type = VarAdd
+trigger1 = var(7) = 0 && command = "LI_1"
+trigger1 = var(8):=13
+var(7) = 1
+ignorehitpause = 1
+
+;-------------------------------------------------------------------------------
+;Hyper Attacks------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+;Gloomy Puppet Show!
+[State -1, Gloomy Puppet Show!]
+type = ChangeState
+value = 8000
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = power >= 3000
+triggerall = (var(23)>0 && var(21) = 5 && AILevel<=0)
+triggerall = ctrl||((stateno=[200,250]))||(stateno = [400,450])
+trigger1 = 1 || (var(23) := 0)
+trigger1 = 1 || (var(22) := 0)
+trigger1 = 1 || (var(21) := 0)
+
+[State Tick Down Buffer]
+type = VarAdd
+trigger1 = var(23)>0
+var(23) = -1
+[State Tick Down G.P.S. failure]
+type = VarAdd
+trigger1 = var(22)>0
+var(22) = -1
+
+[State G.P.S. CMD Status Reset]
+type = VarSet
+trigger1 = var(22)<=0
+var(21) = 0
+[State Successful G.P.S., set up buffer]
+type = VarSet
+trigger1 = var(21) >= 5 && var(23)<=0
+trigger1 = 1 || (var(22):=2)
+var(23) = 3
+
+;Splendor Love
+[State -1, Splendor Love]
+type = ChangeState
+value = 3100
+triggerall = command = "SplendorLove"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = power >= 1000
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && movecontact && var(4) <= 1
+trigger3 = stateno = 410 && movecontact && var(4) <= 1
+trigger4 = stateno = 240 && movecontact && var(4) <= 1
+trigger5 = stateno = 440 && movecontact && var(4) <= 1
+trigger6 = (stateno = [200,205]) && movecontact
+trigger7 = stateno = 230 && movecontact
+trigger8 = stateno = 400 && movecontact
+trigger9 = stateno = 430 && movecontact
+trigger10 = (stateno = [3200,3202]) && movecontact && var(4) <= 1
+
+;Mirage Blade
+[State -1, Mirage Blade]
+type = ChangeState
+value = 3200
+triggerall = command = "MirageBlade"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = power >= 1000
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && movecontact && var(4) <= 1
+trigger3 = stateno = 410 && movecontact && var(4) <= 1
+trigger4 = stateno = 240 && movecontact && var(4) <= 1
+trigger5 = stateno = 440 && movecontact
+trigger6 = (stateno = [200,205]) && movecontact
+trigger7 = stateno = 230 && movecontact
+trigger8 = stateno = 400 && movecontact
+trigger9 = stateno = 430 && movecontact
+
+;Luminous Illusion
+[State -1, Luminous Illusion]
+type = ChangeState
+value = 3000
+triggerall = statetype != A
+triggerall = var(59) = 0
+triggerall = (var(9)>0 && var(7) = 5 && AILevel<=0)
+triggerall = ctrl||((stateno=[200,250]))||(stateno = [400,450])||((stateno = [3200,3202])&&(movecontact))
+triggerall = power >= 1000
+trigger1 = 1 || (var(9) := 0)
+trigger1 = 1 || (var(8))
+
+;Aerial Illusion
+[State -1, Aerial Illusion]
+type = ChangeState
+value = 3050
+triggerall = statetype = A
+triggerall = (var(9)>0 && var(7) = 5 && AILevel<=0)
+triggerall = ctrl||((stateno=[600,650]))||(stateno = [1010,1012])||(stateno = 255)||((stateno = 3102)&&(NumTarget)&&(time <= 10))
+triggerall = power >= 1000
+trigger1 = 1 || (var(9) := 0)
+trigger1 = 1 || (var(8))
+
+[State Tick Down Buffer]
+type = VarAdd
+trigger1 = var(9)>0
+var(9) = -1
+[State Tick Down LI failure]
+type = VarAdd
+trigger1 = var(8)>0
+var(8) = -1
+
+[State LI CMD Status Reset]
+type = VarSet
+trigger1 = var(8)<=0
+var(7) = 0
+[State Successful DI, set up buffer]
+type = VarSet
+trigger1 = var(7) >= 5 && var(9)<=0
+trigger1 = 1 || (var(8):=2)
+var(9) = 3
+
+;-------------------------------------------------------------------------------
+;ES Specials--------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+;ES Shining Blade
+[State -1, ES Shining Blade]
+type = ChangeState
+value = 2100
+triggerall = (command = "ES_ShiningBlade"||(command="ES_ShiningBladeR"&&(var(47)=1536||var(47)=2560||var(47)=3072)))
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = power >= 500
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;ES Soul Flash
+[State -1, ES Soul Flash]
+type = ChangeState
+value = 2000
+triggerall = (command = "ES_SoulFlash"||(command="ES_SoulFlashR"&&(var(47)=1536||var(47)=2560||var(47)=3072)))
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = power >= 500
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;ES Air Soul Flash
+[State -1, ES Air Soul Flash]
+type = ChangeState
+value = 2010
+triggerall = (command = "ES_SoulFlash"||(command="ES_SoulFlashR"&&(var(47)=1536||var(47)=2560||var(47)=3072)))
+triggerall = var(59) = 0
+triggerall = statetype = A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = power >= 500
+trigger1 = ctrl
+trigger2 = (stateno = [600,650]) && (movecontact=[1,3])
+
+;ES Merry Turn
+[State -1, ES Merry Turn]
+type = ChangeState
+value = 2200
+triggerall = (command = "ES_MerryTurn"||(command="ES_MerryTurnR"&&(var(47)=192||var(47)=320||var(47)=384)))
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = power >= 500
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;ES Aerial Turn
+[State -1, ES Aerial Turn]
+type = ChangeState
+value = 2210
+triggerall = (command = "ES_MerryTurn"||(command="ES_MerryTurnR"&&(var(47)=192||var(47)=320||var(47)=384)))
+triggerall = var(59) = 0
+triggerall = statetype = A
+triggerall = power >= 500
+trigger1 = ctrl
+trigger2 = (stateno = [600,650]) && (movecontact=[1,3])
+
+;ES Mystic Arrow
+[State -1, ES Mystic Arrow]
+type = ChangeState
+value = 2300
+triggerall = (command = "ES_MysticArrow"||(command="ES_MysticArrowR"&&(var(47)=1536||var(47)=2560||var(47)=3072)))
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = power >= 500
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;-------------------------------------------------------------------------------
+;Special Attacks----------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+;Shining Blade Light
+[State -1, Shining Blade Light]
+type = ChangeState
+value = 1100
+triggerall = command = "ShiningBladeL"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Shining Blade Medium
+[State -1, Shining Blade Medium]
+type = ChangeState
+value = 1101
+triggerall = command = "ShiningBladeM"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Shining Blade Heavy
+[State -1, Shining Blade Heavy]
+type = ChangeState
+value = 1102
+triggerall = command = "ShiningBladeH"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Soul Flash Light
+[State -1, Soul Flash Light]
+type = ChangeState
+value = 1000
+triggerall = command = "SoulFlashL"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Soul Flash Medium
+[State -1, Soul Flash Medium]
+type = ChangeState
+value = 1001
+triggerall = command = "SoulFlashM"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Soul Flash Heavy
+[State -1, Soul Flash Heavy]
+type = ChangeState
+value = 1002
+triggerall = command = "SoulFlashH"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = NumHelper(2050) = 0
+triggerall = NumHelper(1050) = 0
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Air Soul Flash Light
+[State -1, Air Soul Flash Light]
+type = ChangeState
+value = 1010
+triggerall = command = "SoulFlashL"
+triggerall = var(59) = 0
+triggerall = statetype = A
+triggerall = NumHelper(2050) = 0
+triggerall = NumProj = 0
+trigger1 = ctrl
+trigger2 = (stateno = [600,650]) && (movecontact=[1,3])
+
+;Air Soul Flash Medium
+[State -1, Air Soul Flash Medium]
+type = ChangeState
+value = 1011
+triggerall = command = "SoulFlashM"
+triggerall = var(59) = 0
+triggerall = statetype = A
+triggerall = NumHelper(2050) = 0
+triggerall = NumProj = 0
+trigger1 = ctrl
+trigger2 = (stateno = [600,650]) && (movecontact=[1,3])
+
+;Air Soul Flash Heavy
+[State -1, Air Soul Flash Heavy]
+type = ChangeState
+value = 1012
+triggerall = command = "SoulFlashH"
+triggerall = var(59) = 0
+triggerall = statetype = A
+triggerall = NumHelper(3101) = 0
+triggerall = NumHelper(2050) = 0
+triggerall = NumProj = 0
+trigger1 = ctrl
+trigger2 = (stateno = [600,650]) && (movecontact=[1,3])
+
+;Merry Turn Light
+[State -1, Merry Turn Light]
+type = ChangeState
+value = 1200
+triggerall = command = "MerryTurnL"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Merry Turn Medium
+[State -1, Merry Turn Medium]
+type = ChangeState
+value = 1201
+triggerall = command = "MerryTurnM"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Merry Turn Heavy
+[State -1, Merry Turn Heavy]
+type = ChangeState
+value = 1202
+triggerall = command = "MerryTurnH"
+triggerall = var(59) = 0
+triggerall = statetype != A
+triggerall = var(5) = 0
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Aerial Turn Light
+[State -1, Aerial Turn Light]
+type = ChangeState
+value = 1210
+triggerall = command = "MerryTurnL"
+triggerall = var(59) = 0
+triggerall = statetype = A
+trigger1 = ctrl
+trigger2 = (stateno = [600,650]) && (movecontact=[1,3])
+
+;Aerial Turn Medium
+[State -1, Aerial Turn Medium]
+type = ChangeState
+value = 1211
+triggerall = command = "MerryTurnM"
+triggerall = var(59) = 0
+triggerall = statetype = A
+trigger1 = ctrl
+trigger2 = (stateno = [600,650]) && (movecontact=[1,3])
+
+;Aerial Turn Heavy
+[State -1, Aerial Turn Heavy]
+type = ChangeState
+value = 1212
+triggerall = command = "MerryTurnH"
+triggerall = var(59) = 0
+triggerall = statetype = A
+trigger1 = ctrl
+trigger2 = (stateno = [600,650]) && (movecontact=[1,3])
+
+;Mystic Arrow Light
+[State -1, Mystic Arrow Light]
+type = ChangeState
+value = 1300
+triggerall = command = "MysticArrowL"
+triggerall = var(59) = 0
+triggerall = statetype != A
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Mystic Arrow Medium
+[State -1, Mystic Arrow Medium]
+type = ChangeState
+value = 1301
+triggerall = command = "MysticArrowM"
+triggerall = var(59) = 0
+triggerall = statetype != A
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;Mystic Arrow Heavy
+[State -1, Mystic Arrow Heavy]
+type = ChangeState
+value = 1302
+triggerall = command = "MysticArrowH"
+triggerall = var(59) = 0
+triggerall = statetype != A
+trigger1 = ctrl
+trigger2 = (stateno = [210,215]) && (movecontact=[1,3]) && var(4) <= 1
+trigger3 = stateno = 410 && (movecontact=[1,3]) && var(4) <= 1
+trigger4 = stateno = 240 && (movecontact=[1,3]) && var(4) <= 1
+trigger5 = stateno = 440 && (movecontact=[1,3]) && var(4) <= 1
+trigger6 = (stateno = [200,205]) && (movecontact=[1,3])
+trigger7 = stateno = 230 && (movecontact=[1,3])
+trigger8 = stateno = 400 && (movecontact=[1,3])
+trigger9 = stateno = 430 && (movecontact=[1,3])
+
+;-------------------------------------------------------------------------------
+;Basic Attacks------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+
+;Taunt
+[State -1, Taunt]
+type = ChangeState
+value = 195+(command = "holdfwd")
+triggerall = command = "start"
+triggerall = statetype != A
+triggerall = var(59) = 0
+trigger1 = ctrl
+
+;Guard Breaker
+[State -1, Guard Breaker]
+type = ChangeState
+value = 900
+triggerall = command = "Guard-Break"
+triggerall = var(59) = 0
+triggerall = stateno != [100,105]
+triggerall = power >= 1000
+trigger1 = statetype != A
+trigger1 = ctrl
+
+; Guard-push
+[State -1, Guard-push]
+type = ChangeState
+value = 160
+trigger1 = var(59) = 0
+trigger1 = var(35) = 1
+trigger1 = stateno = 151 || stateno = 153 || stateno = 155
+
+;Playful Twirl
+[State -1, Playful Twirl]
+type = ChangeState
+value = 255
+triggerall = command = "holdfwd"
+triggerall = command = "c"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+triggerall = stateno != 100
+trigger1 = statetype = S
+trigger1 = ctrl
+
+;Dash Forward
+[State -1, Dash Forward]
+type = ChangeState
+value = 100
+triggerall = var(59) = 0
+trigger1 = command = "FF"
+trigger1 = statetype = S
+trigger1 = ctrl
+trigger1 = stateno != 100
+trigger1 = stateno != 105
+
+;Dash Backward
+[State -1, Dash Backward]
+type = ChangeState
+value = 105
+triggerall = var(59) = 0
+trigger1 = command = "BB"
+trigger1 = statetype = S
+trigger1 = ctrl
+trigger1 = stateno != 100
+trigger1 = stateno != 105
+
+;Innocent Hug
+[State -1, Innocent Hug]
+type = ChangeState
+value = 700
+triggerall = command = "y"||command = "z"
+triggerall = statetype = S
+triggerall = ctrl
+triggerall = stateno != 100
+trigger1 = command = "holdfwd"||command = "holdback"
+trigger1 = p2bodydist X < 16
+trigger1 = (p2statetype = S) || (p2statetype = C)
+trigger1 = p2movetype != H
+
+;Childish Drop
+[State -1, Childish Drop]
+type = ChangeState
+value = 730
+triggerall = command = "y"||command = "z"
+triggerall = statetype = A
+triggerall = ctrl
+triggerall = stateno != 100
+trigger1 = command = "holdfwd"||command = "holdback"
+trigger1 = p2bodydist X < 16 && p2bodydist Y < 30 && p2bodydist Y > -30
+trigger1 = p2statetype = A
+trigger1 = p2movetype != H
+
+;Stand Light Punch
+[State -1, Stand Light Punch]
+type = ChangeState
+value = 200
+triggerall = command = "x"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+triggerall = p2bodydist x >= 20
+trigger1 = statetype = S && ctrl
+trigger2 = ((stateno = [200,205]) && (time>=4 || movecontact=[1,3]))||(stateno = 400 && (time>6 || movecontact=[1,3]))
+trigger2 = var(5) = 0
+
+;Stand Light Punch (close)
+[State -1, Stand Light Punch (close)]
+type = ChangeState
+value = 205
+triggerall = command = "x"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+triggerall = p2bodydist x < 20
+trigger1 = statetype = S && ctrl
+trigger2 = ((stateno = [200,205]) && (time>=4 || movecontact=[1,3]))||(stateno = 400 && (time>6 || movecontact=[1,3]))
+trigger2 = var(5) = 0
+
+;Stand Medium Punch
+[State -1, Stand Medium Punch]
+type = ChangeState
+value = 210
+triggerall = command = "y"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+triggerall = p2bodydist x >= 25
+trigger1 = statetype = S
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+
+;Stand Medium Punch (close)
+[State -1, Stand Medium Punch (close)]
+type = ChangeState
+value = 215
+triggerall = command = "y"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+triggerall = p2bodydist x < 25
+trigger1 = statetype = S
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+
+;Stand Heavy Punch
+[State -1, Stand Heavy Punch]
+type = ChangeState
+value = 220
+triggerall = command = "z"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = S
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 210 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 240 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger7 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger8 = stateno = 410 && (movecontact=[1,3]) && var(5) = 0
+trigger9 = stateno = 440 && (movecontact=[1,3]) && var(5) = 0
+trigger10 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+trigger11 = stateno = 215 && (movecontact=[1,3]) && var(5) = 0
+
+;Stand Light Kick
+[State -1, Stand Light Kick]
+type = ChangeState
+value = 230
+triggerall = command = "a"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = S
+trigger1 = ctrl||((stateno = 230) && (time>=9))
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+
+;Stand Medium Kick
+[State -1, Stand Medium Kick]
+type = ChangeState
+value = 240
+triggerall = command = "b"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = S
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 210 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 410 && (movecontact=[1,3]) && var(5) = 0
+trigger7 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger8 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+trigger9 = stateno = 215 && (movecontact=[1,3]) && var(5) = 0
+
+;Stand Heavy Kick
+[State -1, Stand Heavy Kick]
+type = ChangeState
+value = 250
+triggerall = command = "c"
+triggerall = command != "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = S
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 210 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 220 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 240 && (movecontact=[1,3]) && var(5) = 0
+trigger7 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger8 = stateno = 410 && (movecontact=[1,3]) && var(5) = 0
+trigger9 = stateno = 420 && (movecontact=[1,3]) && var(5) = 0
+trigger10 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger11 = stateno = 440 && (movecontact=[1,3]) && var(5) = 0
+trigger12 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+trigger13 = stateno = 215 && (movecontact=[1,3]) && var(5) = 0
+
+;Crouch Light Punch
+[State -1, Crouch Light Punch]
+type = ChangeState
+value = 400
+triggerall = command = "x"
+triggerall = command = "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = C && ctrl
+trigger2 = (stateno = 400 && (time>6 || movecontact=[1,3]))||((stateno = [200,205]) && (time>6 || movecontact=[1,3]))
+trigger2 = var(5) = 0
+
+;Crouch Medium Punch
+[State -1, Crouch Medium Punch]
+type = ChangeState
+value = 410
+triggerall = command = "y"
+triggerall = command = "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = c
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+
+;Crouch Heavy Punch
+[State -1, Crouch Heavy Punch]
+type = ChangeState
+value = 420
+triggerall = command = "z"
+triggerall = command = "holddown"
+triggerall = var(59) = 0
+trigger1 = command != "holdfwd"
+trigger1 = statetype = c
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 210 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 240 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger7 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger8 = stateno = 410 && (movecontact=[1,3]) && var(5) = 0
+trigger9 = stateno = 440 && (movecontact=[1,3]) && var(5) = 0
+trigger10 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+trigger11 = stateno = 215 && (movecontact=[1,3]) && var(5) = 0
+
+;Gleaming Upper
+[State -1, Gleaming Upper]
+type = ChangeState
+value = 425
+triggerall = command = "z"
+triggerall = command = "holddown"
+triggerall = command = "holdfwd"
+triggerall = var(59) = 0
+trigger1 = statetype = C
+trigger1 = ctrl
+
+;Crouch Light Kick
+[State -1, Crouch Light Kick]
+type = ChangeState
+value = 430
+triggerall = command = "a"
+triggerall = command = "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = C
+trigger1 = ctrl||((stateno = 430) && (time>=8))
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+
+;Crouch Medium Kick
+[State -1, Crouch Medium Kick]
+type = ChangeState
+value = 440
+triggerall = command = "b"
+triggerall = command = "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = c
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 210 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 410 && (movecontact=[1,3]) && var(5) = 0
+trigger7 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger8 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+trigger9 = stateno = 215 && (movecontact=[1,3]) && var(5) = 0
+
+;Crouch Heavy Kick
+[State -1, Crouch Heavy Kick]
+type = ChangeState
+value = 450
+triggerall = command = "c"
+triggerall = command = "holddown"
+triggerall = var(59) = 0
+trigger1 = statetype = c
+trigger1 = ctrl
+trigger2 = stateno = 200 && (movecontact=[1,3]) && var(5) = 0
+trigger3 = stateno = 230 && (movecontact=[1,3]) && var(5) = 0
+trigger4 = stateno = 210 && (movecontact=[1,3]) && var(5) = 0
+trigger5 = stateno = 220 && (movecontact=[1,3]) && var(5) = 0
+trigger6 = stateno = 240 && (movecontact=[1,3]) && var(5) = 0
+trigger7 = stateno = 400 && (movecontact=[1,3]) && var(5) = 0
+trigger8 = stateno = 410 && (movecontact=[1,3]) && var(5) = 0
+trigger9 = stateno = 420 && (movecontact=[1,3]) && var(5) = 0
+trigger10 = stateno = 430 && (movecontact=[1,3]) && var(5) = 0
+trigger11 = stateno = 440 && (movecontact=[1,3]) && var(5) = 0
+trigger12 = stateno = 205 && (movecontact=[1,3]) && var(5) = 0
+trigger13 = stateno = 215 && (movecontact=[1,3]) && var(5) = 0
+
+;Air Light Punch
+[State -1, Air Light Punch]
+type = ChangeState
+value = 600
+triggerall = command = "x"
+triggerall = statetype = a
+triggerall = var(59) = 0
+trigger1 = ctrl && !MoveContact && StateNo != 600
+
+;Air Medium Punch
+[State -1, Air Medium Punch]
+type = ChangeState
+value = 610
+triggerall = command = "y"
+triggerall = statetype = a
+triggerall = var(59) = 0
+trigger1 = ctrl && !MoveContact && StateNo != 610
+trigger2 = stateno = 600 && (movecontact=[1,3])
+trigger3 = stateno = 630 && (movecontact=[1,3])
+
+;Air Heavy Punch
+[State -1, Air Heavy Punch]
+type = ChangeState
+value = 620
+triggerall = command = "z"
+triggerall = statetype = a
+triggerall = var(59) = 0
+trigger1 = ctrl && !MoveContact && StateNo != 620
+trigger2 = stateno = 600 && (movecontact=[1,3])
+trigger3 = stateno = 630 && (movecontact=[1,3])
+trigger4 = stateno = 610 && (movecontact=[1,3])
+trigger5 = stateno = 640 && (movecontact=[1,3])
+
+;Air Light Kick
+[State -1, Air Light Kick]
+type = ChangeState
+value = 630
+triggerall = command = "a"
+triggerall = statetype = a
+triggerall = var(59) = 0
+trigger1 = ctrl && !MoveContact && StateNo != 630
+trigger2 = stateno = 600 && (movecontact=[1,3])
+
+;Air Medium Kick
+[State -1, Air Medium Kick]
+type = ChangeState
+value = 640
+triggerall = command = "b"
+triggerall = statetype = a
+triggerall = var(59) = 0
+trigger1 = ctrl && !MoveContact && StateNo != 640
+trigger2 = stateno = 600 && (movecontact=[1,3])
+trigger3 = stateno = 630 && (movecontact=[1,3])
+trigger4 = stateno = 610 && (movecontact=[1,3])
+
+;Air Heavy Kick
+[State -1, Air Heavy Kick]
+type = ChangeState
+value = 650
+triggerall = command = "c"
+triggerall = statetype = a
+triggerall = var(59) = 0
+trigger1 = ctrl && !MoveContact && StateNo != 650
+trigger1 = command != "holddown"
+trigger2 = stateno = 600 && (movecontact=[1,3])
+trigger3 = stateno = 630 && (movecontact=[1,3])
+trigger4 = stateno = 610 && (movecontact=[1,3])
+trigger5 = stateno = 640 && (movecontact=[1,3])
+trigger6 = stateno = 620 && (movecontact=[1,3])
+
+;Gleeful Dive
+[State -1, Gleeful Dive]
+type = ChangeState
+value = 655
+triggerall = command = "c"
+triggerall = command = "holddown"
+triggerall = statetype = a
+triggerall = var(59) = 0
+trigger1 = ctrl && !MoveContact
