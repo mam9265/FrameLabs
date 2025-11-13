@@ -4151,10 +4151,40 @@ main.txt_loading = nil
 --sleep(1)
 
 if motif.attract_mode.enabled == 1 then
-	main.f_attractMode()
+    main.f_attractMode()
 else
-	main.menu.loop()
+    if os.getenv("AUTOTRAIN") == "1" then
+        print("Auto-training mode enabled.")
+
+        local triggered = false
+
+        -- Hook into the menu loop to ensure everything is initialized
+        hook.add("main.f_menuLoop", "autotraining", function()
+            if triggered then return end
+
+            -- Check if the training mode function exists
+            if main.t_gameMode and type(main.t_gameMode.training) == "function" then
+                triggered = true
+
+                -- Optional: set default stage and characters if desired
+                -- main.t_pIn[1] = 1
+                -- main.t_pIn[2] = 2
+                -- main.forceChar[1] = main.t_charDef["kfm"]
+                -- main.forceChar[2] = main.t_charDef["kfm"]
+                -- setStage("stages/training.def")
+
+                main.t_gameMode.training()
+                print("Training mode started automatically!")
+            end
+        end)
+    end
+
+    -- Always run the main menu loop
+    main.menu.loop()
 end
+
+
+
 
 -- Debug Info
 --main.motifData = nil

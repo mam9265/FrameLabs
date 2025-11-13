@@ -75,12 +75,11 @@
 <body>
   <h1>PRACTICE MODE</h1>
   <div class="row">
-
-    <a href="#" onclick="startFreestyle(event)" class="card">
+    <div class="card" onclick="launchIkemen()">
       <span class="emoji">🥋</span>
       <h2>FREESTYLE TRAINING</h2>
       <p>SELECT A CHARACTER AND EXPERIMENT ON A DUMMY.</p>
-    </a>
+    </div>
 
     <a href="./practiceModeScreens/comboTrials.html" class="card">
       <span class="emoji">🎮</span>
@@ -108,23 +107,11 @@
       window.location.href = "homePage.html";
     }
 
-    async function startFreestyle(e) {
-      try {
-        e.preventDefault();
-        // Request the server to launch Ikemen GO in fullscreen
-        const resp = await fetch('/launch-ikemen', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fullscreen: true })
-        });
-        const data = await resp.json();
-        if (!resp.ok) throw new Error(data?.error || data?.details || 'Unknown error');
-
-        // Optionally navigate to the freestyle training page to show controls/status
-        // window.location.href = './practiceModeScreens/freestyleTraining.html';
-      } catch (err) {
-        alert('Error launching Ikemen GO fullscreen: ' + (err.message || err));
-      }
+    function launchIkemen() {
+      fetch('/launch-training-ikemen', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => alert(data.message))
+        .catch(err => alert('Error launching Ikemen GO: ' + err.message));
     }
   </script>
 </body>

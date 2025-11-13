@@ -3,9 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const { exec, spawn } = require('child_process');
-const os = require('os');
-// Don't require electron in the server - we'll handle screen size differently
-const si = require('systeminformation');
+
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
@@ -19,31 +17,12 @@ const jwt = require('jsonwebtoken');
 
 
 const FrameLabs = express();
-
-// Basic CORS middleware
-FrameLabs.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
-
 FrameLabs.use(express.json());
 FrameLabs.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const path = require('path');
 
-// Serve static files from public directory
 FrameLabs.use(express.static(path.join(__dirname, 'public')));
-
-// Log all requests
-FrameLabs.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-});
 
 //Connect to MongoDB
 const connectDB = require('./db.js');
@@ -293,293 +272,45 @@ FrameLabs.post('/api/user/:id/controller', async (req, res) => {
       res.status(201).json(newPreset);
 })
 
-FrameLabs.post('/launch-ikemen', async (req, res) => {
+
+FrameLabs.post('/launch-training-ikemen', (req, res) => {
+  const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+  const cwd = path.dirname(ikemenPath);
+
+  console.log(`Launching Ikemen GO from: ${ikemenPath}`);
+
   try {
-    console.log('Received launch-ikemen request');
-    
-    // Path to Ikemen GO executable
-    const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
-    console.log('Ikemen path:', ikemenPath);
-
-    if (!fs.existsSync(ikemenPath)) {
-      console.error('Ikemen executable not found at:', ikemenPath);
-      return res.status(500).json({ error: 'Ikemen GO executable not found' });
-    }
-
-  // Read optional target position/size from the request body (sent by the browser)
-  // Expect numbers: { x, y, width, height }
-  const reqX = Number.isFinite(req.body?.x) ? req.body.x : null;
-  const reqY = Number.isFinite(req.body?.y) ? req.body.y : null;
-  const reqW = Number.isFinite(req.body?.width) ? req.body.width : null;
-  const reqH = Number.isFinite(req.body?.height) ? req.body.height : null;
-
-  // Fixed size (use passed width/height or default)
-  const gameWidth = reqW || 1280;
-  const gameHeight = reqH || 720;
-
-  // If the client provided coordinates, use them. Otherwise default to 0,0
-  // Note: a browser cannot actually "embed" a native window. What we do here is
-  // move the native game window to the given screen coordinates so it visually
-  // overlaps the browser page area. The page should compute its element's
-  // absolute screen coordinates and POST them to this endpoint.
-  const targetX = reqX !== null ? reqX : 0;
-  const targetY = reqY !== null ? reqY : 0;
-
-  console.log('Setting up game window...');
-  console.log('Requested position/size:', { x: targetX, y: targetY, width: gameWidth, height: gameHeight });
-
-    // Allow client to request fullscreen instead of windowed placement
-    const fullscreen = !!req.body?.fullscreen;
-
-    // Launch args for Ikemen GO. In fullscreen mode we use fullscreen flags,
-    // otherwise request windowed with the requested client size to make positioning work.
-    const args = fullscreen ? [
-      '-fullscreen', '1'
-    ] : [
-      '-windowed', '1',
-      '-screenwidth', gameWidth.toString(),
-      '-screenheight', gameHeight.toString()
-    ];
-
-    // PowerShell script to launch and position the window.
-    // Start-Process may return before the game's main window appears; poll for the MainWindowHandle.
-    const psScript = `
-      $ErrorActionPreference = 'Stop'
-      # Launch game and get process id
-      $proc = Start-Process -FilePath '${ikemenPath}' -ArgumentList '${args.join(' ')}' -WorkingDirectory '${path.dirname(ikemenPath)}' -WindowStyle Normal -PassThru
-      $gamePid = $proc.Id
-
-      # Wait up to 10 seconds for the main window handle to be available
-      $hwnd = $null
-      for ($i = 0; $i -lt 20; $i++) {
-        Start-Sleep -Milliseconds 500
-        try {
-          $p = Get-Process -Id $gamePid -ErrorAction Stop
-          if ($p.MainWindowHandle -ne 0) { $hwnd = $p.MainWindowHandle; break }
-        } catch {
-          # process may not yet be listed; continue polling
-        }
-      }
-
-      if ($hwnd) {
-        Add-Type -TypeDefinition @"
-          using System;
-          using System.Runtime.InteropServices;
-          public class Win32 {
-            [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-            [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-          }
-"@
-        # Suppress boolean return values so PowerShell doesn't emit 'True'/'False' to stdout
-        [void][Win32]::SetWindowPos([IntPtr]$hwnd, [IntPtr]::new(-1), ${targetX}, ${targetY}, ${gameWidth}, ${gameHeight}, 0x0040)
-        [void][Win32]::ShowWindow([IntPtr]$hwnd, 1)
-      }
-
-  # Output the pid so Node can read it
-  Write-Output $gamePid
-    `;
-
-    console.log('Executing PowerShell script to launch and position game...');
-    const psProcess = spawn('powershell.exe', ['-NoProfile', '-Command', psScript], { windowsHide: false });
-
-    let launchedPid = null;
-    let errorOutput = '';
-
-    psProcess.stdout.on('data', data => {
-      const raw = data.toString();
-      // PowerShell may emit multiple lines; process each
-      raw.split(/\r?\n/).forEach(line => {
-        const text = line.trim();
-        if (!text) return;
-        console.log('PowerShell stdout:', text);
-        // Ignore non-informational boolean outputs from Win32 calls
-        if (text === 'True' || text === 'False') return;
-        const parsed = parseInt(text, 10);
-        if (!isNaN(parsed) && parsed > 0) {
-          launchedPid = parsed;
-        } else {
-          // Any other non-numeric text is appended to errorOutput
-          errorOutput += text + '\n';
-        }
-      });
+    const ikemenProcess = spawn(ikemenPath, [], {
+      cwd,
+      env: { ...process.env, AUTOTRAIN: '1' },
     });
 
-    psProcess.stderr.on('data', data => {
-      const text = data.toString().trim();
-      console.error('PowerShell stderr:', text);
-      errorOutput += text + '\n';
+    // Log Ikemen output
+    ikemenProcess.stdout.on('data', (data) => {
+      console.log(`Ikemen: ${data.toString().trim()}`);
     });
 
-    // Wait for the PowerShell helper to finish
-    await new Promise((resolve, reject) => {
-      psProcess.on('close', code => {
-        console.log('PowerShell helper exit code:', code);
-        if (code === 0) resolve();
-        else reject(new Error(`PowerShell helper failed (code ${code}): ${errorOutput}`));
-      });
+    ikemenProcess.stderr.on('data', (data) => {
+      console.error(`Ikemen Error: ${data.toString().trim()}`);
     });
 
-    // We already captured the launched PID from the script run (launchedPid).
-    if (errorOutput) {
-      throw new Error('Failed to launch game: ' + errorOutput);
-    }
-
-    if (!launchedPid) {
-      throw new Error('Game process ID not received from PowerShell script');
-    }
-
-    console.log('Game launched successfully with PID:', launchedPid);
-  // If the client requested a specific position/size and we're NOT launching fullscreen,
-  // attempt to adjust the running window so the game's client area matches the requested width/height.
-  if (!fullscreen && typeof targetX === 'number' && typeof targetY === 'number') {
-      try {
-        console.log('Attempting to position game window to', { x: targetX, y: targetY, width: gameWidth, height: gameHeight });
-
-        const psPositionScript = `
-          $ErrorActionPreference = 'Stop'
-          $pid = ${launchedPid}
-          $hwnd = $null
-          for ($i=0; $i -lt 20; $i++) {
-            Start-Sleep -Milliseconds 250
-            try { $p = Get-Process -Id $pid -ErrorAction Stop; if ($p.MainWindowHandle -ne 0) { $hwnd = $p.MainWindowHandle; break } } catch { }
-          }
-          if (-not $hwnd) { Write-Error "Could not find main window for pid $pid"; exit 1 }
-
-          Add-Type -TypeDefinition @"
-            using System;
-            using System.Runtime.InteropServices;
-            public struct RECT { public int left; public int top; public int right; public int bottom; }
-            public class Win32 {
-              [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-              [DllImport("user32.dll")] public static extern bool AdjustWindowRectEx(ref RECT lpRect, uint dwStyle, bool bMenu, uint dwExStyle);
-              [DllImport("user32.dll")] public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-            }
-"@
-          $style = [Win32]::GetWindowLong([IntPtr]$hwnd, -16)
-          $exStyle = [Win32]::GetWindowLong([IntPtr]$hwnd, -20)
-
-          Write-Output "FOUND_HWND:$hwnd"
-          Write-Output "STYLE:$style"
-          Write-Output "EXSTYLE:$exStyle"
-
-          $rect = New-Object RECT
-          $rect.left = 0; $rect.top = 0; $rect.right = ${gameWidth}; $rect.bottom = ${gameHeight}
-          [void][Win32]::AdjustWindowRectEx([ref]$rect, [uint32]$style, $false, [uint32]$exStyle)
-
-          $outerW = $rect.right - $rect.left
-          $outerH = $rect.bottom - $rect.top
-
-          Write-Output "OUTER_SIZE:${outerW},${outerH}"
-
-          [void][Win32]::MoveWindow([IntPtr]$hwnd, ${targetX}, ${targetY}, $outerW, $outerH, $true)
-          Write-Output "POSITIONED"
-        `;
-
-        const posProcess = spawn('powershell.exe', ['-NoProfile', '-Command', psPositionScript], { windowsHide: false });
-        let posErr = '';
-        posProcess.stdout.on('data', d => console.log('position stdout:', d.toString().trim()));
-        posProcess.stderr.on('data', d => { console.error('position stderr:', d.toString().trim()); posErr += d.toString(); });
-
-        await new Promise((resolve, reject) => {
-          posProcess.on('close', code => {
-            console.log('Position helper exit code:', code);
-            if (code === 0) resolve(); else reject(new Error('Position helper failed: ' + posErr));
-          });
-        });
-
-        console.log('Window positioned successfully');
-      } catch (posErr) {
-        console.warn('Window positioning failed:', posErr);
-        // We don't fail the entire request if positioning fails; return success with warning
-      }
-    }
-
-    res.json({ 
-      success: true,
-      message: 'Game launched',
-      pid: launchedPid
+    ikemenProcess.on('error', (err) => {
+      console.error('Failed to start Ikemen GO:', err);
     });
 
+    ikemenProcess.on('exit', (code, signal) => {
+      console.log(`Ikemen GO exited with code ${code} (signal: ${signal})`);
+      // Optional: trigger cleanup or callback logic here
+    });
+
+    // Respond to the HTTP request
+    res.status(200).json({ message: 'Ikemen GO launched in training mode!' });
   } catch (err) {
-    console.error('Error launching Ikemen GO:', err);
-    res.status(500).json({ 
-      error: 'Failed to launch Ikemen GO',
-      details: err.message
-    });
+    console.error('Unexpected error:', err);
+    res.status(500).json({ error: 'Failed to launch Ikemen GO' });
   }
 });
 
-// Reposition an already-running game's window by PID
-FrameLabs.post('/position-window', async (req, res) => {
-  try {
-    const { pid, x, y, width, height } = req.body || {};
-    if (!pid || !Number.isInteger(pid)) return res.status(400).json({ error: 'pid (integer) is required' });
-    const targetX = Number.isFinite(x) ? x : 0;
-    const targetY = Number.isFinite(y) ? y : 0;
-    const gameWidth = Number.isFinite(width) ? width : 1280;
-    const gameHeight = Number.isFinite(height) ? height : 720;
-
-    console.log('Position request for pid', pid, '->', { x: targetX, y: targetY, width: gameWidth, height: gameHeight });
-
-    const psPositionScript = `
-      $ErrorActionPreference = 'Stop'
-      $pid = ${pid}
-      $hwnd = $null
-      for ($i=0; $i -lt 20; $i++) {
-        Start-Sleep -Milliseconds 250
-        try { $p = Get-Process -Id $pid -ErrorAction Stop; if ($p.MainWindowHandle -ne 0) { $hwnd = $p.MainWindowHandle; break } } catch { }
-      }
-      if (-not $hwnd) { Write-Error "Could not find main window for pid $pid"; exit 1 }
-
-      Add-Type -TypeDefinition @"
-        using System;
-        using System.Runtime.InteropServices;
-        public struct RECT { public int left; public int top; public int right; public int bottom; }
-        public class Win32 {
-          [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-          [DllImport("user32.dll")] public static extern bool AdjustWindowRectEx(ref RECT lpRect, uint dwStyle, bool bMenu, uint dwExStyle);
-          [DllImport("user32.dll")] public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        }
-"@
-
-      $style = [Win32]::GetWindowLong([IntPtr]$hwnd, -16)
-      $exStyle = [Win32]::GetWindowLong([IntPtr]$hwnd, -20)
-
-      Write-Output "FOUND_HWND:$hwnd"
-      Write-Output "STYLE:$style"
-      Write-Output "EXSTYLE:$exStyle"
-
-      $rect = New-Object RECT
-      $rect.left = 0; $rect.top = 0; $rect.right = ${gameWidth}; $rect.bottom = ${gameHeight}
-      [void][Win32]::AdjustWindowRectEx([ref]$rect, [uint32]$style, $false, [uint32]$exStyle)
-
-      $outerW = $rect.right - $rect.left
-      $outerH = $rect.bottom - $rect.top
-
-      Write-Output "OUTER_SIZE:${outerW},${outerH}"
-
-      [void][Win32]::MoveWindow([IntPtr]$hwnd, ${targetX}, ${targetY}, $outerW, $outerH, $true)
-      Write-Output "POSITIONED"
-    `;
-
-    const posProcess = spawn('powershell.exe', ['-NoProfile', '-Command', psPositionScript], { windowsHide: false });
-    let posErr = '';
-    posProcess.stdout.on('data', d => console.log('position stdout:', d.toString().trim()));
-    posProcess.stderr.on('data', d => { console.error('position stderr:', d.toString().trim()); posErr += d.toString(); });
-
-    await new Promise((resolve, reject) => {
-      posProcess.on('close', code => {
-        console.log('Position helper exit code:', code);
-        if (code === 0) resolve(); else reject(new Error('Position helper failed: ' + posErr));
-      });
-    });
-
-    res.json({ success: true, message: 'Window positioned' });
-  } catch (err) {
-    console.error('Error positioning window:', err);
-    res.status(500).json({ error: 'Failed to position window', details: err.message });
-  }
-});
 
 //Return all the Community Guides
 FrameLabs.get('/api/community/guide', async (req, res) => {

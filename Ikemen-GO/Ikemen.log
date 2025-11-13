@@ -1,7 +1,4 @@
-external/script/main.lua:4034: <game end>
+external/script/main.lua:4163: attempt to call a non-function object
 stack traceback:
-	[G]: in function 'refresh'
-	external/script/main.lua:4034: in function 'f_menuCommonDraw'
-	external/script/main.lua:3101: in function 'loop'
-	external/script/main.lua:4156: in main chunk
+	external/script/main.lua:4163: in main chunk
 	[G]: ?
