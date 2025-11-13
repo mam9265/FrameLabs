@@ -6,9 +6,12 @@ const userAccountSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  name: {
+  name: { type: String, required: true },
+  email: { type: String },
+  skill: {
     type: String,
-    required: true,
+    enum: ['baby', 'child', 'average', 'lord', 'king', 'force', 'god'],
+    default: 'average',
   },
   profilePicture: {
     data: Buffer,

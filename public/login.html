@@ -120,8 +120,9 @@
         }
 
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.userId);
         window.location.href = '/homePage.html';
-      } catch (err) {
+        } catch (err) {
         console.error('Login error:', err);
         errorDiv.textContent = 'Server error. Please try again later.';
       }

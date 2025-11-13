@@ -30,11 +30,12 @@
     .config-card {
       background-color: #2a006b;
       border-radius: 40px;
-      width: 400px;
+      width: 420px;
       padding: 40px;
       text-align: left;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 20px;
       color: #9be0e3;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
@@ -46,12 +47,22 @@
       transform: scale(1.02);
     }
 
+    .profile-preview {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #9be0e3;
+      box-shadow: 0 0 12px rgba(155, 224, 227, 0.5);
+    }
+
     label {
       font-size: 16px;
       letter-spacing: 1px;
+      align-self: flex-start;
     }
 
-    input, textarea, select {
+    input, select {
       width: 100%;
       padding: 10px;
       border-radius: 10px;
@@ -78,6 +89,7 @@
       transition: background-color 0.3s, transform 0.2s;
       font-family: 'Orbitron', sans-serif;
       letter-spacing: 1px;
+      width: 100%;
     }
 
     button:hover {
@@ -91,11 +103,13 @@
       left: 30px;
       background-color: #2a006b;
       color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
       font-size: 18px;
       padding: 15px 30px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
+      width: auto;
       transition: background-color 0.3s, transform 0.2s;
       letter-spacing: 1px;
     }
@@ -111,15 +125,13 @@
 
   <div class="config-container">
     <form id="ConfigForm" class="config-card">
+      <img id="profilePreview" src="images/default.jpg" alt="Profile Picture" class="profile-preview">
 
-      <label for="username">Username:</label>
-      <input id="username" name="username" type="text" required>
+      <h2 id="accountName">Loading...</h2>
+      <p id="accountEmail"></p>
 
-      <label for="email">Email:</label>
-      <input id="email" name="email" type="email" required>
-
-      <button type="button" onclick="changePicture()">Change Picture</button>
-      <button type="button" onclick="changePassword()">Change Password</button>
+      <button type="button" id="pictureBtn">Change Picture</button>
+      <button type="button" id="passwordBtn">Change Password</button>
 
       <label for="skill">Choose a skill level that best represents you:</label>
       <select name="skill" id="skill" required>
@@ -139,12 +151,163 @@
   <button class="back-button" onclick="window.location.href='homePage.html'">⟵ MAIN MENU</button>
 
   <script>
-    function changePicture() {
-      alert("Change picture function coming soon!");
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+    const form = document.getElementById("ConfigForm");
+    const accountName = document.getElementById("accountName");
+    const accountEmail = document.getElementById("accountEmail");
+    const skillSelect = document.getElementById("skill");
+    const profilePreview = document.getElementById("profilePreview");
+  
+    async function loadAccountInfo() {
+      try {
+        if (!userId) {
+          alert("User ID not found. Please log in again.");
+          window.location.href = "/login.html";
+          return;
+        }
+  
+        const res = await fetch(`/api/user/${userId}/account`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+  
+        if (!res.ok) throw new Error("Failed to load account info");
+        const data = await res.json();
+  
+        accountName.textContent = data.name || "Unnamed User";
+        accountEmail.textContent = data.email ? `📧 ${data.email}` : "";
+        skillSelect.value = data.skill || "average";
+        profilePreview.src = data.profilePicturePath || "images/default.jpg";
+  
+      } catch (err) {
+        console.error("Error loading account:", err);
+        accountName.textContent = "Error Loading Account";
+        profilePreview.src = "images/default.jpg";
+      }
     }
-    function changePassword() {
-      alert("Change password function coming soon!");
-    }
+  
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+  
+      if (!userId) {
+        alert("User ID not found. Please log in again.");
+        window.location.href = "/login.html";
+        return;
+      }
+  
+      const updatedData = { skill: skillSelect.value };
+  
+      try {
+        const res = await fetch(`/api/user/${userId}/account`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(updatedData)
+        });
+  
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || "Failed to update configuration");
+        }
+  
+        alert("Skill level updated successfully!");
+      } catch (err) {
+        console.error("Error saving config:", err);
+        alert("Failed to update account info: " + err.message);
+      }
+    });
+  
+    document.getElementById("pictureBtn").addEventListener("click", () => {
+      if (!userId) {
+        alert("User ID not found. Please log in again.");
+        window.location.href = "/login.html";
+        return;
+      }
+  
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+  
+      input.onchange = async () => {
+        const file = input.files[0];
+        if (!file) return;
+  
+        const formData = new FormData();
+        formData.append("profilePicture", file);
+  
+        try {
+          const res = await fetch(`/api/user/${userId}/account`, {
+            method: "PUT",
+            headers: { "Authorization": `Bearer ${token}` },
+            body: formData
+          });
+  
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || "Failed to upload image");
+          }
+
+          profilePreview.src = URL.createObjectURL(file);
+          alert("Profile picture updated successfully!");
+        } catch (err) {
+          console.error("Error uploading picture:", err);
+          alert("Failed to change picture: " + err.message);
+        }
+      };
+  
+      input.click();
+    });
+  
+    document.getElementById("passwordBtn").addEventListener("click", () => {
+      alert("Change Password feature coming soon!");
+    });
+  
+    loadAccountInfo();
   </script>
+
+<div id="passwordModal" style="
+  display:none;
+  position: fixed;
+  top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index: 2000;
+">
+  <div style="
+    background:#2a006b;
+    padding:30px;
+    border-radius:20px;
+    width:350px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+  ">
+    <h2 style="margin-bottom:20px;">Change Password</h2>
+
+    <input id="oldPass" type="password" placeholder="Current Password" style="
+      width:100%; padding:10px; margin-bottom:15px; border-radius:10px;
+      border:none; background:#9be0e3; color:#2a006b;
+    ">
+
+    <input id="newPass" type="password" placeholder="New Password" style="
+      width:100%; padding:10px; margin-bottom:15px; border-radius:10px;
+      border:none; background:#9be0e3; color:#2a006b;
+    ">
+
+    <button id="submitPassword" style="
+      width:100%; padding:12px; margin-top:10px;
+      background:#9be0e3; color:#2a006b; font-weight:bold;
+      border:none; border-radius:20px; cursor:pointer;
+    ">Update Password</button>
+
+    <button id="closePassword" style="
+      width:100%; padding:12px; margin-top:10px;
+      background:#3a008b; color:#9be0e3;
+      border:none; border-radius:20px; cursor:pointer;
+    ">Cancel</button>
+  </div>
+</div>
 </body>
 </html>

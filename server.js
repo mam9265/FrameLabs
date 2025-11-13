@@ -13,7 +13,7 @@ const auth = require('./Middleware/auth')
 const rolecheck = require('./Middleware/roleCheck')
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -115,7 +115,10 @@ FrameLabs.post('/api/login', async (req, res) => {
     );
 
     console.log('Login successful, token generated');
-    res.json({ token });
+    res.json({
+      token,
+      userId: existingUser._id
+    });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ error: 'Server error during login' });
@@ -836,35 +839,78 @@ FrameLabs.get('/api/user', async (req, res) => {
     }
 })
 
-//Get all user account information
+// Get all user account information
 FrameLabs.get('/api/user/:id/account', async (req, res) => {
-    const userId = req.params.id;
-    try {
-      const account = await userAccount.findOne({ userId: userId });
-      if (account) {
-          res.json(account);
-      } else {
-          res.status(404).json({ error: 'User account not found' });
-      }
-  } catch (error) {
-      res.status(500).json({ error: 'Server error', details: error.message });
-  }
-})
+  const userId = req.params.id;
+  try {
+    const account = await userAccount.findOne({ userId });
+    if (!account) {
+      return res.status(404).json({ error: 'User account not found' });
+    }
 
+    // Build response
+    const response = {
+      userId: account.userId,
+      name: account.name,
+      email: account.email || '',
+      skill: account.skill || 'average',
+      profilePicturePath: `/api/user/${userId}/profilePicture`,
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error('Error retrieving account:', error);
+    res.status(500).json({ error: 'Server error', details: error.message });
+  }
+});
+
+
+// Update user account info
+FrameLabs.put('/api/user/:id/account', upload.single('profilePicture'), async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { name, email, skill } = req.body;
+
+    let account = await userAccount.findOne({ userId });
+    if (!account) {
+      return res.status(404).json({ error: 'User account not found' });
+    }
+
+    if (name) account.name = name;
+    if (email) account.email = email;
+    if (skill) account.skill = skill;
+
+    if (req.file) {
+      account.profilePicture = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype
+      };
+    }
+
+    await account.save();
+
+    res.json({
+      message: 'Account updated successfully',
+      profilePicturePath: `/api/user/${userId}/profilePicture`
+    });
+
+  } catch (err) {
+    console.error('Error updating account:', err);
+    res.status(500).json({ error: 'Server error', details: err.message });
+  }
+});
+
+
+// Get profile picture
 FrameLabs.get('/api/user/:id/profilePicture', async (req, res) => {
   try {
     const userId = req.params.id;
-    console.log('GET profilePicture for userId =', userId);
-
     const account = await userAccount.findOne({ userId });
-    console.log('Account found:', account);
 
-    if (!account || !account.profilePicture || !account.profilePicture.data) {
-      console.warn('Profile picture not found for userId', userId);
+    if (!account || !account.profilePicture?.data) {
       return res.status(404).json({ error: 'Profile picture not found' });
     }
 
-    console.log('Sending picture contentType =', account.profilePicture.contentType);
     res.contentType(account.profilePicture.contentType);
     res.send(account.profilePicture.data);
   } catch (err) {
