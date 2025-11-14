@@ -18,36 +18,82 @@
       margin: 0;
     }
 
-    .login-container {
-      background-color: #2a006b;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-      width: 600px;
-      height: 450px;
-      text-align: center;
+    .wrapper {
+      display: flex;
+      background: 
+        linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+        url('/images/bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 85%;
+      max-width: 1200px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
     }
 
-    h1 {
-      margin-bottom: 25px;
-      font-size: 40px;
+    /* LEFT SIDE - INTRO */
+    .info-panel {
+      flex: 1;
+      padding: 40px;
+      background: linear-gradient(180deg, #3f0091, #2a006b);
+      color: #9be0e3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .info-panel h1 {
+      font-size: 70px;
+      margin-top: 10px;
+      margin-bottom: 20px;
       letter-spacing: 3px;
     }
 
+    .info-panel h2 {
+      font-size: 28px;
+      margin-bottom: 25px;
+      color: #ffcc00;
+    }
+
+    .features {
+      margin-top: 10px;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    .features li {
+      margin-bottom: 10px;
+    }
+
+    /* RIGHT SIDE - LOGIN */
+    .login-panel {
+      flex: 0.7;
+      padding: 50px;
+      text-align: center;
+      background-color: #1a0047;
+    }
+
+    .login-panel h3 {
+      font-size: 34px;
+      margin-bottom: 25px;
+    }
+
     input {
-      width: 95%;
-      padding: 10px;
-      margin: 10px 0;
+      width: 90%;
+      padding: 12px;
+      margin: 12px 0;
       border: none;
       border-radius: 6px;
       font-family: 'Orbitron', sans-serif;
       text-align: center;
-      font-size: 25px;
+      font-size: 22px;
     }
 
     button {
-      width: 100%;
-      padding: 12px;
+      width: 95%;
+      padding: 14px;
       background-color: #9be0e3;
       color: #2a006b;
       font-size: 24px;
@@ -65,13 +111,13 @@
     .error {
       color: #ff7070;
       margin-top: 15px;
-      font-size: 14px;
+      font-size: 16px;
     }
 
     .register-link {
       display: block;
-      margin-top: 20px;
-      font-size: 18px;
+      margin-top: 25px;
+      font-size: 20px;
       color: #ffcc00;
       text-decoration: none;
       cursor: pointer;
@@ -81,17 +127,37 @@
       text-decoration: underline;
       color: #e6b800;
     }
+
   </style>
 </head>
 
 <body>
-  <div class="login-container">
-    <h1>LOGIN</h1>
-    <input type="text" id="username" placeholder="Username" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Sign In</button>
-    <a href="/register.html" class="register-link">Create Account</a>
-    <div id="error" class="error"></div>
+  <div class="wrapper">
+
+    <!-- LEFT SIDE -->
+    <div class="info-panel">
+      <h1>Frame Labs</h1>
+      <h2>The Fighting Game App</h2>
+
+      <ul class="features">
+        <li>Learn combos, frame data, and execution</li>
+        <li>Complete community-made trials</li>
+        <li>Track your practice and progress</li>
+        <li>Discover guides & character tech</li>
+        <li>Connect with players worldwide</li>
+      </ul>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="login-panel">
+      <h3>Sign In</h3>
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+      <a href="/register.html" class="register-link">Create Account</a>
+      <div id="error" class="error"></div>
+    </div>
+
   </div>
 
   <script>
@@ -122,11 +188,12 @@
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.userId);
         window.location.href = '/homePage.html';
-        } catch (err) {
+      } catch (err) {
         console.error('Login error:', err);
         errorDiv.textContent = 'Server error. Please try again later.';
       }
     }
   </script>
+
 </body>
 </html>
