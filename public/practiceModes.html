@@ -75,17 +75,17 @@
 <body>
   <h1>PRACTICE MODE</h1>
   <div class="row">
-    <div class="card" onclick="launchIkemen()">
+    <div class="card" onclick="launchTrainingIkemen()">
       <span class="emoji">🥋</span>
       <h2>FREESTYLE TRAINING</h2>
       <p>SELECT A CHARACTER AND EXPERIMENT ON A DUMMY.</p>
     </div>
 
-    <a href="./practiceModeScreens/comboTrials.html" class="card">
+    <div class="card" onclick="launchTrialIkemen()">
       <span class="emoji">🎮</span>
       <h2>COMBO TRIALS</h2>
       <p>TRY TO ENTER THE CORRECT COMBOS FOR EACH CHARACTER.</p>
-    </a>
+    </div>
 
     <a href="./practiceModeScreens/basicTutorial.html" class="card">
       <span class="emoji">📘</span>
@@ -107,8 +107,14 @@
       window.location.href = "homePage.html";
     }
 
-    function launchIkemen() {
+    function launchTrainingIkemen() {
       fetch('/launch-training-ikemen', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => alert(data.message))
+        .catch(err => alert('Error launching Ikemen GO: ' + err.message));
+    }
+    function launchTrialIkemen() {
+      fetch('/launch-trail-ikemen', { method: 'POST' })
         .then(res => res.json())
         .then(data => alert(data.message))
         .catch(err => alert('Error launching Ikemen GO: ' + err.message));

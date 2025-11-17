@@ -14,7 +14,7 @@ localcoord = 320,240        ;Local coordinate space width and height
 
 ; Files for the player
 [Files]
-trials = trials.def        ;Ikemen feature: Trials mode data
+trials=trials.def        ;Ikemen feature: Trials mode data
 cmd     = kfm.cmd           ;Command set
 cns     = kfm.const           ;Constants
 st      = kfm.zss           ;States

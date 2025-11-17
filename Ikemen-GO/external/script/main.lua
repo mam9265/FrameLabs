@@ -2916,6 +2916,36 @@ main.t_itemname = {
 	end,
 	--TRIALS
 	['trials'] = function()
+		setHomeTeam(1)
+		main.f_playerInput(main.playerInput, 1)
+		main.t_pIn[2] = 1
+
+		-- Force player 2 character if defined
+		if main.t_charDef[config.TrainingChar:lower()] ~= nil then
+			main.forceChar[2] = {main.t_charDef[config.TrainingChar:lower()]}
+		end
+
+		-- Set some UI / menu flags
+		main.selectMenu[2] = true
+		main.stageMenu = true
+		main.teamMenu[1].ratio = false
+		main.teamMenu[1].simul = false
+		main.teamMenu[1].single = true
+		main.teamMenu[1].tag = false
+		main.teamMenu[1].turns = false
+		main.teamMenu[2].single = true
+
+		-- Update menu text
+		if motif and motif.select_info and motif.select_info.title_trials_text then
+			main.txt_mainSelect:update({text = motif.select_info.title_trials_text})
+		end
+
+		-- Set the game mode to trials
+		setGameMode('trials')
+		hook.run("main.t_itemname")
+
+		-- Return the function that opens the select menu
+		return start.f_selectMode
 	end,
 	--VS MODE / TEAM VERSUS
 	['versus'] = function(t, item)
@@ -4189,6 +4219,45 @@ else
             return
         else
             print("Training mode entry not found, falling back to default menu.")
+        end
+    end
+
+    if os.getenv("AUTOTRAIN") == "2" then
+        print("Auto-trail mode enabled.")
+
+        if main.t_itemname and type(main.t_itemname.trials) == "function" then
+            print("Launching trail mode automatically.")
+
+            if type(main.f_default) == "function" then
+                main.f_default()
+            end
+
+            local startFunc = main.t_itemname.trials()
+
+            if motif and main.group and motif[main.group] then
+                main.f_fadeReset('fadeout', motif[main.group])
+            end
+
+            if type(main.f_unlock) == "function" then
+                main.f_unlock(false)
+            end
+
+            if type(startFunc) == "function" then
+                startFunc()
+            end
+
+            if type(main.f_default) == "function" then
+                main.f_default()
+            end
+
+            if type(main.f_unlock) == "function" then
+                main.f_unlock(false)
+            end
+
+            main.menu.loop()
+            return
+        else
+            print("Trail mode entry not found, falling back to default menu.")
         end
     end
 

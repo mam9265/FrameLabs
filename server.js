@@ -307,7 +307,43 @@ FrameLabs.post('/launch-training-ikemen', (req, res) => {
     });
 
     // Respond to the HTTP request
-    res.status(200).json({ message: 'Ikemen GO launched in training mode!' });
+  } catch (err) {
+    console.error('Unexpected error:', err);
+    res.status(500).json({ error: 'Failed to launch Ikemen GO' });
+  }
+});
+
+FrameLabs.post('/launch-trail-ikemen', (req, res) => {
+  const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+  const cwd = path.dirname(ikemenPath);
+
+  console.log(`Launching Ikemen GO from: ${ikemenPath}`);
+
+  try {
+    const ikemenProcess = spawn(ikemenPath, [], {
+      cwd,
+      env: { ...process.env, AUTOTRAIN: '2' },
+    });
+
+    // Log Ikemen output
+    ikemenProcess.stdout.on('data', (data) => {
+      console.log(`Ikemen: ${data.toString().trim()}`);
+    });
+
+    ikemenProcess.stderr.on('data', (data) => {
+      console.error(`Ikemen Error: ${data.toString().trim()}`);
+    });
+
+    ikemenProcess.on('error', (err) => {
+      console.error('Failed to start Ikemen GO:', err);
+    });
+
+    ikemenProcess.on('exit', (code, signal) => {
+      console.log(`Ikemen GO exited with code ${code} (signal: ${signal})`);
+      // Optional: trigger cleanup or callback logic here
+    });
+
+    // Respond to the HTTP request
   } catch (err) {
     console.error('Unexpected error:', err);
     res.status(500).json({ error: 'Failed to launch Ikemen GO' });
@@ -349,7 +385,6 @@ FrameLabs.post('/launch-ikemen', (req, res) => {
     });
 
     res.status(200).json({
-      message: 'Ikemen GO launched in training mode!',
       pid: ikemenProcess.pid,
     });
   } catch (err) {

@@ -16,92 +16,245 @@
 -- mode is in README.md.
 -------------------------------------------------------------------------
 
--- Some environments (like automated practice launches) may load this module
--- before the engine registers helpers such as motifLocalcoord. Provide a
--- harmless fallback so initialization doesn't crash.
-if type(motifLocalcoord) ~= "function" then
-	function motifLocalcoord(value)
-		return value
-	end
-end
-
 --;===========================================================
 --; Local Functions
 --;===========================================================
 
-local function f_timeConvert(value)
-	-- converts ticks to time
-	local totalSec = value / 60 --used to be framerate
-	local h = tostring(math.floor(totalSec / 3600))
-	local m = tostring(math.floor((totalSec / 3600 - h) * 60))
-	local s = tostring(math.floor(((totalSec / 3600 - h) * 60 - m) * 60))
-	local x = tostring(math.floor((((totalSec / 3600 - h) * 60 - m) * 60 - s) *100))
-	if string.len(m) < 2 then
-		m = 0 .. m
-	end
-	if string.len(s) < 2 then
-		s = 0 .. s
-	end
-	if string.len(x) < 2 then
-		x = 0 .. x
-	end
-	return m, s, x
-end
-
-local function f_trimforchar(line, char, when)
-	-- trims a string before or after a specified character.
-	-- also trims leading and trailing whitespace
-	x = string.find(line, char)
-	if x ~= nil then
-		if when == "after" then
-			line = string.sub(line, x+1, #line)
-		elseif when == "before" then
-			line = string.sub(line, 1, x-1)
-		end
-		line = string.gsub(line, '^%s*(.-)%s*$', '%1')
-		line = string.gsub(line, '[ \t]+%f[\r\n%z]', '')
-	else
-		line = ""
-	end
-	return line
-end
-
-local function f_str2boolean(str)
-	-- converts a table of "true" and "false" strings to bool
-    local bool = {}
-	for x = 1, #str, 1 do
-		if string.lower(str[x]) == "true" then
-			bool[x] = true
-		else
-			bool[x] = false
-		end
-	end
-    return bool
-end
-
-local function f_str2number(str)
-	-- converts a table of strings to numbers
-    local array = {}
-	for x = 1, #str, 1 do
-		array[x] = tonumber(str[x])
-	end
-    return array
-end
-
-local function f_deepCopy(orig)
-	-- copies a table into a local instance that can be modified freely
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[f_deepCopy(orig_key)] = f_deepCopy(orig_value)
-        end
-        setmetatable(copy, f_deepCopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
+-- Force a path to be absolute
+local function forceAbsolutePath(path)
+	if not path or path == "" then return "" end
+    -- Already absolute on Windows (C:\ or \\) or Unix (/)
+    if path:match("^%a:\\") or path:match("^/") or path:match("^\\\\") then
+        return path:gsub("/", "\\") -- normalize slashes
     end
-    return copy
+    -- Otherwise prepend current working directory
+    local cwd = io.popen("cd"):read("*l")
+    if cwd:sub(-1) ~= "\\" and cwd:sub(-1) ~= "/" then
+        cwd = cwd .. "\\"
+    end
+    return (cwd .. path):gsub("/", "\\") -- normalize slashes
+end
+
+-- Convert ticks to time
+local function f_timeConvert(value)
+    local totalSec = value / 60
+    local h = math.floor(totalSec / 3600)
+    local m = math.floor((totalSec % 3600) / 60)
+    local s = math.floor(totalSec % 60)
+    local x = math.floor((totalSec - math.floor(totalSec)) * 100)
+
+    m = string.format("%02d", m)
+    s = string.format("%02d", s)
+    x = string.format("%02d", x)
+
+    return m, s, x
+end
+
+-- Load a text file safely
+local function loadText(filename)
+    if not filename then return "" end
+    local file = io.open(filename, "r")
+    if not file then
+        print("Warning: could not open file:", filename)
+        return ""
+    end
+    local content = file:read("*a")
+    file:close()
+    return content
+end
+
+-- Trim string by char
+local function f_trimforchar(str, char, mode)
+    if not str then return "" end
+    local before, after = str:match("(.-)" .. char .. "(.*)")
+    if mode == "before" then return before or str
+    elseif mode == "after" then return after or "" end
+    return str
+end
+
+-- Convert string(s) to number(s)
+local function f_str2number(t)
+    if type(t) == "table" then
+        for i = 1, #t do t[i] = tonumber(t[i]) end
+        return t
+    else
+        return tonumber(t)
+    end
+end
+
+-- Convert string(s) to boolean(s)
+local function f_str2boolean(t)
+    if type(t) == "table" then
+        for i = 1, #t do
+            t[i] = (t[i] == "true" or t[i] == true) and true or false
+        end
+        return t
+    else
+        return (t == "true" or t == true) and true or false
+    end
+end
+
+-- Split string by separator safely
+local function safe_strsplit(sep, str)
+    local t = {}
+    if not str then return t end
+    for part in str:gmatch("([^" .. sep .. "]+)") do
+        table.insert(t, part)
+    end
+    return t
+end
+
+--;===========================================================
+--; Main Trials Loader
+--;===========================================================
+
+for row = 1, #main.t_selChars do
+    if main.t_selChars[row].def then
+        main.t_selChars[row].trialsdef = ""
+
+        -- Load character definition file
+        local deffile = loadText(main.t_selChars[row].def)
+        for line in deffile:gmatch("([^\r\n]*)[\r\n]?") do
+            line = line:gsub('%s*;.*$', '') -- remove comments
+            local lcline = line:lower()
+
+            -- Find trials file
+            if lcline:match('trials') then
+				local path = f_trimforchar(line, "=", "after") or ""
+				path = path:gsub("^%s*(.-)%s*$", "%1") -- remove spaces
+				
+				local dir = main.t_selChars[row].dir or ""
+				dir = dir:gsub("^%s*(.-)%s*$", "%1") -- remove spaces
+				
+				-- Ensure dir ends with a slash if not empty
+				if dir ~= "" and dir:sub(-1) ~= "/" and dir:sub(-1) ~= "\\" then
+					dir = dir .. "/"
+				end
+				
+				main.t_selChars[row].trialsdef = forceAbsolutePath(dir .. path)
+				main.t_selChars[row].trialsdef = main.t_selChars[row].trialsdef:gsub("^%s*(.-)%s*$", "%1") -- trim final string
+				
+				print("Loading trials file: [" .. main.t_selChars[row].trialsdef .. "]")
+                break
+            end
+        end
+    end
+
+    -- Load and parse trials
+    if main.t_selChars[row].def and main.t_selChars[row].trialsdef ~= "" then
+        local i, j = 0, 0
+        local trial = {}
+        local trialsFile = loadText(main.t_selChars[row].trialsdef)
+        if trialsFile == "" then
+            print("Warning: trials.def could not be loaded for ", main.t_selChars[row].def)
+        else
+            for line in trialsFile:gmatch("([^\r\n]*)[\r\n]?") do
+                line = line:gsub('%s*;.*$', '')
+                local lcline = line:lower()
+
+                -- Trial definition block
+                if line:match('^%s*%[.-%s*%]%s*$') then
+                    line = line:match('^%s*%[(.-)%s*%]%s*$')
+                    if line:lower():match('^trialdef') then
+                        i = i + 1
+                        j = 0
+                        trial[i] = {
+                            name = f_trimforchar(line, ",", "after") ~= "" and f_trimforchar(line, ",", "after") or ("Trial " .. i),
+                            dummymode = "stand",
+                            guardmode = "none",
+                            buttonjam = "none",
+                            active = false,
+                            complete = false,
+                            p1life = -1,
+                            p2life = -1,
+                            playerpos = nil,
+                            dummypos = nil,
+                            showforvar = {nil},
+                            showforval = {nil},
+                            elapsedtime = 0,
+                            textbox = "",
+                            textcnt = 0,
+                            starttick = 0,
+                            trialstep = {}
+                        }
+                    end
+                end
+
+                -- Start of a trial step
+                if i > 0 and lcline:find("trialstep." .. (j+1) .. ".") then
+                    j = j + 1
+                    trial[i].trialstep[j] = {
+                        numofmicrosteps = 1,
+                        text = "",
+                        glyphs = "",
+                        stateno = {},
+                        animno = {},
+                        hitcount = {},
+                        stephitscount = {},
+                        combocountonstep = {},
+                        isthrow = {},
+                        ishelper = {},
+                        isproj = {},
+                        iscounterhit = {},
+                        validfortickcount = {},
+                        validforvar = {},
+                        validforval = {},
+                        glyphline = {
+                            vertical = { glyph = {}, pos = {}, width = {}, alignOffset = {}, lengthOffset = {}, scale = {} },
+                            horizontal = { glyph = {}, pos = {}, width = {}, alignOffset = {}, lengthOffset = {}, scale = {} },
+                        }
+                    }
+                end
+
+                -- Trial properties
+                if i > 0 then
+                    if lcline:find("dummymode") then
+                        trial[i].dummymode = f_trimforchar(lcline, "=", "after")
+                    elseif lcline:find("guardmode") then
+                        trial[i].guardmode = f_trimforchar(lcline, "=", "after")
+                    elseif lcline:find("dummybuttonjam") then
+                        trial[i].buttonjam = f_trimforchar(lcline, "=", "after")
+                    elseif lcline:find("playerlife") then
+                        trial[i].p1life = tonumber(f_trimforchar(lcline, "=", "after"))
+                    elseif lcline:find("dummylife") then
+                        trial[i].p2life = tonumber(f_trimforchar(lcline, "=", "after"))
+                    elseif lcline:find("playerpos") then
+                        trial[i].playerpos = f_trimforchar(lcline, "=", "after")
+                    elseif lcline:find("dummypos") then
+                        trial[i].dummypos = f_trimforchar(lcline, "=", "after")
+                    end
+                end
+
+                -- Trial step properties
+                if i > 0 and j > 0 then
+                    local step = trial[i].trialstep[j]
+                    if lcline:find("trialstep." .. j .. ".text") then
+                        step.text = f_trimforchar(line, "=", "after")
+                    elseif lcline:find("trialstep." .. j .. ".glyphs") then
+                        step.glyphs = f_trimforchar(line, "=", "after")
+                    elseif lcline:find("trialstep." .. j .. ".stateno") then
+                        step.stateno = f_str2number(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                        step.numofmicrosteps = #step.stateno
+                    elseif lcline:find("trialstep." .. j .. ".animno") then
+                        step.animno = f_str2number(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                    elseif lcline:find("trialstep." .. j .. ".hitcount") then
+                        step.hitcount = f_str2number(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                    elseif lcline:find("trialstep." .. j .. ".isthrow") then
+                        step.isthrow = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                    elseif lcline:find("trialstep." .. j .. ".iscounterhit") then
+                        step.iscounterhit = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                    elseif lcline:find("trialstep." .. j .. ".ishelper") then
+                        step.ishelper = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                    elseif lcline:find("trialstep." .. j .. ".isproj") then
+                        step.isproj = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                    end
+                end
+            end
+
+            -- Save parsed trial data
+            main.t_selChars[row].trialsdata = trial
+        end
+    end
 end
 
 --;===========================================================
@@ -111,8 +264,8 @@ main.t_itemname.trials = function()
 	setHomeTeam(1)
 	main.f_playerInput(main.playerInput, 1)
 	main.t_pIn[2] = 1
-	if config.TrainingChar ~= nil and config.TrainingChar ~= '' and main.t_charDef[config.TrainingChar:lower()] ~= nil then
-		main.forceChar[2] = {main.t_charDef[config.TrainingChar:lower()]}
+	if main.t_charDef[config.TrainingChar:lower()] ~= nil then
+		main.forceChar[2] = {main.t_charDef[gameOption('Config.TrainingChar'):lower()]}
   	end
 	--main.lifebar.p1score = false
 	--main.lifebar.p2aiLevel = true
@@ -136,6 +289,10 @@ end
 --;===========================================================
 if motif.select_info.title_trials_text == nil then
 	motif.select_info.title_trials_text = 'Trials'
+end
+
+function motifLocalcoord(x)
+    return x
 end
 
 local t_base = {
@@ -2014,324 +2171,180 @@ end
 --; trials.lua
 --;===========================================================
 
--- Find trials files and parse them; append t_selChars table
--- Skip if loadText is not available (e.g., during early initialization)
-if type(loadText) == "function" and main ~= nil and type(main) == "table" and main.t_selChars ~= nil and type(main.t_selChars) == "table" then
-for row = 1, #main.t_selChars, 1 do
-	if main.t_selChars[row].def ~= nil then
-		main.t_selChars[row].trialsdef = ""
-		local deffile = loadText(main.t_selChars[row].def)
-		for line in deffile:gmatch("([^\r\n]*)[\r\n]?") do
-			line = line:gsub('%s*;.*$', '')
-			lcline = string.lower(line)
-			if lcline:match('trials') then
-				main.t_selChars[row].trialsdef = main.t_selChars[row].dir .. f_trimforchar(line, "=", "after")
-				break
-			end
-		end
-	end
-	if  main.t_selChars[row].def ~= nil and main.t_selChars[row].trialsdef ~= "" then
-		i = 0 --Trial number
-		j = 0 --TrialStep number
-		trial = {}
-		local trialsFile = loadText(main.t_selChars[row].trialsdef)
 
-		for line in trialsFile:gmatch("([^\r\n]*)[\r\n]?") do
-			line = line:gsub('%s*;.*$', '')
-			lcline = string.lower(line)
+-- Iterate over selected characters
+for row = 1, #main.t_selChars do
+    local selChar = main.t_selChars[row]
+    if selChar.def then
+        selChar.trialsdef = ""
+        local deffile = loadText(selChar.def)
+        -- Find trials definition
+        for line in deffile:gmatch("([^\r\n]*)[\r\n]?") do
+            line = line:gsub('%s*;.*$', '') -- remove comments
+            local lcline = string.lower(line)
+            if lcline:match('trials') then
+                selChar.trialsdef = selChar.dir .. (f_trimforchar(line, "=", "after") or "")
+                break
+            end
+        end
+    end
 
-			if lcline:find("trialstep." .. j+1 .. ".") then
-				j = j + 1
-				trialsteplangfound = false
-				trial[i].trialstep[j] = {
-					numofmicrosteps = 1,
-					text = "",
-					glyphs = "",
-					stateno = {},
-					animno = {},
-					hitcount = {},
-					stephitscount = {},
-					combocountonstep = {},
-					isthrow = {},
-					ishelper = {},
-					isproj = {},
-					iscounterhit = {},
-					validfortickcount = {},
-					validforvar = {},
-					validforval = {},
-					glyphline = {
-						vertical = {
-							glyph = {},
-							pos = {},
-							width = {},
-							alignOffset = {},
-							lengthOffset = {},
-							scale = {},
-						},
-						horizontal = {
-							glyph = {},
-							pos = {},
-							width = {},
-							alignOffset = {},
-							lengthOffset = {},
-							scale = {},
-						},
-					},
-				}
-			end 
+    if selChar.def and selChar.trialsdef ~= "" then
+        local trial = {}
+        local trialsFile = loadText(selChar.trialsdef)
+        local i, j = 0, 0
+        local lang = "en"
+        if gameOption and type(gameOption) == "function" then
+            lang = (gameOption('Config.Language') or "en"):lower()
+        end
 
-			if line:match('^%s*%[.-%s*%]%s*$') then --matched [] group
-				line = line:match('^%s*%[(.-)%s*%]%s*$') --match text between []
-				lcline = string.lower(line)
-				if lcline:match('^trialdef') then --matched trialdef block
-					i = i + 1 -- increment Trial number
-					j = 0 -- reset trialstep number
-					triallangfound = false
-					lang = gameOption('Config.Language'):lower()
-					trial[i] = {
-						name = "",
-						dummymode = "stand",
-						guardmode = "none",
-						buttonjam = "none",
-						active = false,
-						complete = false,
-						p1life = -1,
-						p2life = -1,
-						playerpos = nil,
-						dummypos = nil,
-						showforvar = {nil},
-						showforval = {nil},
-						elapsedtime = 0,
-						textbox = "",
-						textcnt = 0,
-						starttick = roundtime()+1,
-						trialstep = {},
-					}
-					temp = {}
-					line = f_trimforchar(line, ",", "after")
-					if line == "" then
-						line = "Trial " .. tostring(i)
-					end
-					trial[i].name = line
-				end
-			elseif lcline:find("dummymode") then
-				trial[i].dummymode = f_trimforchar(lcline, "=", "after")
-			elseif lcline:find("guardmode") then
-				trial[i].guardmode = f_trimforchar(lcline, "=", "after")
-			elseif lcline:find("dummybuttonjam") then
-				trial[i].buttonjam = f_trimforchar(lcline, "=", "after")
-			elseif lcline:find("playerlife") then
-				trial[i].p1life = tonumber(f_trimforchar(lcline, "=", "after"))
-			elseif lcline:find("dummylife") then
-				trial[i].p2life = tonumber(f_trimforchar(lcline, "=", "after"))
-			elseif lcline:find("playerpos") then
-				trial[i].playerpos = f_trimforchar(lcline, "=", "after")
-			elseif lcline:find("dummypos") then
-				trial[i].dummypos = f_trimforchar(lcline, "=", "after")
-			elseif lcline:find("showforvarvalpairs") then
-				showforvarvalpairsfound = false
-				temp = main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", ""))
-				trial[i].showforvar = {}
-				trial[i].showforval = {}
-				for k = 1, #temp, 2 do
-					trial[i].showforvar[#trial[i].showforvar+1] = tonumber(temp[k])
-					trial[i].showforval[#trial[i].showforval+1] = f_str2number(main.f_strsplit('|', temp[k+1]))
-				end
-			elseif lcline:find("textbox") and not triallangfound then
-				if lcline:find("textbox." .. lang) then
-					trial[i].textbox = f_trimforchar(lcline, "=", "after")
-					triallangfound = true
-				elseif string.match(lcline, "trial.textbox.en") then
-					trial[i].textbox = f_trimforchar(lcline, "=", "after")
-				elseif string.match(f_trimforchar(lcline, "=", "before"), "^trial.textbox$") then
-					trial[i].textbox = f_trimforchar(lcline, "=", "after")
-					triallangfound = true
-				end
-			elseif lcline:find("trialstep." .. j .. ".text") and not trialsteplangfound then
-				if lcline:find("trialstep." .. j .. ".text." .. lang) then
-					trial[i].trialstep[j].text = f_trimforchar(line, "=", "after")
-					trialsteplangfound = true
-				elseif string.match(lcline, "trialstep." .. j .. ".text.en") then
-					trial[i].trialstep[j].text = f_trimforchar(line, "=", "after")
-				elseif string.match(f_trimforchar(lcline, "=", "before"), "^trialstep." .. j .. ".text$") then
-					trial[i].trialstep[j].text = f_trimforchar(line, "=", "after")
-					trialsteplangfound = true
-				end
-				trial[i].trialstep[j].text = f_trimforchar(line, "=", "after")
-			elseif lcline:find("trialstep." .. j .. ".glyphs") then
-				trial[i].trialstep[j].glyphs = f_trimforchar(line, "=", "after")
-			elseif lcline:find("trialstep." .. j .. ".stateno") then
-				trial[i].trialstep[j].stateno = main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", ""))
-				for k = 1, #trial[i].trialstep[j].stateno, 1 do
-					local temp = trial[i].trialstep[j].stateno[k]
-					trial[i].trialstep[j].stateno[k] = f_str2number(main.f_strsplit('|', temp))
-				end
-				trial[i].trialstep[j].numofmicrosteps = #trial[i].trialstep[j].stateno
-				for k = 1, trial[i].trialstep[j].numofmicrosteps, 1 do
-					trial[i].trialstep[j].stephitscount[k] = 0
-					trial[i].trialstep[j].combocountonstep[k] = 0
-					trial[i].trialstep[j].hitcount[k] = 1
-					trial[i].trialstep[j].isthrow[k] = false
-					trial[i].trialstep[j].ishelper[k] = false
-					trial[i].trialstep[j].isproj[k] = false
-					trial[i].trialstep[j].iscounterhit[k] = false
-					trial[i].trialstep[j].validforval[k] = nil
-					trial[i].trialstep[j].validforvar[k] = nil
-					trial[i].trialstep[j].validfortickcount[k] = nil
-				end
-			elseif lcline:find("trialstep." .. j .. ".animno") then
-				if string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "") ~= "" then
-					trial[i].trialstep[j].animno = main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", ""))
-					for k = 1, #trial[i].trialstep[j].animno, 1 do
-						local temp = trial[i].trialstep[j].animno[k]
-						trial[i].trialstep[j].animno[k] = f_str2number(main.f_strsplit('|', temp))
-					end
-				end
-			elseif lcline:find("trialstep." .. j .. ".hitcount") then
-				if string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "") ~= "" then
-					trial[i].trialstep[j].hitcount = f_str2number(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "")))
-				end
-			elseif lcline:find("trialstep." .. j .. ".isthrow") then
-				if string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "") ~= "" then
-					trial[i].trialstep[j].isthrow = f_str2boolean(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "")))
-				end
-			elseif lcline:find("trialstep." .. j .. ".iscounterhit") then
-				if string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "") ~= "" then
-					trial[i].trialstep[j].iscounterhit = f_str2boolean(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "")))
-				end
-			elseif lcline:find("trialstep." .. j .. ".ishelper") then
-				if string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "") ~= "" then
-					trial[i].trialstep[j].ishelper = f_str2boolean(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "")))
-				end
-			elseif lcline:find("trialstep." .. j .. ".isproj") then
-				if string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "") ~= "" then
-					trial[i].trialstep[j].isproj = f_str2boolean(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "")))
-				end
-			elseif lcline:find("trialstep." .. j .. ".validforvarvalpairs") then
-				if string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "") ~= "" then
-					local varvalpairs = f_str2number(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "")))
-					for ii = 1, #varvalpairs, 2 do
-						trial[i].trialstep[j].validforvar[ii] = varvalpairs[ii]
-						trial[i].trialstep[j].validforval[ii] = varvalpairs[ii+1]
-					end
-				end
-			elseif lcline:find("trialstep." .. j .. ".validfortickcount") then
-				if string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "") ~= "" then
-					trial[i].trialstep[j].validfortickcount = f_str2number(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after"),"%s+", "")))
-				end
-			end
-		end
+        for line in trialsFile:gmatch("([^\r\n]*)[\r\n]?") do
+            line = line:gsub('%s*;.*$', '')
+            local lcline = string.lower(line)
 
-		main.t_selChars[row].trialsdata = trial
-	end
+            -- Detect new trial
+            if line:match('^%s*%[.-%s*%]%s*$') then
+                local block = line:match('^%s*%[(.-)%s*%]%s*$')
+                if block and block:match('^trialdef') then
+                    i = i + 1
+                    j = 0
+                    trial[i] = {
+                        name = "",
+                        dummymode = "stand",
+                        guardmode = "none",
+                        buttonjam = "none",
+                        active = false,
+                        complete = false,
+                        p1life = -1,
+                        p2life = -1,
+                        playerpos = nil,
+                        dummypos = nil,
+                        showforvar = {nil},
+                        showforval = {nil},
+                        elapsedtime = 0,
+                        textbox = "",
+                        textcnt = 0,
+                        starttick = (roundtime and type(roundtime)=="function" and roundtime()+1) or 1,
+                        trialstep = {}
+                    }
+
+                    local tempname = f_trimforchar(line, ",", "after")
+                    trial[i].name = (tempname == "" and "Trial " .. tostring(i)) or tempname
+                end
+            end
+
+            -- Generic trial properties
+            if i > 0 then
+                local curTrial = trial[i]
+
+                if lcline:find("dummymode") then curTrial.dummymode = f_trimforchar(lcline, "=", "after") or curTrial.dummymode end
+                if lcline:find("guardmode") then curTrial.guardmode = f_trimforchar(lcline, "=", "after") or curTrial.guardmode end
+                if lcline:find("dummybuttonjam") then curTrial.buttonjam = f_trimforchar(lcline, "=", "after") or curTrial.buttonjam end
+                if lcline:find("playerlife") then curTrial.p1life = tonumber(f_trimforchar(lcline, "=", "after")) or curTrial.p1life end
+                if lcline:find("dummylife") then curTrial.p2life = tonumber(f_trimforchar(lcline, "=", "after")) or curTrial.p2life end
+                if lcline:find("playerpos") then curTrial.playerpos = f_trimforchar(lcline, "=", "after") end
+                if lcline:find("dummypos") then curTrial.dummypos = f_trimforchar(lcline, "=", "after") end
+
+                -- Showforvar/val
+                if lcline:find("showforvarvalpairs") then
+                    local temp = main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", ""))
+                    curTrial.showforvar = {}
+                    curTrial.showforval = {}
+                    for k = 1, #temp, 2 do
+                        curTrial.showforvar[#curTrial.showforvar+1] = tonumber(temp[k])
+                        curTrial.showforval[#curTrial.showforval+1] = f_str2number(main.f_strsplit('|', temp[k+1]))
+                    end
+                end
+
+                -- Textbox handling
+                if lcline:find("textbox") then
+                    if lcline:find("textbox." .. lang) or string.match(lcline, "^trial.textbox$") or string.match(lcline, "trial.textbox.en") then
+                        curTrial.textbox = f_trimforchar(lcline, "=", "after") or ""
+                    end
+                end
+
+                -- Detect new trialstep
+                local stepMatch = lcline:match("trialstep%.(%d+)%.")
+                if stepMatch then
+                    j = tonumber(stepMatch)
+                    curTrial.trialstep[j] = curTrial.trialstep[j] or {
+                        numofmicrosteps = 1, text="", glyphs="", stateno={}, animno={}, hitcount={}, stephitscount={}, combocountonstep={}, 
+                        isthrow={}, ishelper={}, isproj={}, iscounterhit={}, validfortickcount={}, validforvar={}, validforval={},
+                        glyphline={vertical={glyph={},pos={},width={},alignOffset={},lengthOffset={},scale={}}, horizontal={glyph={},pos={},width={},alignOffset={},lengthOffset={},scale={}}}
+                    }
+                end
+
+                -- Only parse trialstep if it exists
+                local curStep = (curTrial.trialstep[j] or nil)
+                if curStep then
+                    if lcline:find("trialstep." .. j .. ".text") then
+                        curStep.text = f_trimforchar(line, "=", "after") or ""
+                    end
+                    if lcline:find("trialstep." .. j .. ".glyphs") then
+                        curStep.glyphs = f_trimforchar(line, "=", "after") or ""
+                    end
+                    if lcline:find("trialstep." .. j .. ".stateno") then
+                        local nums = main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", ""))
+                        curStep.stateno = {}
+                        for k,num in ipairs(nums) do curStep.stateno[k] = f_str2number(main.f_strsplit('|', num)) end
+                        curStep.numofmicrosteps = #curStep.stateno
+                        for k = 1, curStep.numofmicrosteps do
+                            curStep.stephitscount[k] = 0
+                            curStep.combocountonstep[k] = 0
+                            curStep.hitcount[k] = 1
+                            curStep.isthrow[k] = false
+                            curStep.ishelper[k] = false
+                            curStep.isproj[k] = false
+                            curStep.iscounterhit[k] = false
+                            curStep.validforval[k] = nil
+                            curStep.validforvar[k] = nil
+                            curStep.validfortickcount[k] = nil
+                        end
+                    end
+                    if lcline:find("trialstep." .. j .. ".animno") then
+                        local animStr = string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", "")
+                        if animStr ~= "" then
+                            local anims = main.f_strsplit(',', animStr)
+                            curStep.animno = {}
+                            for k,a in ipairs(anims) do curStep.animno[k] = f_str2number(main.f_strsplit('|', a)) end
+                        end
+                    end
+                    if lcline:find("trialstep." .. j .. ".hitcount") then
+                        curStep.hitcount = f_str2number(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", "")))
+                    end
+                    if lcline:find("trialstep." .. j .. ".isthrow") then
+                        curStep.isthrow = f_str2boolean(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", "")))
+                    end
+                    if lcline:find("trialstep." .. j .. ".iscounterhit") then
+                        curStep.iscounterhit = f_str2boolean(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", "")))
+                    end
+                    if lcline:find("trialstep." .. j .. ".ishelper") then
+                        curStep.ishelper = f_str2boolean(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", "")))
+                    end
+                    if lcline:find("trialstep." .. j .. ".isproj") then
+                        curStep.isproj = f_str2boolean(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", "")))
+                    end
+                    if lcline:find("trialstep." .. j .. ".validforvarvalpairs") then
+                        local pairs = f_str2number(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", "")))
+                        curStep.validforvar, curStep.validforval = {}, {}
+                        for k = 1, #pairs, 2 do
+                            curStep.validforvar[k] = pairs[k]
+                            curStep.validforval[k] = pairs[k+1]
+                        end
+                    end
+                    if lcline:find("trialstep." .. j .. ".validfortickcount") then
+                        curStep.validfortickcount = f_str2number(main.f_strsplit(',', string.gsub(f_trimforchar(lcline, "=", "after") or "", "%s+", "")))
+                    end
+                end
+            end
+        end
+
+        selChar.trialsdata = trial
+    end
 end
-end -- Close the if statement checking for loadText availability
 
 --;===========================================================
 --; global.lua
 --;===========================================================
 hook.add("loop#trials", "f_trialsMode", start.f_trialsMode)
 hook.add("start.f_selectScreen", "f_trialsSelectScreen", start.f_trialsSelectScreen)
-
--- Add trials to the main menu sort order
--- Hook into motif.setBaseTitleInfo to ensure menu_itemname is set
-hook.add("motif.setBaseTitleInfo", "addTrialsToMenuName", function()
-	if motif.title_info.menu_itemname_trials == nil or motif.title_info.menu_itemname_trials == '' then
-		motif.title_info.menu_itemname_trials = "TRIALS"
-	end
-end)
-
--- Function to add trials to menu order
-local function addTrialsToMenuOrder()
-	-- Ensure menu_itemname is set
-	if motif.title_info.menu_itemname_trials == nil or motif.title_info.menu_itemname_trials == '' then
-		motif.title_info.menu_itemname_trials = "TRIALS"
-	end
-	
-	-- Ensure sort table exists
-	if main.t_sort.title_info == nil then
-		main.t_sort.title_info = {}
-	end
-	if main.t_sort.title_info.menu == nil then
-		main.t_sort.title_info.menu = {}
-	end
-	
-	-- Add trials to the menu order (between menupractice and menumission)
-	local found = false
-	for i, item in ipairs(main.t_sort.title_info.menu) do
-		if item == "trials" then
-			found = true
-			break
-		end
-	end
-	if not found then
-		-- Find menupractice position and insert after it, or find menumission and insert before it
-		local insertPos = nil
-		for i, item in ipairs(main.t_sort.title_info.menu) do
-			if item == "menupractice" then
-				insertPos = i + 1
-				break
-			elseif item == "menumission" then
-				insertPos = i
-				break
-			end
-		end
-		if insertPos then
-			table.insert(main.t_sort.title_info.menu, insertPos, "trials")
-		else
-			-- If neither found, try to find training or add at the end before options/exit
-			for i, item in ipairs(main.t_sort.title_info.menu) do
-				if item == "training" then
-					insertPos = i + 1
-					break
-				end
-			end
-			if insertPos then
-				table.insert(main.t_sort.title_info.menu, insertPos, "trials")
-			else
-				-- Add at the end before options/exit
-				local optionsPos = nil
-				for i, item in ipairs(main.t_sort.title_info.menu) do
-					if item == "options" or item == "exit" then
-						optionsPos = i
-						break
-					end
-				end
-				if optionsPos then
-					table.insert(main.t_sort.title_info.menu, optionsPos, "trials")
-				else
-					table.insert(main.t_sort.title_info.menu, "trials")
-				end
-			end
-		end
-	end
-end
-
--- Hook to ensure trials is in menu order - runs right before menu is built
--- We need to hook into the code that runs before main.f_start processes the menu
--- Since main.f_start checks if menu is empty and calls motif.setBaseTitleInfo,
--- we'll ensure our function runs after that check but before the menu loop
-local function ensureTrialsInMenu()
-	-- This will be called after system.def is parsed but before menu is built
-	if main.t_sort and main.t_sort.title_info and main.t_sort.title_info.menu then
-		addTrialsToMenuOrder()
-	end
-end
-
--- Hook into motif.setBaseTitleInfo to ensure trials is added after default items
-hook.add("motif.setBaseTitleInfo", "addTrialsAfterBase", function()
-	-- This runs when setBaseTitleInfo is called, which happens if menu is empty
-	ensureTrialsInMenu()
-end)
-
--- Also try to ensure it's added right before main.f_start builds the menu
--- We'll override main.f_start to call our function first
-if main and main.f_start then
-	local original_f_start = main.f_start
-	main.f_start = function()
-		ensureTrialsInMenu()
-		return original_f_start()
-	end
-end
-
---;===========================================================
