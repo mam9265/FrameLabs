@@ -6,127 +6,297 @@
   <style>
     body { font-family: 'Orbitron', sans-serif; margin: 40px; background-color: #005b91; color: #9be0e3; }
     .container { display: flex; width: 1000px; gap: 12px; }
-    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
-    button { background-color: #2a006b; color: #9be0e3; border: none; cursor: pointer; }
+    .top-section { display: flex; gap: 12px; margin-bottom: 20px; }
+    .test-section, .config-section { flex: 1; background-color: rgba(155, 224, 227, 0.1); padding: 15px; border-radius: 8px; }
+    .section-title { margin-top: 0; margin-bottom: 10px; }
+    input, textarea, button, select { padding: 8px; border-radius: 6px; border: 1px solid #888; background-color: rgba(255, 255, 255, 0.1); color: #9be0e3; }
+    button { background-color: #2a006b; color: #9be0e3; border: none; cursor: pointer; padding: 10px 20px; }
     button:hover { background-color: #3a008b; }
+    .test-btn { background-color: #4CAF50; border: 2px solid #66bb6a; }
+    .test-btn:hover { background-color: #45a049; }
+    .back-button { background-color: #555; }
+    .back-button:hover { background-color: #666; }
+    .mapping-section { background-color: rgba(155, 224, 227, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+    .mapping-section h3 { margin-top: 0; }
+    .button-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    .button-row label { flex: 1; min-width: 150px; }
+    label { display: block; margin-bottom: 5px; }
+    hr { border-color: rgba(155, 224, 227, 0.3); margin: 20px 0; }
+    
+    /* Modal styles for controller testing */
+    #testModal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); }
+    .modal-content { background-color: #005b91; margin: 5% auto; padding: 20px; border: 2px solid #9be0e3; border-radius: 10px; width: 80%; max-width: 800px; color: #9be0e3; }
+    .close { color: #9be0e3; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close:hover { color: #fff; }
+    .controller-status { padding: 15px; margin: 10px 0; background-color: rgba(155, 224, 227, 0.1); border-radius: 8px; }
+    .controller-active { background-color: rgba(76, 175, 80, 0.2); border: 2px solid #4CAF50; }
+    .controller-disconnected { background-color: rgba(244, 67, 54, 0.2); border: 2px solid #f44336; }
+    .button-display { display: inline-block; padding: 5px 10px; margin: 3px; border-radius: 4px; background-color: rgba(155, 224, 227, 0.2); }
+    .button-pressed { background-color: #4CAF50; color: #000; font-weight: bold; }
+    .axis-display { display: inline-block; padding: 5px 10px; margin: 3px; border-radius: 4px; background-color: rgba(155, 224, 227, 0.2); }
+    #buttonMappingArea { margin-top: 20px; }
+    #buttonMappingArea p { margin: 5px 0; padding: 8px; background-color: rgba(155, 224, 227, 0.1); border-radius: 4px; }
+    #buttonMappingArea .active { background-color: rgba(76, 175, 80, 0.3); }
   </style>
 </head>
 <body>
 
   <h2>Controller Config</h2>
   
-  <form id="ConfigForm">
-    <label for="configSelect">Choose Config:</label>
-    <select id="configSelect">
-      <option value="new">NEW CONFIG</option>
-    </select>
+  <div class="top-section">
+    <div class="test-section">
+      <h3 class="section-title">Test Controllers</h3>
+      <button type="button" id="testBtn" class="test-btn">🎮 Test Controllers</button>
+      <p style="margin-top: 10px; font-size: 14px;">Click to test your connected gamepad/controller</p>
+    </div>
+    
+    <div class="config-section">
+      <h3 class="section-title">Choose Config</h3>
+      <form id="ConfigForm">
+        <label for="configSelect">Choose Config:</label>
+        <select id="configSelect">
+          <option value="new">NEW CONFIG</option>
+        </select>
 
-    <label for="configName">Config Name:</label>
-    <input type="text" id="configName" name="CONFIGNAME" required />
+        <label for="configName">Config Name:</label>
+        <input type="text" id="configName" name="CONFIGNAME" placeholder="Enter configuration name" required />
+      </form>
+    </div>
+  </div>
 
-    <hr>
+  <div class="mapping-section">
+    <h3>Button Mappings</h3>
+    <div class="button-row">
+      <label>button 1: <input type="text" id="button1" name="B1"></label>
+      <label>button 2: <input type="text" id="button2" name="B2"></label>
+      <label>button 3: <input type="text" id="button3" name="B3"></label>
+      <label>button 4: <input type="text" id="button4" name="B4"></label>
+    </div>
+    <div class="button-row">
+      <label>button 5: <input type="text" id="button5" name="B5"></label>
+      <label>button 6: <input type="text" id="button6" name="B6"></label>
+      <label>button 7: <input type="text" id="button7" name="B7"></label>
+      <label>button 8: <input type="text" id="button8" name="B8"></label>
+    </div>
+  </div>
 
-    <!-- buttons 1-4 -->
-    <label for="button1">button 1: <input type="text" id="button1" name="B1"> </label>
-    <label for="button2">button 2: <input type="text" id="button2" name="B2"> </label>
-    <label for="button3">button 3: <input type="text" id="button3" name="B3"> </label>
-    <label for="button4">button 4: <input type="text" id="button4" name="B4"> </label>
-    <hr>
+  <div class="mapping-section">
+    <h3>D-Pad & System Buttons</h3>
+    <div class="button-row">
+      <label>Up: <input type="text" id="up" name="UP"></label>
+      <label>Left: <input type="text" id="left" name="LEFT"></label>
+      <label>Down: <input type="text" id="down" name="DOWN"></label>
+      <label>Right: <input type="text" id="right" name="RIGHT"></label>
+    </div>
+    <div class="button-row">
+      <label>Back: <input type="text" id="back" name="BACK"></label>
+      <label>Menu: <input type="text" id="menu" name="MENU"></label>
+      <label>Start: <input type="text" id="start" name="START"></label>
+    </div>
+  </div>
 
-     <!-- buttons 5-8 -->
-     <label for="button5">button 5: <input type="text" id="button5" name="B5"> </label>
-     <label for="button6">button 6: <input type="text" id="button6" name="B6"> </label>
-     <label for="button7">button 7: <input type="text" id="button7" name="B7"> </label>
-     <label for="button8">button 8: <input type="text" id="button8" name="B8"> </label>
-
-    <hr>
-
-    <label>Up: <input type="text" id="up" name="UP"></label>
-    <label>Left: <input type="text" id="left" name="LEFT"></label>
-    <label>Down: <input type="text" id="down" name="DOWN"></label>
-    <label>Right: <input type="text" id="right" name="RIGHT"></label>
-
-    <hr>
-
-    <label>Back: <input type="text" id="back" name="BACK"></label>
-    <label>Menu: <input type="text" id="menu" name="MENU"></label>
-    <label>Start: <input type="text" id="start" name="START"></label>
-
-    <hr>
-
+  <div style="display: flex; gap: 10px; margin-top: 20px;">
     <button type="button" id="saveBtn">Save Config</button>
-  </form>
+    <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
+  </div>
 
-  <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
+  <!-- Controller Test Modal -->
+  <div id="testModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Controller Testing</h2>
+      <div id="controllerStatus" class="controller-status controller-disconnected">
+        <p><strong>Status:</strong> <span id="statusText">Waiting for controller...</span></p>
+        <p><strong>Controller:</strong> <span id="controllerName">None</span></p>
+      </div>
+      <div id="controllerInput" style="margin-top: 20px;">
+        <h3>Buttons:</h3>
+        <div id="buttonsDisplay"></div>
+        <h3 style="margin-top: 15px;">Axes (Sticks/Triggers):</h3>
+        <div id="axesDisplay"></div>
+        <div id="buttonMappingArea" style="margin-top: 20px;">
+          <h3>Press any button to map it:</h3>
+          <p id="mappingHint">Click on an input field in the config form, then press a controller button to map it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    const fs = require("fs");
-    const path = require("path");
-    const configPath = path.join(__dirname, "Ikemen-GO", "save", "config.json");
+    // API Configuration
+    const API_BASE_URL = window.location.origin; // Use same origin for API calls
+    let isElectron = false;
+    let fs = null;
+    let path = null;
+    let configPath = null;
+
+    // Check if running in Electron (has require)
+    try {
+      fs = require("fs");
+      path = require("path");
+      configPath = path.join(__dirname, "Ikemen-GO", "save", "config.json");
+      isElectron = true;
+    } catch (e) {
+      console.log("Running in browser mode, using API");
+    }
 
     const configSelect = document.getElementById("configSelect");
     const saveBtn = document.getElementById("saveBtn");
+    const testBtn = document.getElementById("testBtn");
+    const testModal = document.getElementById("testModal");
+    const closeModal = document.querySelector(".close");
+    
+    let controllerTestInterval = null;
+    let currentGamepad = null;
+    let mappingMode = false;
+    let targetInputField = null;
 
-    // Load existing configs
-    if (fs.existsSync(configPath)) {
-      const configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
-      Object.keys(configs).forEach(name => {
-        const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
-        configSelect.appendChild(opt);
-      });
+    // API Functions
+    async function loadConfigsFromAPI() {
+      try {
+        // For now, we'll use a generic endpoint. You may need to adjust this based on your API structure
+        const response = await fetch(`${API_BASE_URL}/api/controller-configs`);
+        if (response.ok) {
+          const configs = await response.json();
+          Object.keys(configs).forEach(name => {
+            const opt = document.createElement("option");
+            opt.value = name;
+            opt.textContent = name;
+            configSelect.appendChild(opt);
+          });
+          return configs;
+        }
+      } catch (error) {
+        console.log("API not available, using local storage or file system");
+      }
+      return null;
+    }
+
+    async function loadConfigFromAPI(name) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/controller-configs/${encodeURIComponent(name)}`);
+        if (response.ok) {
+          return await response.json();
+        }
+      } catch (error) {
+        console.error("Error loading config from API:", error);
+      }
+      return null;
+    }
+
+    async function saveConfigToAPI(name, data) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/controller-configs`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, config: data })
+        });
+        return response.ok;
+      } catch (error) {
+        console.error("Error saving config to API:", error);
+        return false;
+      }
+    }
+
+    // Load existing configs (try API first, then local file)
+    async function loadConfigs() {
+      // Try API first
+      const apiConfigs = await loadConfigsFromAPI();
+      if (apiConfigs) return;
+
+      // Fallback to file system if in Electron
+      if (isElectron && fs && fs.existsSync(configPath)) {
+        try {
+          const configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
+          Object.keys(configs).forEach(name => {
+            const opt = document.createElement("option");
+            opt.value = name;
+            opt.textContent = name;
+            configSelect.appendChild(opt);
+          });
+        } catch (error) {
+          console.error("Error loading configs from file:", error);
+        }
+      }
     }
 
     // Load selected config
-    configSelect.addEventListener("change", () => {
+    configSelect.addEventListener("change", async () => {
       const name = configSelect.value;
       if (name === "new") {
-        document.getElementById("ConfigForm").reset();
+        // Reset all input fields
+        document.querySelectorAll("input[type='text']").forEach(input => {
+          input.value = "";
+        });
         document.getElementById("configName").value = "";
         return;
       }
 
-      const configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
-      const cfg = configs[name];
-      for (const key in cfg) {
-        if (document.getElementById(key.toLowerCase())) {
-          document.getElementById(key.toLowerCase()).value = cfg[key];
+      // Try API first
+      let cfg = await loadConfigFromAPI(name);
+      
+      // Fallback to file system
+      if (!cfg && isElectron && fs && fs.existsSync(configPath)) {
+        try {
+          const configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
+          cfg = configs[name];
+        } catch (error) {
+          console.error("Error loading config from file:", error);
         }
       }
-      document.getElementById("configName").value = name;
+
+      if (cfg) {
+        for (const key in cfg) {
+          const input = document.getElementById(key.toLowerCase());
+          if (input) {
+            input.value = cfg[key];
+          }
+        }
+        document.getElementById("configName").value = name;
+      }
     });
 
     // Save config
-    saveBtn.addEventListener("click", () => {
+    saveBtn.addEventListener("click", async () => {
       const name = document.getElementById("configName").value.trim();
       if (!name) return alert("Please enter a config name!");
 
       const data = {
-        B1: button1.value,
-        B2: button2.value,
-        B3: button3.value,
-        B4: button4.value,
-        B5: button5.value,
-        B6: button6.value,
-        B7: button7.value,
-        B8: button8.value,
-        UP: up.value,
-        LEFT: left.value,
-        DOWN: down.value,
-        RIGHT: right.value,
-        BACK: back.value,
-        MENU: menu.value,
-        START: start.value
+        B1: document.getElementById("button1").value,
+        B2: document.getElementById("button2").value,
+        B3: document.getElementById("button3").value,
+        B4: document.getElementById("button4").value,
+        B5: document.getElementById("button5").value,
+        B6: document.getElementById("button6").value,
+        B7: document.getElementById("button7").value,
+        B8: document.getElementById("button8").value,
+        UP: document.getElementById("up").value,
+        LEFT: document.getElementById("left").value,
+        DOWN: document.getElementById("down").value,
+        RIGHT: document.getElementById("right").value,
+        BACK: document.getElementById("back").value,
+        MENU: document.getElementById("menu").value,
+        START: document.getElementById("start").value
       };
 
-      let configs = {};
-      if (fs.existsSync(configPath)) {
-        configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
+      // Try API first
+      const saved = await saveConfigToAPI(name, data);
+      
+      // Fallback to file system
+      if (!saved && isElectron && fs) {
+        try {
+          let configs = {};
+          if (fs.existsSync(configPath)) {
+            configs = JSON.parse(fs.readFileSync(configPath, "utf8"));
+          }
+          configs[name] = data;
+          fs.writeFileSync(configPath, JSON.stringify(configs, null, 2));
+        } catch (error) {
+          console.error("Error saving config to file:", error);
+          alert("Error saving config!");
+          return;
+        }
       }
-
-      configs[name] = data;
-      fs.writeFileSync(configPath, JSON.stringify(configs, null, 2));
 
       alert(`Controller config "${name}" saved successfully!`);
       if (![...configSelect.options].some(o => o.value === name)) {
@@ -136,6 +306,150 @@
         configSelect.appendChild(opt);
       }
       configSelect.value = name;
+    });
+
+    // Controller Testing Functions
+    function openTestModal() {
+      testModal.style.display = "block";
+      startControllerTest();
+    }
+
+    function closeTestModal() {
+      testModal.style.display = "none";
+      stopControllerTest();
+    }
+
+    closeModal.addEventListener("click", closeTestModal);
+    window.addEventListener("click", (e) => {
+      if (e.target === testModal) closeTestModal();
+    });
+
+    testBtn.addEventListener("click", openTestModal);
+
+    function startControllerTest() {
+      if (controllerTestInterval) return;
+      
+      // Setup input field click handlers for mapping
+      const inputFields = document.querySelectorAll("input[type='text']");
+      inputFields.forEach(input => {
+        input.addEventListener("focus", () => {
+          mappingMode = true;
+          targetInputField = input;
+          document.getElementById("mappingHint").textContent = 
+            `Click on "${input.name || input.id}" field, now press a controller button to map it.`;
+          input.style.border = "2px solid #4CAF50";
+        });
+        input.addEventListener("blur", () => {
+          if (targetInputField === input) {
+            mappingMode = false;
+            targetInputField = null;
+            input.style.border = "";
+          }
+        });
+      });
+
+      controllerTestInterval = setInterval(updateControllerDisplay, 50);
+      updateControllerDisplay();
+    }
+
+    function stopControllerTest() {
+      if (controllerTestInterval) {
+        clearInterval(controllerTestInterval);
+        controllerTestInterval = null;
+      }
+      currentGamepad = null;
+      mappingMode = false;
+      targetInputField = null;
+
+      // Reset input field borders
+      document.querySelectorAll("input[type='text']").forEach(input => {
+        input.style.border = "";
+      });
+    }
+
+    function updateControllerDisplay() {
+      const gamepads = navigator.getGamepads();
+      let gamepad = null;
+
+      // Find the first connected gamepad
+      for (let i = 0; i < gamepads.length; i++) {
+        if (gamepads[i]) {
+          gamepad = gamepads[i];
+          break;
+        }
+      }
+
+      const statusDiv = document.getElementById("controllerStatus");
+      const statusText = document.getElementById("statusText");
+      const controllerName = document.getElementById("controllerName");
+      const buttonsDisplay = document.getElementById("buttonsDisplay");
+      const axesDisplay = document.getElementById("axesDisplay");
+
+      if (!gamepad) {
+        statusDiv.className = "controller-status controller-disconnected";
+        statusText.textContent = "No controller connected";
+        controllerName.textContent = "None";
+        buttonsDisplay.innerHTML = "<p>Connect a controller and press any button to begin.</p>";
+        axesDisplay.innerHTML = "";
+        currentGamepad = null;
+        return;
+      }
+
+      currentGamepad = gamepad;
+      statusDiv.className = "controller-status controller-active";
+      statusText.textContent = "Controller connected";
+      controllerName.textContent = gamepad.id || "Unknown Controller";
+
+      // Display buttons
+      let buttonsHTML = "";
+      gamepad.buttons.forEach((button, index) => {
+        const pressed = button.pressed;
+        const value = button.value;
+        buttonsHTML += `<span class="button-display ${pressed ? 'button-pressed' : ''}">Button ${index}${pressed ? ` (${(value * 100).toFixed(0)}%)` : ''}</span>`;
+        
+        // If in mapping mode and button was just pressed, map it
+        if (mappingMode && targetInputField && pressed && button.value > 0.5) {
+          const buttonLabel = `Button ${index}`;
+          targetInputField.value = buttonLabel;
+          targetInputField.style.border = "2px solid #4CAF50";
+          setTimeout(() => {
+            targetInputField.blur();
+            targetInputField.style.border = "";
+          }, 500);
+        }
+      });
+      buttonsDisplay.innerHTML = buttonsHTML || "<p>No buttons detected</p>";
+
+      // Display axes (sticks/triggers)
+      let axesHTML = "";
+      const axisNames = ["Left Stick X", "Left Stick Y", "Right Stick X", "Right Stick Y", "Left Trigger", "Right Trigger"];
+      gamepad.axes.forEach((axis, index) => {
+        const absValue = Math.abs(axis);
+        const threshold = 0.1;
+        if (absValue > threshold) {
+          const name = axisNames[index] || `Axis ${index}`;
+          axesHTML += `<span class="axis-display">${name}: ${axis.toFixed(2)}</span>`;
+        }
+      });
+      axesDisplay.innerHTML = axesHTML || "<p>No axis movement detected</p>";
+    }
+
+    // Initialize on page load
+    loadConfigs();
+
+    // Listen for gamepad connections
+    window.addEventListener("gamepadconnected", (e) => {
+      console.log("Gamepad connected:", e.gamepad.id);
+      if (testModal.style.display === "block") {
+        updateControllerDisplay();
+      }
+    });
+
+    window.addEventListener("gamepaddisconnected", (e) => {
+      console.log("Gamepad disconnected:", e.gamepad.id);
+      if (testModal.style.display === "block") {
+        updateControllerDisplay();
+      }
     });
   </script>
 

@@ -1,0 +1,133 @@
+; KFMZ TRIALS LIST ---------------------------
+
+[TrialDef, KFM's First Trial]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+trial.textbox.en = This is KFM's first trial. Good luck!
+
+trialstep.1.text = Strong Kung Fu Palm
+trialstep.1.glyphs = _QDF^Y
+trialstep.1.stateno = 1010
+trialstep.1.hitcount = 1
+
+;---------------------------------------------
+
+[TrialDef, Kung Fu Throw]
+trialstep.1.text = Kung Fu Throw
+trialstep.1.glyphs = [_B/_F]_+^Y
+trialstep.1.stateno = 810
+trialstep.1.isthrow = true
+trialstep.1.hitcount = 1
+
+;---------------------------------------------
+
+[TrialDef, Kung Fu Taunt]
+trial.textbox.en = This is an English textbox!
+trial.textbox.es = Este es un cuadro de texto en español.
+
+trialstep.1.text.en = Kung Fu Taunt
+trialstep.1.text.es = Kung Fu Pulla
+trialstep.1.glyphs = ^S
+trialstep.1.stateno = 195
+trialstep.1.hitcount = 0
+
+;---------------------------------------------
+
+[TrialDef, Standing Punch Chain]
+trialstep.1.text = Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
+trialstep.1.hitcount = 1
+
+trialstep.2.text = Standing Strong Punch
+trialstep.2.glyphs = ^Y
+trialstep.2.stateno = 210
+trialstep.2.hitcount = 1
+
+;---------------------------------------------
+
+[TrialDef, Condensed Standing Punch Chain]
+trialstep.1.text = Standing Light to Strong Punch Chain
+trialstep.1.glyphs = ^X_-^Y
+trialstep.1.stateno = 200,210
+trialstep.1.hitcount = 1,1
+
+;---------------------------------------------
+
+[TrialDef, KFM Kung Fu Palm]
+trialstep.1.text = Kung Fu Palm
+trialstep.1.glyphs = _X_-^Y
+trialstep.1.stateno = 1000,1010
+trialstep.1.hitcount = 1,1
+
+;---------------------------------------------
+
+[TrialDef, Kung Fu Juggle Combo]
+trial.dummypos = right-corner
+
+trialstep.1.text = Kung Fu Knee and Extra Kick
+trialstep.1.glyphs = _F_F_+^K_.^K
+trialstep.1.stateno = 1060,1055
+trialstep.1.hitcount = 1,1
+
+trialstep.2.text = Crouching Jab
+trialstep.2.glyphs = _D_+^X
+trialstep.2.stateno = 400
+trialstep.2.hitcount = 1
+
+trialstep.3.text = Weak Kung Fu Palm
+trialstep.3.glyphs = _QCF_+^X
+trialstep.3.stateno = 1000
+trialstep.3.hitcount = 1
+
+;---------------------------------------------
+
+[TrialDef, Kung Fu Fist Four Piece]
+trialstep.1.text = Jumping Strong Punch
+trialstep.1.glyphs = _AIR^Y
+trialstep.1.stateno = 610
+trialstep.1.hitcount = 1
+
+trialstep.2.text = Standing Light Punch
+trialstep.2.glyphs = ^X
+trialstep.2.stateno = 200
+trialstep.2.hitcount = 1
+
+trialstep.3.text = Standing Strong Punch
+trialstep.3.glyphs = ^Y
+trialstep.3.stateno = 210
+trialstep.3.hitcount = 1
+
+trialstep.4.text = Strong Kung Fu Palm
+trialstep.4.glyphs = _QDF^Y
+trialstep.4.stateno = 1010
+trialstep.4.hitcount = 1
+
+;---------------------------------------------
+
+[TrialDef, Kung Fu Super Cancel]
+trialstep.1.text = Jumping Strong Kick
+trialstep.1.glyphs = _AIR^B
+trialstep.1.stateno = 640
+trialstep.1.hitcount = 1
+
+trialstep.2.text = Standing Light Kick
+trialstep.2.glyphs = ^A
+trialstep.2.stateno = 230
+trialstep.2.hitcount = 1
+
+trialstep.3.text = Standing Strong Kick
+trialstep.3.glyphs = ^B
+trialstep.3.stateno = 240
+trialstep.3.hitcount = 1
+
+trialstep.4.text = Fast Kung Fu Zankou
+trialstep.4.glyphs = _QDF^A^B
+trialstep.4.stateno = 1420
+trialstep.4.hitcount = 1
+
+trialstep.5.text = Triple Kung Fu Palm
+trialstep.5.glyphs = _QDF_QDF^P
+trialstep.5.stateno = 3000
+trialstep.5.hitcount = 3
