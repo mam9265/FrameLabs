@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Community Stages</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      text-align: center;
+      background-color: #015b91;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 110px;
+      letter-spacing: 6px;
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+    
+    .wrapper {
+      display: flex;
+      margin: auto;
+      width: 85%;
+      max-width: 1200px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      justify-content: center;
+    }
+
+    /* LEFT SIDE - INTRO */
+    .stageList {
+      flex: 1;
+      padding: 40px;
+      background: linear-gradient(180deg, #3f0091, #2a006b);
+      color: #9be0e3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    /*
+    .stageList h1 {
+      font-size: 70px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      letter-spacing: 3px;
+    }*/
+
+    /* RIGHT SIDE - LOGIN */
+    .stageView {
+      flex: 0.7;
+      padding: 50px;
+      text-align: center;
+      background-color: #1a0047;
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      font-size: 22px;
+      margin: auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      width: 65%;
+      padding: 14px;
+      background-color: #9be0e3;
+      color: #2a006b;
+      font-size: 16px;
+      font-family: 'Orbitron', sans-serif;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      margin-left: auto;
+      margin-right: auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    select {
+
+      font-family: 'Orbitron', sans-serif;
+      background-color: #2a006b;
+      color: #9be0e3;
+      overflow-y: scroll;
+
+    }
+
+    button:hover {
+      background-color: #7dd4e0;
+    }
+
+    .back-button {
+      
+      bottom: 30px;
+      left: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .back-button:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <h1>Community Stages</h1>
+
+  <div class="wrapper">
+
+    <!-- LEFT SIDE -->
+    <div class="stageList">
+
+        <p>Community stages will be shown here.</p>
+        <p>Select one to see more information about it.</p>
+        <select id = "stageSelect" size="7" onselect="loadStageDesc()">  
+            
+        </select>
+
+        <button> Upload Stage </button>
+      
+    </div>
+
+    <script>
+
+            window.onload = loadStages();
+
+            async function loadStages() {
+                
+                try {
+
+                    const res = await fetch(`/api/community/stage`);
+                    if (!res.ok) throw new Error('Failed to fetch stages');
+                    
+                    stages = await res.json();
+                    const recordCount = stages.length;
+                    const select = document.getElementById('stageSelect');
+                    let titles = [];
+                    for (let i = 0; i < recordCount; i++) { titles[i] = stages[i].title; }
+                    for (let j = 0; j < recordCount; j++) { 
+                        
+                        var optn = titles[j]; 
+                        var el = document.createElement("option"); 
+                        el.textContent = optn; 
+                        el.value = optn; 
+                        select.appendChild(el);
+
+                     }
+
+                } catch (err) {
+                    console.error('Error loading stages:', err);
+                    alert('Stages could not be loaded.');
+                }
+
+            }
+
+            
+
+    </script>
+
+    <!-- RIGHT SIDE -->
+    <div class="stageView">
+      
+        <p>Stage Information:</p>
+
+        <p id = "stageDescription">
+            Select a stage on the left to see more information about it and add it to your account.
+            Adding a stage to your account means you are able to use it in practice modes as you please.
+        </p>
+
+        <button> Add Stage to Profile </button>
+
+    </div>
+
+    <script>
+
+        function loadStageDesc() {
+                
+            /*
+            alert('Select happened.');
+            const select = document.getElementById("stageSelect");
+            var title = select.options[select.selectedIndex].text;
+
+                try {
+
+                    const res = fetch(`/api/community/stage/${title}`);
+                    if (!res.ok) throw new Error('Failed to fetch stages');
+                    
+                    stageDesc = res.json();
+                    const desc = document.getElementById('stageDescription');
+                    desc.textContent = stageDesc.description.text;
+
+
+                } catch (err) {
+                    console.error('Error loading stages:', err);
+                    alert('Stages desc could not be loaded.');
+                }*/
+            }
+
+    </script>
+
+  </div>
+
+  <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
+
+  </style>
+</head>
+<body>
+
+</html>
+
