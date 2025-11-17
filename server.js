@@ -1273,6 +1273,115 @@ FrameLabs.put('/api/user/:id/controller/:mappingid', async (req, res) => {
   }
 });
 
+// Controller Config API Endpoints (for controlConfig.html)
+// These endpoints work with the local JSON file format used in controlConfig.html
+
+// Get all controller configs
+FrameLabs.get('/api/controller-configs', async (req, res) => {
+  try {
+    const configPath = path.join(__dirname, 'Ikemen-GO', 'save', 'config.json');
+    
+    if (!fs.existsSync(configPath)) {
+      return res.status(200).json({});
+    }
+
+    const configs = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    res.status(200).json(configs);
+  } catch (err) {
+    console.error('Error loading controller configs:', err);
+    res.status(500).json({ error: 'Server error while loading controller configs' });
+  }
+});
+
+// Get a specific controller config by name
+FrameLabs.get('/api/controller-configs/:name', async (req, res) => {
+  try {
+    const configName = decodeURIComponent(req.params.name);
+    const configPath = path.join(__dirname, 'Ikemen-GO', 'save', 'config.json');
+    
+    if (!fs.existsSync(configPath)) {
+      return res.status(404).json({ error: 'Config file not found' });
+    }
+
+    const configs = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    
+    if (!configs[configName]) {
+      return res.status(404).json({ error: 'Controller config not found' });
+    }
+
+    res.status(200).json(configs[configName]);
+  } catch (err) {
+    console.error('Error loading controller config:', err);
+    res.status(500).json({ error: 'Server error while loading controller config' });
+  }
+});
+
+// Save/Update a controller config
+FrameLabs.post('/api/controller-configs', async (req, res) => {
+  try {
+    const { name, config } = req.body;
+    
+    if (!name || !config) {
+      return res.status(400).json({ error: 'Name and config data are required' });
+    }
+
+    const configPath = path.join(__dirname, 'Ikemen-GO', 'save', 'config.json');
+    const configDir = path.dirname(configPath);
+
+    // Ensure directory exists
+    if (!fs.existsSync(configDir)) {
+      fs.mkdirSync(configDir, { recursive: true });
+    }
+
+    // Load existing configs or create new object
+    let configs = {};
+    if (fs.existsSync(configPath)) {
+      try {
+        configs = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      } catch (err) {
+        console.warn('Error parsing existing config file, creating new one:', err);
+        configs = {};
+      }
+    }
+
+    // Update or add the new config
+    configs[name] = config;
+
+    // Write back to file
+    fs.writeFileSync(configPath, JSON.stringify(configs, null, 2));
+
+    res.status(200).json({ message: 'Controller config saved successfully', name, config });
+  } catch (err) {
+    console.error('Error saving controller config:', err);
+    res.status(500).json({ error: 'Server error while saving controller config' });
+  }
+});
+
+// Delete a controller config
+FrameLabs.delete('/api/controller-configs/:name', async (req, res) => {
+  try {
+    const configName = decodeURIComponent(req.params.name);
+    const configPath = path.join(__dirname, 'Ikemen-GO', 'save', 'config.json');
+    
+    if (!fs.existsSync(configPath)) {
+      return res.status(404).json({ error: 'Config file not found' });
+    }
+
+    const configs = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    
+    if (!configs[configName]) {
+      return res.status(404).json({ error: 'Controller config not found' });
+    }
+
+    delete configs[configName];
+    fs.writeFileSync(configPath, JSON.stringify(configs, null, 2));
+
+    res.status(200).json({ message: 'Controller config deleted successfully', name: configName });
+  } catch (err) {
+    console.error('Error deleting controller config:', err);
+    res.status(500).json({ error: 'Server error while deleting controller config' });
+  }
+});
 
 //Port the system runs on
 const PORT = 3000;
