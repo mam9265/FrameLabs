@@ -55,7 +55,7 @@
       letter-spacing: 3px;
     }*/
 
-    /* RIGHT SIDE - LOGIN */
+    /* RIGHT SIDE */
     .stageView {
       flex: 0.7;
       padding: 50px;
@@ -144,7 +144,7 @@
 
         <p>Community stages will be shown here.</p>
         <p>Select one to see more information about it.</p>
-        <select id = "stageSelect" size="7" onselect="loadStageDesc()">  
+        <select id = "stageSelect" size="7" onmouseup="loadStageDesc()">  
             
         </select>
 
@@ -206,27 +206,35 @@
     <script>
 
         function loadStageDesc() {
-                
-            /*
+
+          const select = document.getElementById("stageSelect");
+          var title = select.options[select.selectedIndex].text;
+
+          if (select) {
+            
             alert('Select happened.');
-            const select = document.getElementById("stageSelect");
-            var title = select.options[select.selectedIndex].text;
+            try {
 
-                try {
+              const res = fetch(`/api/community/stage/${title}`);
+              if (!res.ok) throw new Error('Failed to fetch stages');
 
-                    const res = fetch(`/api/community/stage/${title}`);
-                    if (!res.ok) throw new Error('Failed to fetch stages');
-                    
-                    stageDesc = res.json();
-                    const desc = document.getElementById('stageDescription');
-                    desc.textContent = stageDesc.description.text;
+              stageDesc = res.json();
+              /*
+              const desc = document.getElementById('stageDescription');
+              desc.textContent = stageDesc.description.text;*/
 
+            } catch (err) {
 
-                } catch (err) {
-                    console.error('Error loading stages:', err);
-                    alert('Stages desc could not be loaded.');
-                }*/
+              console.error('Error loading stages:', err);
+              alert('Stages desc could not be loaded.');
+              
             }
+          
+          }
+
+              
+                
+        }
 
     </script>
 
