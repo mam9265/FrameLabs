@@ -1,0 +1,65 @@
+<#f0f000>THROWS</>
+
+Tsukami Nage					[_B/_F]_+^2P
+Seoi Nage						[_B/_F]_+^2K
+Izuna Otoshi					_AIR[_B/_F]_+[^2P/^2K]
+
+<#f0f000>UNIQUE ATTACKS</>
+
+Kubi Kudaki						_F_+^Y
+Hiji Otoshi						_AIR_D_+^Y
+Kamaitachi						_DF_+^C
+Bushin Gokusa Ken 1				^X, ^Y, ^Z, ^C
+Bushin Gokusa Ken 2				^X, ^Y, ^Z, _D+^Z
+Target Combo 1					^Y, ^Z
+Target Combo 2					_CLOSE^B, ^B, ^B
+
+<#f0f000>SPECIAL MOVES</>
+
+Hozanto_EX						_D_DB_B^P
+Bushin Senpukyaku_EX			_D_DB_B^K
+Bushin Izuna Otoshi_EX			_D_DF_F^P
+_!Bushin Izuna Otoshi			_CLOSE^P
+_!Izuna no Hiji Otoshi			_FAR^P
+Hayagake_EX						_D_DF_F^K
+_!Kage Sukui					^A
+_!Seichukari					^B
+_!Kubikari						^C
+Hassokyaku						(back corner) _AIR_D_DB_B^K
+								(front corner) _AIR_D_DF_F^K
+
+<#f0f000>LEVEL 1 SUPER COMBOS</>
+
+Bushin Goraikyaku				_D_DF_F_D_DF_F^K
+Bushin Hasoken					_D_DF_F_D_DF_F^P
+Kaiten Izuna Otoshi				_AIR_D_DB_B_D_DB_B^P
+
+<#f0f000>LEVEL 2 SUPER COMBOS</>
+
+Tessinhou						_D_DF_F_D_DF_F^2K
+_!Attack						^K
+_!Stop							^P
+
+<#f0f000>LEVEL 3 SUPER COMBOS</>
+
+Bushin Muso Renge				_D_DB_B_D_DB_B^2P
+
+<#f0f000>SYSTEM</>
+
+Run								_F_F
+Back Dash						_B_B
+High Jump						_TAP_D,_U
+Hop								_TAP_U
+Hyper Hop						_TAP_D, _TAP_U
+Wall Jump						(near corner) _AIR_UF / _UB
+Parry							_TAP_F / _TAP_D
+Roll							[_B/_F]_+^A_+^X
+Sidestep						^A_+^X
+_!Sidestep Attack				^P/^K
+Power Charge					^B_+^Y
+Custom Combo					_AIROK^C_+^Z
+Guard Cancel High				(during guard) _F_+^2P
+Guard Cancel Low				(during guard) _F_+^2K
+Fall Recovery					(when allowed)^P
+Roll Recovery					(while falling from a hit)^K
+Taunt							^S

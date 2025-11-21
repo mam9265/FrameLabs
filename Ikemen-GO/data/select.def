@@ -194,9 +194,8 @@
  ;Insert your characters below.
 
 kfmZ, stages/kfm.def
-kfm720, stages/kfm.def, order=0
 Lilith_YX, random
-
+guy by PotS/guy_pots.def
 randomselect
 
 ;-------------------------------------------------------------------------------

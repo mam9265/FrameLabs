@@ -754,7 +754,16 @@ local t_base_info = {
 if motif.trials_info == nil then
 	motif.trials_info = {}
 end
-motif.trials_info = main.f_tableMerge(t_base_info, motif.trials_info)
+if main and type(main.f_tableMerge) == "function" then
+	motif.trials_info = main.f_tableMerge(t_base_info, motif.trials_info)
+else
+	-- Fallback if f_tableMerge is not available
+	for k, v in pairs(t_base_info) do
+		if motif.trials_info[k] == nil then
+			motif.trials_info[k] = v
+		end
+	end
+end
 
 if motif.trialsbgdef == nil then
     motif.trialsbgdef = {
@@ -764,21 +773,31 @@ if motif.trialsbgdef == nil then
 end
 
 --trials_info section reuses menu_info values (excluding itemnames)
-t = {}
-motif.trials_info = main.f_tableMerge(motif.trials_info, motif.menu_info)
-t.trials_info = {}
-for k, v in pairs(motif.menu_info) do
-	if t.trials_info[k] == nil and not k:match('_itemname_') then
-		t.trials_info[k] = v
+-- Only initialize if required functions are available
+if main and type(main.f_tableMerge) == "function" and motif and motif.menu_info then
+	t = {}
+	if motif.trials_info == nil then
+		motif.trials_info = {}
+	end
+	motif.trials_info = main.f_tableMerge(motif.trials_info, motif.menu_info)
+	t.trials_info = {}
+	for k, v in pairs(motif.menu_info) do
+		if t.trials_info[k] == nil and not k:match('_itemname_') then
+			t.trials_info[k] = v
+		end
+	end
+	motif = main.f_tableMerge(motif, t)
+
+	--arrows spr/anim data (only if motif.f_loadSprData exists)
+	if motif.f_loadSprData and type(motif.f_loadSprData) == "function" and motif.trials_info.menu_pos then
+		motif.f_loadSprData(motif.trials_info, {s = 'menu_arrow_up_',   x = motif.trials_info.menu_pos[1], y = motif.trials_info.menu_pos[2]})
+		motif.f_loadSprData(motif.trials_info, {s = 'menu_arrow_down_', x = motif.trials_info.menu_pos[1], y = motif.trials_info.menu_pos[2]})
+		if motif.trials_info.movelist_pos then
+			motif.f_loadSprData(motif.trials_info, {s = 'movelist_arrow_up_',   x = motif.trials_info.movelist_pos[1], y = motif.trials_info.movelist_pos[2]})
+			motif.f_loadSprData(motif.trials_info, {s = 'movelist_arrow_down_', x = motif.trials_info.movelist_pos[1], y = motif.trials_info.movelist_pos[2]})
+		end
 	end
 end
-motif = main.f_tableMerge(motif, t)
-
---arrows spr/anim data
-motif.f_loadSprData(motif.trials_info, {s = 'menu_arrow_up_',   x = motif.trials_info.menu_pos[1], y = motif.trials_info.menu_pos[2]})
-motif.f_loadSprData(motif.trials_info, {s = 'menu_arrow_down_', x = motif.trials_info.menu_pos[1], y = motif.trials_info.menu_pos[2]})
-motif.f_loadSprData(motif.trials_info, {s = 'movelist_arrow_up_',   x = motif.trials_info.movelist_pos[1], y = motif.trials_info.movelist_pos[2]})
-motif.f_loadSprData(motif.trials_info, {s = 'movelist_arrow_down_', x = motif.trials_info.movelist_pos[1], y = motif.trials_info.movelist_pos[2]})
 
 -- This code creates data out of optional [trialsbgdef] sff file.
 -- Defaults to motif.files.spr_data, defined in screenpack, if not declared.
@@ -923,9 +942,9 @@ function start.f_inittrialsData()
 		validfortickcount = 0,
 		combocounter = 0,
 		maxsteps = 0,
-		starttick = roundtime(),
+		starttick = (type(roundtime) == "function" and roundtime()) or 0,
 		elapsedtime = 0,
-		trial = f_deepCopy(start.f_getCharData(start.p[1].t_selected[1].ref).trialsdata),
+		trial = (start.p and start.p[1] and start.p[1].t_selected and start.p[1].t_selected[1] and start.f_getCharData and type(start.f_getCharData) == "function" and start.f_getCharData(start.p[1].t_selected[1].ref) and start.f_getCharData(start.p[1].t_selected[1].ref).trialsdata and type(f_deepCopy) == "function") and f_deepCopy(start.f_getCharData(start.p[1].t_selected[1].ref).trialsdata) or {},
 		bgelemdata = {
 			vertical = {},
 			horizontal = {},
@@ -1132,8 +1151,13 @@ function start.f_trialsBuilder()
 
 	-- Build list out all of the available trials for Pause menu
 	menu.t_valuename.trialslist = {}
-	for i = 1, #start.trials.trial, 1 do
-		table.insert(menu.t_valuename.trialslist, {itemname = tostring(i), displayname = start.trials.trial[i].name})
+	if #start.trials.trial > 0 then
+		for i = 1, #start.trials.trial, 1 do
+			table.insert(menu.t_valuename.trialslist, {itemname = tostring(i), displayname = start.trials.trial[i].name})
+		end
+	else
+		-- If no trials, add default entry
+		table.insert(menu.t_valuename.trialslist, {itemname = "0", displayname = "Select Trial"})
 	end
 
 	start.trials.trialsInitialized = true
@@ -1145,66 +1169,66 @@ function start.f_trialsDummySetup()
 	setAILevel(0)
 	if start.trials.currenttrial <= #start.trials.trial then
 		if start.trials.trial[start.trials.currenttrial].p2life > 0 then
-			mapSet('_iksys_trialsSetLife', start.trials.trial[start.trials.currenttrial].p2life)
+			charMapSet(2, '_iksys_trialsSetLife', start.trials.trial[start.trials.currenttrial].p2life)
 			setLife(start.trials.trial[start.trials.currenttrial].p2life)
 		elseif map('_iksys_trialsSetLife') < lifemax() then
-			mapSet('_iksys_trialsSetLife', lifemax())
+			charMapSet(2, '_iksys_trialsSetLife', lifemax())
 			setLife(lifemax())
 		end
 	else
-		mapSet('_iksys_trialsSetLife', lifemax())
+		charMapSet(2, '_iksys_trialsSetLife', lifemax())
 		setLife(lifemax())
 	end
 	player(1)
 	if start.trials.currenttrial <= #start.trials.trial then
 		if start.trials.trial[start.trials.currenttrial].p1life > 0 then
-			mapSet('_iksys_trialsSetLife', start.trials.trial[start.trials.currenttrial].p1life)
+			charMapSet(1, '_iksys_trialsSetLife', start.trials.trial[start.trials.currenttrial].p1life)
 			setLife(start.trials.trial[start.trials.currenttrial].p1life)
 		elseif map('_iksys_trialsSetLife') < lifemax() then
-			mapSet('_iksys_trialsSetLife', lifemax())
+			charMapSet(1, '_iksys_trialsSetLife', lifemax())
 			setLife(lifemax())
 		end
 	else
-		mapSet('_iksys_trialsSetLife', lifemax())
+		charMapSet(1, '_iksys_trialsSetLife', lifemax())
 		setLife(lifemax())
 	end
 	player(2)
-	mapSet('_iksys_trialsDummyControl', 0)
+	charMapSet(2, '_iksys_trialsDummyControl', 0)
 	if not start.trials.allclear and not start.trials.trial[start.trials.currenttrial].active then
 		if start.trials.trial[start.trials.currenttrial].dummymode == 'stand' then
-			mapSet('_iksys_trialsDummyMode', 0)
+			charMapSet(2, '_iksys_trialsDummyMode', 0)
 		elseif start.trials.trial[start.trials.currenttrial].dummymode == 'crouch' then
-			mapSet('_iksys_trialsDummyMode', 1)
+			charMapSet(2, '_iksys_trialsDummyMode', 1)
 		elseif start.trials.trial[start.trials.currenttrial].dummymode == 'jump' then
-			mapSet('_iksys_trialsDummyMode', 2)
+			charMapSet(2, '_iksys_trialsDummyMode', 2)
 		elseif start.trials.trial[start.trials.currenttrial].dummymode == 'wjump' then
-			mapSet('_iksys_trialsDummyMode', 3)
+			charMapSet(2, '_iksys_trialsDummyMode', 3)
 		end
 		if start.trials.trial[start.trials.currenttrial].guardmode == 'none' then
-			mapSet('_iksys_trialsGuardMode', 0)
+			charMapSet(2, '_iksys_trialsGuardMode', 0)
 		elseif start.trials.trial[start.trials.currenttrial].guardmode == 'auto' then
-			mapSet('_iksys_trialsGuardMode', 2)
+			charMapSet(2, '_iksys_trialsGuardMode', 2)
 		end
 		if start.trials.trial[start.trials.currenttrial].buttonjam == 'none' then
-			mapSet('_iksys_trialsButtonJam', 0)
+			charMapSet(2, '_iksys_trialsButtonJam', 0)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'a' then
-			mapSet('_iksys_trialsButtonJam', 1)
+			charMapSet(2, '_iksys_trialsButtonJam', 1)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'b' then
-			mapSet('_iksys_trialsButtonJam', 2)
+			charMapSet(2, '_iksys_trialsButtonJam', 2)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'c' then
-			mapSet('_iksys_trialsButtonJam', 3)
+			charMapSet(2, '_iksys_trialsButtonJam', 3)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'x' then
-			mapSet('_iksys_trialsButtonJam', 4)
+			charMapSet(2, '_iksys_trialsButtonJam', 4)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'y' then
-			mapSet('_iksys_trialsButtonJam', 5)
+			charMapSet(2, '_iksys_trialsButtonJam', 5)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'z' then
-			mapSet('_iksys_trialsButtonJam', 6)
+			charMapSet(2, '_iksys_trialsButtonJam', 6)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'start' then
-			mapSet('_iksys_trialsButtonJam', 7)
+			charMapSet(2, '_iksys_trialsButtonJam', 7)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'd' then
-			mapSet('_iksys_trialsButtonJam', 8)
+			charMapSet(2, '_iksys_trialsButtonJam', 8)
 		elseif start.trials.trial[start.trials.currenttrial].buttonjam == 'w' then
-			mapSet('_iksys_trialsButtonJam', 9)
+			charMapSet(2, '_iksys_trialsButtonJam', 9)
 		end
 		start.trials.trial[start.trials.currenttrial].active = true
 	end
@@ -2042,7 +2066,11 @@ menu.t_itemname['trialslist'] = function(t, item, cursorPosY, moveTxt, section)
 	return true
 end
 menu.t_vardisplay['trialslist'] = function()
-	return menu.t_valuename.trialslist[menu.trialslist or 1].displayname
+	if menu.t_valuename.trialslist and menu.t_valuename.trialslist[menu.trialslist or 1] then
+		return menu.t_valuename.trialslist[menu.trialslist or 1].displayname
+	else
+		return "Select Trial"
+	end
 end
 
 menu.t_itemname['trialadvancement'] = function(t, item, cursorPosY, moveTxt, section)
@@ -2155,16 +2183,16 @@ function menu.f_trialsReset()
 	end
 	player(2)
 	setAILevel(0)
-	mapSet('_iksys_trialsDummyControl', 0)
-	mapSet('_iksys_trialsDummyMode', 0)
-	mapSet('_iksys_trialsGuardMode', 0)
-	mapSet('_iksys_trialsFallRecovery', 0)
-	mapSet('_iksys_trialsDistance', 0)
-	mapSet('_iksys_trialsButtonJam', 0)
-	mapSet('_iksys_trialsReposition', 0)
-	mapSet('_iksys_trialsSetLife', lifemax())
+	charMapSet(2, '_iksys_trialsDummyControl', 0)
+	charMapSet(2, '_iksys_trialsDummyMode', 0)
+	charMapSet(2, '_iksys_trialsGuardMode', 0)
+	charMapSet(2, '_iksys_trialsFallRecovery', 0)
+	charMapSet(2, '_iksys_trialsDistance', 0)
+	charMapSet(2, '_iksys_trialsButtonJam', 0)
+	charMapSet(2, '_iksys_trialsReposition', 0)
+	charMapSet(2, '_iksys_trialsSetLife', lifemax())
 	player(1)
-	mapSet('_iksys_trialsSetLife', lifemax())
+	charMapSet(1, '_iksys_trialsSetLife', lifemax())
 end
 
 --;===========================================================
