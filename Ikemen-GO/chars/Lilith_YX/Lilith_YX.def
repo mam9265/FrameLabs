@@ -7,7 +7,7 @@ author = "Yamori X"
 pal.defaults = 1,4
 
 [Files]
-trials = trials.def
+trials=trials.def
 sprite = Aesthetic/Lilith.sff
 anim = Aesthetic/Lilith.air
 sound = Aesthetic/Lilith.snd

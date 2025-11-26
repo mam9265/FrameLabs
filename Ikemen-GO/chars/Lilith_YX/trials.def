@@ -1,139 +1,326 @@
-; LILITH TRIALS LIST ---------------------------
-
 [TrialDef, Standing Light Punch]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Standing Light Punch
 trialstep.1.glyphs = ^X
 trialstep.1.stateno = 200
 
-;---------------------------------------------
-
 [TrialDef, Standing Medium Punch]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Standing Medium Punch
 trialstep.1.glyphs = ^Y
 trialstep.1.stateno = 210
 
-;---------------------------------------------
+[TrialDef, Standing Heavy Punch]
+trial.dummymode = stand
+trialstep.1.text = Standing Heavy Punch
+trialstep.1.glyphs = ^Z
+trialstep.1.stateno = 220
 
 [TrialDef, Standing Light Kick]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Standing Light Kick
 trialstep.1.glyphs = ^A
 trialstep.1.stateno = 230
 
-;---------------------------------------------
-
 [TrialDef, Standing Medium Kick]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Standing Medium Kick
 trialstep.1.glyphs = ^B
 trialstep.1.stateno = 240
 
-;---------------------------------------------
+[TrialDef, Standing Heavy Kick]
+trial.dummymode = stand
+trialstep.1.text = Standing Heavy Kick
+trialstep.1.glyphs = ^C
+trialstep.1.stateno = 250
 
 [TrialDef, Crouching Light Punch]
 trial.dummymode = crouch
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Crouching Light Punch
-trialstep.1.glyphs = _D_+^X
+trialstep.1.glyphs = _D^X
 trialstep.1.stateno = 400
-
-;---------------------------------------------
 
 [TrialDef, Crouching Medium Punch]
 trial.dummymode = crouch
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Crouching Medium Punch
-trialstep.1.glyphs = _D_+^Y
+trialstep.1.glyphs = _D^Y
 trialstep.1.stateno = 410
 
-;---------------------------------------------
+[TrialDef, Crouching Heavy Punch]
+trial.dummymode = crouch
+trialstep.1.text = Crouching Heavy Punch
+trialstep.1.glyphs = _D^Z
+trialstep.1.stateno = 420
 
 [TrialDef, Crouching Light Kick]
 trial.dummymode = crouch
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Crouching Light Kick
-trialstep.1.glyphs = _D_+^A
+trialstep.1.glyphs = _D^A
 trialstep.1.stateno = 430
-
-;---------------------------------------------
 
 [TrialDef, Crouching Medium Kick]
 trial.dummymode = crouch
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Crouching Medium Kick
-trialstep.1.glyphs = _D_+^B
+trialstep.1.glyphs = _D^B
 trialstep.1.stateno = 440
 
-;---------------------------------------------
+[TrialDef, Crouching Heavy Kick]
+trial.dummymode = crouch
+trialstep.1.text = Crouching Heavy Kick
+trialstep.1.glyphs = _D^C
+trialstep.1.stateno = 450
 
-[TrialDef, Throw]
+[TrialDef, Air Light Punch]
+trial.dummymode = jump
+trialstep.1.text = Air Light Punch
+trialstep.1.glyphs = _AIR^X
+trialstep.1.stateno = 600
+
+[TrialDef, Air Medium Punch]
+trial.dummymode = jump
+trialstep.1.text = Air Medium Punch
+trialstep.1.glyphs = _AIR^Y
+trialstep.1.stateno = 610
+
+[TrialDef, Air Heavy Punch]
+trial.dummymode = jump
+trialstep.1.text = Air Heavy Punch
+trialstep.1.glyphs = _AIR^Z
+trialstep.1.stateno = 620
+
+[TrialDef, Air Light Kick]
+trial.dummymode = jump
+trialstep.1.text = Air Light Kick
+trialstep.1.glyphs = _AIR^A
+trialstep.1.stateno = 630
+
+[TrialDef, Air Medium Kick]
+trial.dummymode = jump
+trialstep.1.text = Air Medium Kick
+trialstep.1.glyphs = _AIR^B
+trialstep.1.stateno = 640
+
+[TrialDef, Air Heavy Kick]
+trial.dummymode = jump
+trialstep.1.text = Air Heavy Kick
+trialstep.1.glyphs = _AIR^C
+trialstep.1.stateno = 650
+
+[TrialDef, Grapple]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
-
-trialstep.1.text = Throw
-trialstep.1.glyphs = [_B/_F]_+^X
+trialstep.1.text = Grapple
+trialstep.1.glyphs = _F^X
 trialstep.1.stateno = 800
-trialstep.1.hitcount = 0
+trialstep.1.isthrow = true
 
-;---------------------------------------------
+[TrialDef, Playful Twirl]
+trial.dummymode = stand
+trialstep.1.text = Playful Twirl
+trialstep.1.glyphs = _F^C
+trialstep.1.stateno = 1000
+
+[TrialDef, Gleaming Upper]
+trial.dummymode = stand
+trialstep.1.text = Gleaming Upper
+trialstep.1.glyphs = _DF^Z
+trialstep.1.stateno = 1010
+
+[TrialDef, Gleeful Dive]
+trial.dummymode = jump
+trialstep.1.text = Gleeful Dive
+trialstep.1.glyphs = _D^C
+trialstep.1.stateno = 1020
 
 [TrialDef, Soul Flash]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Soul Flash
-trialstep.1.glyphs = _QCF_+^P
+trialstep.1.glyphs = _QCF^X
 trialstep.1.stateno = 1000
-
-;---------------------------------------------
 
 [TrialDef, Shining Blade]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
-
 trialstep.1.text = Shining Blade
-trialstep.1.glyphs = _F_D_DF_+^P
-trialstep.1.stateno = 1101
+trialstep.1.glyphs = _F_D_DF^X
+trialstep.1.stateno = 1010
 
-;---------------------------------------------
-
-[TrialDef, Basic Combo]
+[TrialDef, Merry Turn]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
+trialstep.1.text = Merry Turn
+trialstep.1.glyphs = _QCB^A
+trialstep.1.stateno = 1002
 
-trialstep.1.text = Standing Light Punch
-trialstep.1.glyphs = ^X
+[TrialDef, Mystic Arrow]
+trial.dummymode = stand
+trialstep.1.text = Mystic Arrow
+trialstep.1.glyphs = _HCB^X
+trialstep.1.stateno = 1011
+
+[TrialDef, Mirage Blade]
+trial.dummymode = stand
+trialstep.1.text = Mirage Blade
+trialstep.1.glyphs = _QCF_QCF^X
+trialstep.1.stateno = 3000
+
+[TrialDef, Splendor Love]
+trial.dummymode = stand
+trialstep.1.text = Splendor Love
+trialstep.1.glyphs = _QCF_QCF^A
+trialstep.1.stateno = 3010
+
+[TrialDef, Luminous Illusion]
+trial.dummymode = stand
+trialstep.1.text = Luminous Illusion
+trialstep.1.glyphs = ^X^X_F^A^Z
+trialstep.1.stateno = 3000
+
+[TrialDef, Basic Chain Combo]
+trial.dummymode = crouch
+trialstep.1.text = Crouch LP
+trialstep.1.glyphs = _D^X
+trialstep.1.stateno = 400
+trialstep.2.text = Crouch MP
+trialstep.2.glyphs = _D^Y
+trialstep.2.stateno = 410
+trialstep.3.text = Crouch MK
+trialstep.3.glyphs = _D^B
+trialstep.3.stateno = 440
+trialstep.4.text = Crouch HP
+trialstep.4.glyphs = _D^Z
+trialstep.4.stateno = 420
+
+[TrialDef, Renda Cancel Combo 1]
+trial.dummymode = stand
+trialstep.1.text = Stand LP x2
+trialstep.1.glyphs = ^X^X
 trialstep.1.stateno = 200
+trialstep.1.hitcount = 2
+trialstep.2.text = Shining Blade
+trialstep.2.glyphs = _F_D_DF^X
+trialstep.2.stateno = 1010
 
-trialstep.2.text = Standing Medium Punch
+[TrialDef, Renda Cancel Combo 2]
+trial.dummymode = crouch
+trialstep.1.text = Crouch LK x2
+trialstep.1.glyphs = _D^A_D^A
+trialstep.1.stateno = 430
+trialstep.1.hitcount = 2
+trialstep.2.text = Merry Turn
+trialstep.2.glyphs = _QCB^A
+trialstep.2.stateno = 1002
+
+[TrialDef, Jump-In Chain Combo]
+trial.dummymode = jump
+trialstep.1.text = Air LP
+trialstep.1.glyphs = _AIR^X
+trialstep.1.stateno = 600
+trialstep.2.text = Air MP
+trialstep.2.glyphs = _AIR^Y
+trialstep.2.stateno = 610
+trialstep.3.text = Crouch LP
+trialstep.3.glyphs = _D^X
+trialstep.3.stateno = 400
+trialstep.4.text = Crouch MP
+trialstep.4.glyphs = _D^Y
+trialstep.4.stateno = 410
+trialstep.5.text = Crouch MK
+trialstep.5.glyphs = _D^B
+trialstep.5.stateno = 440
+trialstep.6.text = Crouch HP
+trialstep.6.glyphs = _D^Z
+trialstep.6.stateno = 420
+trialstep.7.text = Crouch HK
+trialstep.7.glyphs = _D^C
+trialstep.7.stateno = 450
+
+[TrialDef, Chain to Super Combo 1]
+trial.dummymode = jump
+trialstep.1.text = Air HP
+trialstep.1.glyphs = _AIR^Z
+trialstep.1.stateno = 620
+trialstep.2.text = Stand MP
 trialstep.2.glyphs = ^Y
 trialstep.2.stateno = 210
+trialstep.3.text = Mirage Blade
+trialstep.3.glyphs = _QCF_QCF^X
+trialstep.3.stateno = 3000
 
-;---------------------------------------------
+[TrialDef, Chain to Super Combo 2]
+trial.dummymode = jump
+trialstep.1.text = Air HK
+trialstep.1.glyphs = _AIR^C
+trialstep.1.stateno = 650
+trialstep.2.text = Crouch MK
+trialstep.2.glyphs = _D^B
+trialstep.2.stateno = 440
+trialstep.3.text = Splendor Love
+trialstep.3.glyphs = _QCF_QCF^A
+trialstep.3.stateno = 3010
 
+[TrialDef, Chain to Luminous Illusion]
+trial.dummymode = jump
+trialstep.1.text = Air LP
+trialstep.1.glyphs = _AIR^X
+trialstep.1.stateno = 600
+trialstep.2.text = Air MP
+trialstep.2.glyphs = _AIR^Y
+trialstep.2.stateno = 610
+trialstep.3.text = Crouch MK
+trialstep.3.glyphs = _D^B
+trialstep.3.stateno = 440
+trialstep.4.text = Crouch HP
+trialstep.4.glyphs = _D^Z
+trialstep.4.stateno = 420
+trialstep.5.text = Luminous Illusion
+trialstep.5.glyphs = ^X^X_F^A^Z
+trialstep.5.stateno = 3000
+
+[TrialDef, Adorable Archery Combo]
+trial.dummymode = stand
+trialstep.1.text = ES Mystic Arrow
+trialstep.1.glyphs = _HCB^X^X
+trialstep.1.stateno = 1011
+trialstep.2.text = Luminous Illusion (Air)
+trialstep.2.glyphs = ^X^X_F^A^Z
+trialstep.2.stateno = 3000
+
+[TrialDef, Super Cancelling Combo]
+trial.dummymode = jump
+trialstep.1.text = Air HP
+trialstep.1.glyphs = _AIR^Z
+trialstep.1.stateno = 620
+trialstep.2.text = Stand MP
+trialstep.2.glyphs = ^Y
+trialstep.2.stateno = 210
+trialstep.3.text = Mirage Blade
+trialstep.3.glyphs = _QCF_QCF^X
+trialstep.3.stateno = 3000
+trialstep.4.text = Luminous Illusion
+trialstep.4.glyphs = ^X^X_F^A^Z
+trialstep.4.stateno = 3000
+
+[TrialDef, Bread and Butter Combo]
+trial.dummymode = stand
+trialstep.1.text = ES Soul Flash
+trialstep.1.glyphs = _QCF^X^X
+trialstep.1.stateno = 1000
+trialstep.2.text = Air LP
+trialstep.2.glyphs = _AIR^X
+trialstep.2.stateno = 600
+trialstep.3.text = Air MP
+trialstep.3.glyphs = _AIR^Y
+trialstep.3.stateno = 610
+trialstep.4.text = Crouch LP
+trialstep.4.glyphs = _D^X
+trialstep.4.stateno = 400
+trialstep.5.text = Crouch MP
+trialstep.5.glyphs = _D^Y
+trialstep.5.stateno = 410
+trialstep.6.text = Crouch MK
+trialstep.6.glyphs = _D^B
+trialstep.6.stateno = 440
+trialstep.7.text = Crouch HP
+trialstep.7.glyphs = _D^Z
+trialstep.7.stateno = 420
+trialstep.8.text = Luminous Illusion
+trialstep.8.glyphs = ^X^X_F^A^Z
+trialstep.8.stateno = 3000

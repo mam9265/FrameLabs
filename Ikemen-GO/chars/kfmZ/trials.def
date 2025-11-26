@@ -1,33 +1,217 @@
-; KFMZ TRIALS LIST ---------------------------
-
-[TrialDef, KFM's First Trial]
+[TrialDef, Standing Light Punch]
 trial.dummymode = stand
-trial.guardmode = none
-trial.dummybuttonjam = none
 
-trialstep.1.text = Strong Kung Fu Palm
-trialstep.1.glyphs = _QDF^Y
-trialstep.1.stateno = 1010
+trialstep.1.text = Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
 
-;---------------------------------------------
+[TrialDef, Standing Strong Punch]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Strong Punch
+trialstep.1.glyphs = ^Y
+trialstep.1.stateno = 210
+
+[TrialDef, Standing Light Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Light Kick
+trialstep.1.glyphs = ^A
+trialstep.1.stateno = 230
+
+[TrialDef, Standing Strong Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Strong Kick
+trialstep.1.glyphs = ^B
+trialstep.1.stateno = 240
+
+[TrialDef, Crouching Light Punch]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Light Punch
+trialstep.1.glyphs = _D^X
+trialstep.1.stateno = 400
+
+[TrialDef, Crouching Strong Punch]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Strong Punch
+trialstep.1.glyphs = _D^Y
+trialstep.1.stateno = 410
+
+[TrialDef, Crouching Light Kick]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Light Kick
+trialstep.1.glyphs = _D^A
+trialstep.1.stateno = 430
+
+[TrialDef, Crouching Strong Kick]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Strong Kick
+trialstep.1.glyphs = _D^B
+trialstep.1.stateno = 440
+
+[TrialDef, Air Light Punch]
+trial.dummymode = jump
+
+trialstep.1.text = Air Light Punch
+trialstep.1.glyphs = _AIR^X
+trialstep.1.stateno = 600
+
+[TrialDef, Air Strong Punch]
+trial.dummymode = jump
+
+trialstep.1.text = Air Strong Punch
+trialstep.1.glyphs = _AIR^Y
+trialstep.1.stateno = 610
+
+[TrialDef, Air Light Kick]
+trial.dummymode = jump
+
+trialstep.1.text = Air Light Kick
+trialstep.1.glyphs = _AIR^A
+trialstep.1.stateno = 630
+
+[TrialDef, Air Strong Kick]
+trial.dummymode = jump
+
+trialstep.1.text = Air Strong Kick
+trialstep.1.glyphs = _AIR^B
+trialstep.1.stateno = 640
 
 [TrialDef, Kung Fu Throw]
+trial.dummymode = stand
+
 trialstep.1.text = Kung Fu Throw
-trialstep.1.glyphs = [_B/_F]_+^Y
-trialstep.1.stateno = 810
+trialstep.1.glyphs = _F^Y
+trialstep.1.stateno = 800
 trialstep.1.isthrow = true
 
-;---------------------------------------------
+[TrialDef, Light Kung Fu Palm]
+trial.dummymode = stand
 
-[TrialDef, Kung Fu Taunt]
-trialstep.1.text = Kung Fu Taunt
-trialstep.1.glyphs = ^S
-trialstep.1.stateno = 195
-trialstep.1.hitcount = 0
+trialstep.1.text = Light Kung Fu Palm
+trialstep.1.glyphs = _QCF^X
+trialstep.1.stateno = 1000
 
-;---------------------------------------------
+[TrialDef, Strong Kung Fu Palm]
+trial.dummymode = stand
 
-[TrialDef, Standing Punch Chain]
+trialstep.1.text = Strong Kung Fu Palm
+trialstep.1.glyphs = _QCF^Y
+trialstep.1.stateno = 1010
+
+[TrialDef, Fast Kung Fu Palm]
+trial.dummymode = stand
+
+trialstep.1.text = Fast Kung Fu Palm
+trialstep.1.glyphs = _QCF^X^Y
+trialstep.1.stateno = 1020
+
+[TrialDef, Light Kung Fu Upper]
+trial.dummymode = stand
+
+trialstep.1.text = Light Kung Fu Upper
+trialstep.1.glyphs = _DSF^X
+trialstep.1.stateno = 1100
+
+[TrialDef, Strong Kung Fu Upper]
+trial.dummymode = stand
+
+trialstep.1.text = Strong Kung Fu Upper
+trialstep.1.glyphs = _DSF^Y
+trialstep.1.stateno = 1110
+
+[TrialDef, Fast Kung Fu Upper]
+trial.dummymode = stand
+
+trialstep.1.text = Fast Kung Fu Upper
+trialstep.1.glyphs = _DSF^X^Y
+trialstep.1.stateno = 1120
+
+[TrialDef, Light Kung Fu Blow]
+trial.dummymode = stand
+
+trialstep.1.text = Light Kung Fu Blow
+trialstep.1.glyphs = _QCB^X
+trialstep.1.stateno = 1200
+
+[TrialDef, Strong Kung Fu Blow]
+trial.dummymode = stand
+
+trialstep.1.text = Strong Kung Fu Blow
+trialstep.1.glyphs = _QCB^Y
+trialstep.1.stateno = 1210
+
+[TrialDef, Fast Kung Fu Blow]
+trial.dummymode = stand
+
+trialstep.1.text = Fast Kung Fu Blow
+trialstep.1.glyphs = _QCB^X^Y
+trialstep.1.stateno = 1220
+
+[TrialDef, Light Kung Fu Zankou]
+trial.dummymode = stand
+
+trialstep.1.text = Light Kung Fu Zankou
+trialstep.1.glyphs = _QCF^A
+trialstep.1.stateno = 1400
+
+[TrialDef, Strong Kung Fu Zankou]
+trial.dummymode = stand
+
+trialstep.1.text = Strong Kung Fu Zankou
+trialstep.1.glyphs = _QCF^B
+trialstep.1.stateno = 1410
+
+[TrialDef, Fast Kung Fu Zankou]
+trial.dummymode = stand
+
+trialstep.1.text = Fast Kung Fu Zankou
+trialstep.1.glyphs = _QCF^A^B
+trialstep.1.stateno = 1420
+
+[TrialDef, Light Kung Fu Knee]
+trial.dummymode = stand
+
+trialstep.1.text = Light Kung Fu Knee
+trialstep.1.glyphs = _F_F^A
+trialstep.1.stateno = 1050
+
+[TrialDef, Strong Kung Fu Knee]
+trial.dummymode = stand
+
+trialstep.1.text = Strong Kung Fu Knee
+trialstep.1.glyphs = _F_F^B
+trialstep.1.stateno = 1060
+
+[TrialDef, Fast Kung Fu Knee]
+trial.dummymode = stand
+
+trialstep.1.text = Fast Kung Fu Knee
+trialstep.1.glyphs = _F_F^A^B
+trialstep.1.stateno = 1070
+
+[TrialDef, Triple Kung Fu Palm]
+trial.dummymode = stand
+
+trialstep.1.text = Triple Kung Fu Palm
+trialstep.1.glyphs = _QCF_QCF^X
+trialstep.1.stateno = 3000
+
+[TrialDef, Smash Kung Fu Upper]
+trial.dummymode = stand
+
+trialstep.1.text = Smash Kung Fu Upper
+trialstep.1.glyphs = _QCB_QCB^X
+trialstep.1.stateno = 3050
+
+[TrialDef, Basic Combo 1]
+trial.dummymode = stand
+
 trialstep.1.text = Standing Light Punch
 trialstep.1.glyphs = ^X
 trialstep.1.stateno = 200
@@ -36,87 +220,102 @@ trialstep.2.text = Standing Strong Punch
 trialstep.2.glyphs = ^Y
 trialstep.2.stateno = 210
 
-;---------------------------------------------
+[TrialDef, Basic Combo 2]
+trial.dummymode = stand
 
-[TrialDef, Condensed Standing Punch Chain]
-; The next two trials show examples of condensed trial steps which check a series of parameters sequentially by using comma separated values. In other words, think of being able to specify multiple trial steps in a single step.
-; For instance, this trial is the same as the previous, but has two steps condensed into one.
-; The next trial uses a combination of condensed steps and normal steps to provide a concise trial.
-; Condensed steps can be very practical for multi-state moves where the trial step should only clear if all of the states are met, without having to create multiple trial steps.
+trialstep.1.text = Standing Light Kick
+trialstep.1.glyphs = ^A
+trialstep.1.stateno = 230
 
-trialstep.1.text = LP > HP Chain		
-trialstep.1.glyphs = ^X_-^Y			
-trialstep.1.stateno = 200, 210		
-trialstep.1.hitcount = 1, 1
-; When desired, you can collapse multiple steps into a single one by using comma separated values in the following parameters:
-; stateno, animno, hitcount, isthrow, iscounterhit, ishelper, isproj
-; If one parameter on the trial step is defined using comma separated values, all parameters on that trial step must be defined similarly.
+trialstep.2.text = Standing Strong Kick
+trialstep.2.glyphs = ^B
+trialstep.2.stateno = 240
 
-;---------------------------------------------
+[TrialDef, Crouching Combo]
+trial.dummymode = crouch
 
-[TrialDef, KFM Kung Fu Palm]
-; In this trial, we use the "or" operand, specified by using the | character, to let the user specify multiple different stateno or animno for which the trialstep or microstep is valid.
+trialstep.1.text = Crouching Light Punch
+trialstep.1.glyphs = _D^X
+trialstep.1.stateno = 400
 
-trialstep.1.text = Kung Fu Palm
-trialstep.1.glyphs = _QDF^P
-trialstep.1.stateno = 1000|1010
+trialstep.2.text = Crouching Strong Punch
+trialstep.2.glyphs = _D^Y
+trialstep.2.stateno = 410
 
-;---------------------------------------------
+[TrialDef, Special Combo 1]
+trial.dummymode = stand
 
-[TrialDef, Kung Fu Juggle Combo]
-trial.dummypos = right-corner
+trialstep.1.text = Standing Strong Punch
+trialstep.1.glyphs = ^Y
+trialstep.1.stateno = 210
 
-trialstep.1.text = KF Knee + Extra Kick
-trialstep.1.glyphs = _F_F^K_-^K
-trialstep.1.stateno = 1060, 1055
+trialstep.2.text = Light Kung Fu Palm
+trialstep.2.glyphs = _QCF^X
+trialstep.2.stateno = 1000
 
-trialstep.2.text = Crouching Jab
-trialstep.2.glyphs = _D_+^X
-trialstep.2.stateno = 400
+[TrialDef, Special Combo 2]
+trial.dummymode = stand
 
-trialstep.3.text = Weak Kung Fu Palm
-trialstep.3.glyphs = _QCF_+^X
-trialstep.3.stateno = 1000
+trialstep.1.text = Standing Light Kick
+trialstep.1.glyphs = ^A
+trialstep.1.stateno = 230
 
-;---------------------------------------------
+trialstep.2.text = Strong Kung Fu Palm
+trialstep.2.glyphs = _QCF^Y
+trialstep.2.stateno = 1010
 
-[TrialDef, Kung Fu Fist Four Piece]
-trialstep.1.text = Jumping Strong Punch
-trialstep.1.glyphs = _AIR^Y
-trialstep.1.stateno = 610
+[TrialDef, Super Combo 1]
+trial.dummymode = stand
+
+trialstep.1.text = Light Kung Fu Palm
+trialstep.1.glyphs = _QCF^X
+trialstep.1.stateno = 1000
+
+trialstep.2.text = Triple Kung Fu Palm
+trialstep.2.glyphs = _QCF_QCF^X
+trialstep.2.stateno = 3000
+
+[TrialDef, Super Combo 2]
+trial.dummymode = stand
+
+trialstep.1.text = Strong Kung Fu Upper
+trialstep.1.glyphs = _DSF^Y
+trialstep.1.stateno = 1110
+
+trialstep.2.text = Smash Kung Fu Upper
+trialstep.2.glyphs = _QCB_QCB^X
+trialstep.2.stateno = 3050
+
+[TrialDef, Air to Ground Combo]
+trial.dummymode = jump
+
+trialstep.1.text = Air Strong Kick
+trialstep.1.glyphs = _AIR^B
+trialstep.1.stateno = 640
 
 trialstep.2.text = Standing Light Punch
 trialstep.2.glyphs = ^X
 trialstep.2.stateno = 200
 
-trialstep.3.text = Standing Strong Punch
-trialstep.3.glyphs = ^Y
-trialstep.3.stateno = 210
+trialstep.3.text = Light Kung Fu Palm
+trialstep.3.glyphs = _QCF^X
+trialstep.3.stateno = 1000
 
-trialstep.4.text = Strong Kung Fu Palm
-trialstep.4.glyphs = _QDF^Y
-trialstep.4.stateno = 1010
+[TrialDef, Advanced Combo]
+trial.dummymode = stand
 
-;---------------------------------------------
+trialstep.1.text = Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
 
-[TrialDef, Kung Fu Super Cancel]
-trialstep.1.text = Jumping Strong Kick
-trialstep.1.glyphs = _AIR^B
-trialstep.1.stateno = 640
+trialstep.2.text = Standing Strong Punch
+trialstep.2.glyphs = ^Y
+trialstep.2.stateno = 210
 
-trialstep.2.text = Standing Light Kick
-trialstep.2.glyphs = ^A
-trialstep.2.stateno = 230
+trialstep.3.text = Strong Kung Fu Palm
+trialstep.3.glyphs = _QCF^Y
+trialstep.3.stateno = 1010
 
-trialstep.3.text = Standing Strong Kick
-trialstep.3.glyphs = ^B
-trialstep.3.stateno = 240
-
-trialstep.4.text = Fast Kung Fu Zankou
-trialstep.4.glyphs = _QDF^A^B
-trialstep.4.stateno = 1420
-
-trialstep.5.text = Triple Kung Fu Palm
-trialstep.5.glyphs = _QCF_QCF^P
-trialstep.5.stateno = 3000
-trialstep.5.hitcount = 3
+trialstep.4.text = Triple Kung Fu Palm
+trialstep.4.glyphs = _QCF_QCF^X
+trialstep.4.stateno = 3000

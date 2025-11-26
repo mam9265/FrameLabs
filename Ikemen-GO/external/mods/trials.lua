@@ -180,30 +180,36 @@ for row = 1, #main.t_selChars do
                     end
                 end
 
-                -- Start of a trial step
-                if i > 0 and lcline:find("trialstep." .. (j+1) .. ".") then
-                    j = j + 1
-                    trial[i].trialstep[j] = {
-                        numofmicrosteps = 1,
-                        text = "",
-                        glyphs = "",
-                        stateno = {},
-                        animno = {},
-                        hitcount = {},
-                        stephitscount = {},
-                        combocountonstep = {},
-                        isthrow = {},
-                        ishelper = {},
-                        isproj = {},
-                        iscounterhit = {},
-                        validfortickcount = {},
-                        validforvar = {},
-                        validforval = {},
-                        glyphline = {
-                            vertical = { glyph = {}, pos = {}, width = {}, alignOffset = {}, lengthOffset = {}, scale = {} },
-                            horizontal = { glyph = {}, pos = {}, width = {}, alignOffset = {}, lengthOffset = {}, scale = {} },
-                        }
-                    }
+                -- Start of a trial step - use more robust detection like second parser
+                local stepMatch = lcline:match("trialstep%.(%d+)%.")
+                if stepMatch then
+                    local stepNum = tonumber(stepMatch)
+                    if stepNum and stepNum >= 1 then
+                        j = stepNum
+                        if not trial[i].trialstep[j] then
+                            trial[i].trialstep[j] = {
+                                numofmicrosteps = 1,
+                                text = "",
+                                glyphs = "",
+                                stateno = {},
+                                animno = {},
+                                hitcount = {},
+                                stephitscount = {},
+                                combocountonstep = {},
+                                isthrow = {},
+                                ishelper = {},
+                                isproj = {},
+                                iscounterhit = {},
+                                validfortickcount = {},
+                                validforvar = {},
+                                validforval = {},
+                                glyphline = {
+                                    vertical = { glyph = {}, pos = {}, width = {}, alignOffset = {}, lengthOffset = {}, scale = {} },
+                                    horizontal = { glyph = {}, pos = {}, width = {}, alignOffset = {}, lengthOffset = {}, scale = {} },
+                                }
+                            }
+                        end
+                    end
                 end
 
                 -- Trial properties
@@ -225,34 +231,162 @@ for row = 1, #main.t_selChars do
                     end
                 end
 
-                -- Trial step properties
-                if i > 0 and j > 0 then
-                    local step = trial[i].trialstep[j]
-                    if lcline:find("trialstep." .. j .. ".text") then
-                        step.text = f_trimforchar(line, "=", "after")
-                    elseif lcline:find("trialstep." .. j .. ".glyphs") then
-                        step.glyphs = f_trimforchar(line, "=", "after")
-                    elseif lcline:find("trialstep." .. j .. ".stateno") then
-                        step.stateno = f_str2number(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
-                        step.numofmicrosteps = #step.stateno
-                    elseif lcline:find("trialstep." .. j .. ".animno") then
-                        step.animno = f_str2number(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
-                    elseif lcline:find("trialstep." .. j .. ".hitcount") then
-                        step.hitcount = f_str2number(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
-                    elseif lcline:find("trialstep." .. j .. ".isthrow") then
-                        step.isthrow = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
-                    elseif lcline:find("trialstep." .. j .. ".iscounterhit") then
-                        step.iscounterhit = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
-                    elseif lcline:find("trialstep." .. j .. ".ishelper") then
-                        step.ishelper = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
-                    elseif lcline:find("trialstep." .. j .. ".isproj") then
-                        step.isproj = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                -- Trial step properties - check if step exists, create if needed
+                if i > 0 then
+                    -- Check if this line contains a trialstep property
+                    local propStepMatch = lcline:match("trialstep%.(%d+)%.")
+                    if propStepMatch then
+                        local propStepNum = tonumber(propStepMatch)
+                        if propStepNum and propStepNum >= 1 then
+                            j = propStepNum
+                            if not trial[i].trialstep[j] then
+                                trial[i].trialstep[j] = {
+                                    numofmicrosteps = 1,
+                                    text = "",
+                                    glyphs = "",
+                                    stateno = {},
+                                    animno = {},
+                                    hitcount = {},
+                                    stephitscount = {},
+                                    combocountonstep = {},
+                                    isthrow = {},
+                                    ishelper = {},
+                                    isproj = {},
+                                    iscounterhit = {},
+                                    validfortickcount = {},
+                                    validforvar = {},
+                                    validforval = {},
+                                    glyphline = {
+                                        vertical = { glyph = {}, pos = {}, width = {}, alignOffset = {}, lengthOffset = {}, scale = {} },
+                                        horizontal = { glyph = {}, pos = {}, width = {}, alignOffset = {}, lengthOffset = {}, scale = {} },
+                                    }
+                                }
+                                -- Initialize default values for the first microstep
+                                local step = trial[i].trialstep[j]
+                                step.hitcount[1] = 0  -- Default to 0 (no hit required) for basic moves
+                                step.stephitscount[1] = 0
+                                step.combocountonstep[1] = 0
+                                step.isthrow[1] = false
+                                step.ishelper[1] = false
+                                step.isproj[1] = false
+                                step.iscounterhit[1] = false
+                            end
+                        end
+                    end
+                    
+                    if j > 0 then
+                        local step = trial[i].trialstep[j]
+                        if step then
+                            if lcline:find("trialstep." .. j .. ".text") then
+                                step.text = f_trimforchar(line, "=", "after")
+                            elseif lcline:find("trialstep." .. j .. ".glyphs") then
+                                step.glyphs = f_trimforchar(line, "=", "after")
+                            elseif lcline:find("trialstep." .. j .. ".stateno") then
+                                local statenoStr = f_trimforchar(lcline, "=", "after")
+                                local statenoList = safe_strsplit(',', statenoStr)
+                                step.stateno = {}
+                                for idx, val in ipairs(statenoList) do
+                                    local stateNum = f_str2number(val)
+                                    step.stateno[idx] = {stateNum}  -- Store as nested array like second parser
+                                    -- Debug: print state number being stored
+                                    if i == 1 and j == 1 and idx == 1 then
+                                        print("Trial " .. i .. " Step " .. j .. ": Storing stateno " .. stateNum .. " as nested array")
+                                    end
+                                end
+                                step.numofmicrosteps = #step.stateno
+                                -- Initialize default values for all microsteps
+                                for k = 1, step.numofmicrosteps do
+                                    if not step.hitcount[k] then
+                                        step.hitcount[k] = 0  -- Default: no hit required for basic moves
+                                    end
+                                    if not step.stephitscount[k] then
+                                        step.stephitscount[k] = 0
+                                    end
+                                    if not step.combocountonstep[k] then
+                                        step.combocountonstep[k] = 0
+                                    end
+                                    if step.isthrow[k] == nil then
+                                        step.isthrow[k] = false
+                                    end
+                                    if step.ishelper[k] == nil then
+                                        step.ishelper[k] = false
+                                    end
+                                    if step.isproj[k] == nil then
+                                        step.isproj[k] = false
+                                    end
+                                    if step.iscounterhit[k] == nil then
+                                        step.iscounterhit[k] = false
+                                    end
+                                end
+                            elseif lcline:find("trialstep." .. j .. ".animno") then
+                                step.animno = f_str2number(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                            elseif lcline:find("trialstep." .. j .. ".hitcount") then
+                                step.hitcount = f_str2number(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                            elseif lcline:find("trialstep." .. j .. ".isthrow") then
+                                step.isthrow = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                            elseif lcline:find("trialstep." .. j .. ".iscounterhit") then
+                                step.iscounterhit = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                            elseif lcline:find("trialstep." .. j .. ".ishelper") then
+                                step.ishelper = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                            elseif lcline:find("trialstep." .. j .. ".isproj") then
+                                step.isproj = f_str2boolean(safe_strsplit(',', f_trimforchar(lcline, "=", "after")))
+                            end
+                        end
                     end
                 end
             end
 
-            -- Save parsed trial data
-            main.t_selChars[row].trialsdata = trial
+            -- Post-process: Ensure all steps have proper defaults for all microsteps
+            for trialIdx = 1, #trial do
+                for stepIdx, step in pairs(trial[trialIdx].trialstep) do
+                    local numMicrosteps = step.numofmicrosteps or 1
+                    for k = 1, numMicrosteps do
+                        if step.hitcount[k] == nil then
+                            step.hitcount[k] = 0  -- Default: no hit required for basic moves
+                        end
+                        if step.stephitscount[k] == nil then
+                            step.stephitscount[k] = 0
+                        end
+                        if step.combocountonstep[k] == nil then
+                            step.combocountonstep[k] = 0
+                        end
+                        if step.isthrow[k] == nil then
+                            step.isthrow[k] = false
+                        end
+                        if step.ishelper[k] == nil then
+                            step.ishelper[k] = false
+                        end
+                        if step.isproj[k] == nil then
+                            step.isproj[k] = false
+                        end
+                        if step.iscounterhit[k] == nil then
+                            step.iscounterhit[k] = false
+                        end
+                    end
+                end
+            end
+
+            -- Save parsed trial data - ensure it's stored properly
+            if #trial > 0 then
+                -- Store by def file path as well for lookup
+                if main.t_selChars[row].def then
+                    if not main.t_trialsDataByDef then
+                        main.t_trialsDataByDef = {}
+                    end
+                    main.t_trialsDataByDef[main.t_selChars[row].def:lower()] = trial
+                end
+                main.t_selChars[row].trialsdata = trial
+                print("First parser loaded " .. #trial .. " trials for " .. (main.t_selChars[row].def or "unknown"))
+                -- Verify storage
+                if main.t_selChars[row].trialsdata and #main.t_selChars[row].trialsdata > 0 then
+                    print("  Verified: trialsdata stored with " .. #main.t_selChars[row].trialsdata .. " trials")
+                else
+                    print("  WARNING: trialsdata storage verification failed!")
+                end
+            else
+                print("Warning: First parser found no trials in " .. (main.t_selChars[row].trialsdef or "unknown"))
+                main.t_selChars[row].trialsdata = {}
+            end
         end
     end
 end
@@ -298,11 +432,11 @@ end
 local t_base = {
     trialsresetonsuccess = "false",
     trialslayout = "vertical",
-	trialsteps_vertical_pos = {0, 0},
+	trialsteps_vertical_pos = {100, 380},  -- Left side, below combo display area (combos at y=80, "NICE COMBO" text around y=110-120)
     trialsteps_vertical_spacing = {0, 0},
     trialsteps_vertical_window = {0, 0, motifLocalcoord(0), motifLocalcoord(1)},
 	trialsteps_vertical_window_withtextbox = {0, 0, motifLocalcoord(0), motifLocalcoord(1)},
-	trialsteps_horizontal_pos = {0, 0},
+	trialsteps_horizontal_pos = {100, 380},
     trialsteps_horizontal_spacing = {0, 0},
 	trialsteps_horizontal_padding = 0,
     trialsteps_horizontal_window = {0, 0, motifLocalcoord(0), motifLocalcoord(1)},
@@ -376,11 +510,11 @@ local t_base = {
     trialtitle_horizontal_front_facing = 1,
     trialtitle_horizontal_front_scale = {1.0, 1.0},
     trialtitle_horizontal_front_displaytime = -1,
-	upcomingstep_vertical_text_offset = {0,0},
+	upcomingstep_vertical_text_offset = {10, 5},  -- Moved from {0, 0} to be more visible
     upcomingstep_vertical_text_font = {'f-6x9.def', 0, 0, 255, 255, 255, -1},
     upcomingstep_vertical_text_font_height = -1,
     upcomingstep_vertical_text_text = '',
-	upcomingstep_vertical_text_scale = {1.0, 1.0},
+	upcomingstep_vertical_text_scale = {1.5, 1.5},  -- Increased from 1.0 to make text bigger
     upcomingstep_vertical_bg_anim = -1,
     upcomingstep_vertical_bg_spr = {},
     upcomingstep_vertical_bg_offset = {0, 0},
@@ -429,11 +563,11 @@ local t_base = {
 	upcomingstep_horizontal_glyphs_palfx_sinadd = {0, 0, 0},
 	upcomingstep_horizontal_glyphs_palfx_invertall = 0,
 	upcomingstep_horizontal_glyphs_palfx_color = 256,
-	currentstep_vertical_text_offset = {0,0},
+	currentstep_vertical_text_offset = {0, 0},  -- Text offset within the step background
     currentstep_vertical_text_font = {'f-6x9.def', 0, 0, 255, 255, 255, -1},
     currentstep_vertical_text_font_height = -1,
     currentstep_vertical_text_text = '',
-	currentstep_vertical_text_scale = {1.0, 1.0},
+	currentstep_vertical_text_scale = {1.5, 1.5},  -- Increased from 1.0 to make text bigger
     currentstep_vertical_bg_anim = -1,
     currentstep_vertical_bg_spr = {},
     currentstep_vertical_bg_offset = {0, 0},
@@ -486,7 +620,7 @@ local t_base = {
     completedstep_vertical_text_font = {'f-6x9.def', 0, 0, 255, 255, 255, -1},
     completedstep_vertical_text_font_height = -1,
     completedstep_vertical_text_text = '',
-	completedstep_vertical_text_scale = {1.0, 1.0},
+	completedstep_vertical_text_scale = {1.5, 1.5},  -- Increased from 1.0 to make text bigger
     completedstep_vertical_bg_anim = -1,
     completedstep_vertical_bg_spr = {},
     completedstep_vertical_bg_offset = {0, 0},
@@ -536,12 +670,12 @@ local t_base = {
 	completedstep_horizontal_glyphs_palfx_invertall = 0,
 	completedstep_horizontal_glyphs_palfx_color = 256,
     glyphs_vertical_offset = {0, 0},
-    glyphs_vertical_scale = {1.0,1.0},
+    glyphs_vertical_scale = {1.0, 1.0},
     glyphs_vertical_spacing = {0,0},
     glyphs_vertical_align = 1,
 	glyphs_vertical_scalewithtext = "false",
     glyphs_horizontal_offset = {0, 0},
-    glyphs_horizontal_scale = {1.0,1.0},
+    glyphs_horizontal_scale = {1.0, 1.0},
     glyphs_horizontal_spacing = {0,0},
     glyphs_horizontal_align = 1,
 	trialcounter_pos = {0,0},
@@ -928,6 +1062,161 @@ end
 start.selectScreenPalMod = 'normal'
 
 function start.f_inittrialsData()
+	-- Get character data and trials
+	local charData = nil
+	local trialsData = {}
+	
+	if start.p and start.p[1] and start.p[1].t_selected and start.p[1].t_selected[1] then
+		local charRef = start.p[1].t_selected[1].ref
+		print("Character ref: " .. (charRef or "nil"))
+		
+		-- First try using the ref
+		if start.f_getCharData and type(start.f_getCharData) == "function" then
+			charData = start.f_getCharData(charRef)
+			if charData then
+				print("Character data found via ref: " .. (charData.def or "no def"))
+				-- Try to restore trialsdata from lookup table if missing
+				if (not charData.trialsdata or #charData.trialsdata == 0) and charData.def and main.t_trialsDataByDef then
+					local storedData = main.t_trialsDataByDef[charData.def:lower()]
+					if storedData and #storedData > 0 then
+						charData.trialsdata = storedData
+						print("Restored trialsdata from lookup table: " .. #storedData .. " trials")
+					end
+				end
+			end
+		end
+		
+		-- If trialsdata is empty, search through all characters for one with trialsdata
+		if not charData or not charData.trialsdata or #charData.trialsdata == 0 then
+			print("trialsdata empty via ref, searching all characters for trialsdata...")
+			-- Get the def file from the character we selected
+			local selectedDef = nil
+			if charData and charData.def then
+				selectedDef = charData.def
+			elseif start.f_getCharData and type(start.f_getCharData) == "function" then
+				local tempData = start.f_getCharData(charRef)
+				if tempData then
+					selectedDef = tempData.def
+				end
+			end
+			
+			if selectedDef then
+				print("Searching for def: " .. selectedDef)
+				-- Search through ALL main.t_selChars to find one with trialsdata matching the def
+				for row = 1, #main.t_selChars do
+					if main.t_selChars[row].def and main.t_selChars[row].def:lower() == selectedDef:lower() then
+						print("  Found matching def at row " .. row)
+						if main.t_selChars[row].trialsdata then
+							local trialCount = 0
+							for k, v in pairs(main.t_selChars[row].trialsdata) do
+								trialCount = trialCount + 1
+							end
+							print("    trialsdata exists with " .. trialCount .. " entries (pairs)")
+							if trialCount > 0 then
+								charData = main.t_selChars[row]
+								print("    Using character at row " .. row .. " with " .. trialCount .. " trials")
+								break
+							end
+						else
+							print("    No trialsdata at row " .. row)
+						end
+					end
+				end
+				
+				-- If still not found, search for ANY character with trialsdata matching the def (case-insensitive partial match)
+				if (not charData or not charData.trialsdata or #charData.trialsdata == 0) and selectedDef then
+					print("Trying case-insensitive partial match...")
+					local defLower = selectedDef:lower()
+					for row = 1, #main.t_selChars do
+						if main.t_selChars[row].def then
+							local rowDefLower = main.t_selChars[row].def:lower()
+							if rowDefLower:find(defLower, 1, true) then
+								if main.t_selChars[row].trialsdata then
+									local trialCount = 0
+									for k, v in pairs(main.t_selChars[row].trialsdata) do
+										trialCount = trialCount + 1
+									end
+									if trialCount > 0 then
+										charData = main.t_selChars[row]
+										print("Found character at row " .. row .. " with " .. trialCount .. " trials (partial match)")
+										break
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+			
+			-- Last resort: search for ANY character with trialsdata, and also try to re-parse if needed
+			if (not charData or not charData.trialsdata or #charData.trialsdata == 0) then
+				print("Last resort: searching ALL characters for any with trialsdata...")
+				for row = 1, #main.t_selChars do
+					if main.t_selChars[row].trialsdata then
+						local trialCount = 0
+						for k, v in pairs(main.t_selChars[row].trialsdata) do
+							trialCount = trialCount + 1
+						end
+						if trialCount > 0 then
+							print("  Found character at row " .. row .. " (" .. (main.t_selChars[row].def or "no def") .. ") with " .. trialCount .. " trials")
+							-- Use this if it matches our selected character's def
+							if selectedDef and main.t_selChars[row].def and main.t_selChars[row].def:lower() == selectedDef:lower() then
+								charData = main.t_selChars[row]
+								print("    Matches selected character, using it!")
+								break
+							end
+						end
+					end
+				end
+				
+				-- If still not found and we have a trialsdef, try to re-parse it
+				if (not charData or not charData.trialsdata or #charData.trialsdata == 0) and charData and charData.trialsdef and charData.trialsdef ~= "" then
+					print("Attempting to re-parse trials file: " .. charData.trialsdef)
+					-- This is a simplified re-parse - we'd need the full parser logic here
+					-- For now, just note that we need to re-parse
+					print("  Re-parsing would be needed here - trialsdef exists: " .. charData.trialsdef)
+				end
+			end
+		end
+		
+		if charData and charData.trialsdata then
+			print("trialsdata exists, type: " .. type(charData.trialsdata) .. ", length: " .. #charData.trialsdata)
+			-- Debug: check table structure
+			local count = 0
+			for k, v in pairs(charData.trialsdata) do
+				count = count + 1
+				print("  trialsdata[" .. tostring(k) .. "] = " .. type(v))
+			end
+			print("  trialsdata has " .. count .. " entries (pairs count)")
+			
+			-- Try to copy the data
+			if type(f_deepCopy) == "function" then
+				trialsData = f_deepCopy(charData.trialsdata)
+				print("Trials data copied using f_deepCopy: " .. #trialsData .. " trials")
+			else
+				-- Fallback: manual copy - use pairs to handle any table structure
+				local idx = 1
+				for k, v in pairs(charData.trialsdata) do
+					if type(k) == "number" then
+						trialsData[k] = v
+					else
+						trialsData[idx] = v
+						idx = idx + 1
+					end
+				end
+				print("Trials data copied manually: " .. #trialsData .. " trials (using #), " .. count .. " entries (pairs)")
+			end
+		else
+			print("Warning: No trialsdata found")
+			if charData then
+				print("  Character def: " .. (charData.def or "nil"))
+				print("  Character trialsdef: " .. (charData.trialsdef or "nil"))
+			end
+		end
+	else
+		print("Warning: Character selection data not available")
+	end
+	
 	start.trials = {
 		trialsExist = true,
 		trialsInitialized = false,
@@ -944,7 +1233,7 @@ function start.f_inittrialsData()
 		maxsteps = 0,
 		starttick = (type(roundtime) == "function" and roundtime()) or 0,
 		elapsedtime = 0,
-		trial = (start.p and start.p[1] and start.p[1].t_selected and start.p[1].t_selected[1] and start.f_getCharData and type(start.f_getCharData) == "function" and start.f_getCharData(start.p[1].t_selected[1].ref) and start.f_getCharData(start.p[1].t_selected[1].ref).trialsdata and type(f_deepCopy) == "function") and f_deepCopy(start.f_getCharData(start.p[1].t_selected[1].ref).trialsdata) or {},
+		trial = trialsData,
 		bgelemdata = {
 			vertical = {},
 			horizontal = {},
@@ -955,6 +1244,8 @@ function start.f_inittrialsData()
 			trialtimer = true,
 		},
 	}
+	
+	print("start.trials.trial initialized with " .. #start.trials.trial .. " trials")
 
 	-- Initialize trialadvancement based on last-left menu value
 	if menu.t_valuename.trialadvancement[menu.trialadvancement or 1].itemname == "Auto-Advance" then
@@ -1013,18 +1304,26 @@ function start.f_trialsBuilder()
 		end
 		for j = 1, #start.trials.trial[i].trialstep, 1 do
 			local movelistline = start.trials.trial[i].trialstep[j].glyphs
-			for kk, v in main.f_sortKeys(motif.glyphs, function(t, a, b) return string.len(a) > string.len(b) end) do
-				movelistline = movelistline:gsub(main.f_escapePattern(kk), '<' .. numberToRune(v[1] + 0xe000) .. '>')
+			if movelistline and movelistline ~= "" then
+				for kk, v in main.f_sortKeys(motif.glyphs, function(t, a, b) return string.len(a) > string.len(b) end) do
+					movelistline = movelistline:gsub(main.f_escapePattern(kk), '<' .. numberToRune(v[1] + 0xe000) .. '>')
+				end
+			else
+				movelistline = ""
 			end
 			movelistline = movelistline:gsub('%s+$', '')
-			for moves in movelistline:gmatch('(	*[^	]+)') do
-				moves = moves .. '<#>'
-				tempglyphs = {}
-				for m1, m2 in moves:gmatch('(.-)<([^%g <>]+)>') do
-					if not m2:match('^#[A-Za-z0-9]+$') and not m2:match('^/$') and not m2:match('^#$') then
-						tempglyphs[#tempglyphs+1] = m2
+			-- Handle both tab-separated and non-tab-separated glyph strings
+			local hasTabs = movelistline:match('	')
+			local pattern = hasTabs and '(	*[^	]+)' or '(.*)'
+			for moves in movelistline:gmatch(pattern) do
+				if moves and moves ~= "" then
+					moves = moves .. '<#>'
+					tempglyphs = {}
+					for m1, m2 in moves:gmatch('(.-)<([^%g <>]+)>') do
+						if not m2:match('^#[A-Za-z0-9]+$') and not m2:match('^/$') and not m2:match('^#$') then
+							tempglyphs[#tempglyphs+1] = m2
+						end
 					end
-				end
 				for _, layout in ipairs({'vertical','horizontal'}) do
 					if motif.trials_mode['glyphs_' .. layout .. '_align'] == -1 then
 						for m = #tempglyphs, 1, -1 do
@@ -1046,7 +1345,8 @@ function start.f_trialsBuilder()
 						end
 					end
 				end
-			end
+				end  -- Close if moves and moves ~= "" then
+			end  -- Close for moves in movelistline:gmatch(pattern) do
 			for _, layout in ipairs({'vertical','horizontal'}) do
 				local lengthOffset = 0
 				local alignOffset = 0
@@ -1268,7 +1568,11 @@ function start.f_trialsDrawer()
 			--Logic for the stopwatches: total time spent in trial, and time spent on this current trial
 			if start.trials.displaytimers.totaltimer then
 				local totaltimertext = motif.trials_mode.totaltrialtimer_text
-				start.trials.elapsedtime = roundtime() - start.trials.starttick
+				if type(roundtime) == "function" then
+					start.trials.elapsedtime = roundtime() - start.trials.starttick
+				else
+					start.trials.elapsedtime = 0
+				end
 				local m, s, x = f_timeConvert(start.trials.elapsedtime)
 				totaltimertext = totaltimertext:gsub('%%s', m .. ":" .. s .. ":" .. x)
 				start.trials.draw.totaltrialtimer:update({text = totaltimertext})
@@ -1279,7 +1583,11 @@ function start.f_trialsDrawer()
 			end
 			if start.trials.displaytimers.trialtimer then
 				local currenttimertext = motif.trials_mode.currenttrialtimer_text
-				start.trials.trial[ct].elapsedtime = roundtime() - start.trials.trial[ct].starttick
+				if type(roundtime) == "function" then
+					start.trials.trial[ct].elapsedtime = roundtime() - start.trials.trial[ct].starttick
+				else
+					start.trials.trial[ct].elapsedtime = 0
+				end
 				local m, s, x = f_timeConvert(start.trials.trial[ct].elapsedtime)
 				currenttimertext = currenttimertext:gsub('%%s', m .. ":" .. s .. ":" .. x)
 				start.trials.draw.currenttrialtimer:update({text = currenttimertext})
@@ -1472,10 +1780,54 @@ function start.f_trialsDrawer()
 						motif.trials_mode.trialsteps_vertical_pos[1] + motif.trials_mode[sub .. 'step_vertical_bg_offset'][1] + tempoffset[1],
 						motif.trials_mode.trialsteps_vertical_pos[2] + motif.trials_mode[sub .. 'step_vertical_bg_offset'][2] + tempoffset[2]
 					)
+					local stepText = start.trials.trial[ct].trialstep[i] and start.trials.trial[ct].trialstep[i].text or ""
+					if i == cts and stepText == "" then
+						print("Warning: Step " .. i .. " text is empty for trial " .. ct)
+					end
+					
+					-- Calculate glyph line center to center text on it
+					local textX = motif.trials_mode.trialsteps_vertical_pos[1]+motif.trials_mode[sub .. 'step_vertical_text_offset'][1]+motif.trials_mode.trialsteps_vertical_spacing[1]*(i-startonstep)
+					if start.trials.trial[ct].trialstep[i].glyphline.vertical and #start.trials.trial[ct].trialstep[i].glyphline.vertical.glyph > 0 then
+						-- Calculate glyph line bounds
+						local firstGlyphX = motif.trials_mode.trialsteps_vertical_pos[1] + motif.trials_mode.glyphs_vertical_offset[1] + (start.trials.trial[ct].trialstep[i].glyphline.vertical.alignOffset[1] or 0)
+						local lastGlyphIdx = #start.trials.trial[ct].trialstep[i].glyphline.vertical.glyph
+						local lastGlyphX = motif.trials_mode.trialsteps_vertical_pos[1] + motif.trials_mode.glyphs_vertical_offset[1] + (start.trials.trial[ct].trialstep[i].glyphline.vertical.alignOffset[lastGlyphIdx] or 0) + (start.trials.trial[ct].trialstep[i].glyphline.vertical.lengthOffset[lastGlyphIdx] or 0)
+						local lastGlyphWidth = start.trials.trial[ct].trialstep[i].glyphline.vertical.width[lastGlyphIdx] or 0
+						local glyphCenterX = firstGlyphX + (lastGlyphX + lastGlyphWidth - firstGlyphX) / 2
+						
+						-- Get text width using fontGetTextWidth if available, otherwise calculate manually
+						local textWidth = 0
+						local textScale = motif.trials_mode[sub .. 'step_vertical_text_scale'][1] or 1.0
+						local fontKey = motif.trials_mode[sub .. 'step_vertical_text_font'][1] .. motif.trials_mode[sub .. 'step_vertical_text_font'][7]
+						if fontGetTextWidth and main.font[fontKey] then
+							-- Use fontGetTextWidth for accurate width calculation
+							textWidth = fontGetTextWidth(main.font[fontKey], stepText, motif.trials_mode[sub .. 'step_vertical_text_font'][2] or 0) * textScale
+						else
+							-- Fallback: calculate manually from font definition
+							local fontDef = main.font_def[fontKey]
+							if fontDef then
+								for char in stepText:gmatch(".") do
+									local charCode = string.byte(char)
+									if fontDef[charCode] then
+										textWidth = textWidth + fontDef[charCode].Width * textScale
+									else
+										textWidth = textWidth + fontDef.Size[1] * textScale
+									end
+								end
+							end
+						end
+						-- Center text on glyph line
+						if textWidth > 0 then
+							textX = glyphCenterX - textWidth / 2
+						end
+					end
+					
 					start.trials.draw.vertical[sub .. 'textline'][i]:update({
-						x = motif.trials_mode.trialsteps_vertical_pos[1]+motif.trials_mode[sub .. 'step_vertical_text_offset'][1]+motif.trials_mode.trialsteps_vertical_spacing[1]*(i-startonstep),
+						x = textX,
 						y = motif.trials_mode.trialsteps_vertical_pos[2]+motif.trials_mode[sub .. 'step_vertical_text_offset'][2]+motif.trials_mode.trialsteps_vertical_spacing[2]*(i-startonstep),
-						text = start.trials.trial[ct].trialstep[i].text
+						text = stepText,
+						scaleX = motif.trials_mode[sub .. 'step_vertical_text_scale'][1] or 1.5,
+						scaleY = motif.trials_mode[sub .. 'step_vertical_text_scale'][2] or 1.5
 					})
 					animSetPalFX(motif.trials_mode[sub .. 'step_vertical_bg_data'], {
 						time = 1,
@@ -1584,9 +1936,22 @@ function start.f_trialsDrawer()
 				end
 				for m = 1, #start.trials.trial[ct].trialstep[i].glyphline[layout].glyph, 1 do
 					animSetScale(motif.glyphs_data[start.trials.trial[ct].trialstep[i].glyphline[layout].glyph[m]].anim, start.trials.trial[ct].trialstep[i].glyphline[layout].scale[m][1], start.trials.trial[ct].trialstep[i].glyphline[layout].scale[m][2])
+					-- Recalculate glyph position relative to current trialsteps position using stored relative offsets
+					-- Use the correct position based on layout (horizontal vs vertical)
+					local basePos = (layout == "horizontal") and motif.trials_mode.trialsteps_horizontal_pos or motif.trials_mode.trialsteps_vertical_pos
+					local glyphX, glyphY
+					if layout == "horizontal" then
+						-- For horizontal layouts, use pre-calculated X position and calculate Y from base position
+						glyphX = start.trials.trial[ct].trialstep[i].glyphline.horizontal.pos[m][1]
+						glyphY = basePos[2] + motif.trials_mode['glyphs_' .. layout .. '_offset'][2] + tempoffset[2]
+					else
+						-- For vertical layouts, recalculate both X and Y from base position
+						glyphX = basePos[1] + motif.trials_mode['glyphs_' .. layout .. '_offset'][1] + (start.trials.trial[ct].trialstep[i].glyphline[layout].alignOffset[m] or 0) + (start.trials.trial[ct].trialstep[i].glyphline[layout].lengthOffset[m] or 0)
+						glyphY = basePos[2] + motif.trials_mode['glyphs_' .. layout .. '_offset'][2] + tempoffset[2]
+					end
 					animSetPos(motif.glyphs_data[start.trials.trial[ct].trialstep[i].glyphline[layout].glyph[m]].anim, 
-						start.trials.trial[ct].trialstep[i].glyphline[layout].pos[m][1], 
-						start.trials.trial[ct].trialstep[i].glyphline[layout].pos[m][2] + tempoffset[2] + motif.trials_mode['glyphs_' .. layout .. '_offset'][2]
+						glyphX, 
+						glyphY
 					)
 					animSetPalFX(motif.glyphs_data[start.trials.trial[ct].trialstep[i].glyphline[layout].glyph[m]].anim, {
 						time = 1,
@@ -1668,12 +2033,43 @@ function start.f_trialsChecker()
 
 		-- Check states and anims; iterate over 'or' operand if multiple states and/or anims are provided
 		local desiredstates = start.trials.trial[ct].trialstep[cts].stateno[ctms]
-		for k = 1, #desiredstates, 1 do
-			if stateno() == desiredstates[k] or attackerstate == desiredstates[k] then
-				statecheck = true
-				break
+		if desiredstates then
+			-- Handle both nested array format (from second parser) and flat array format (from first parser)
+			if type(desiredstates) == "table" and #desiredstates > 0 then
+				for k = 1, #desiredstates, 1 do
+					local stateVal = desiredstates[k]
+					if type(stateVal) == "table" then
+						stateVal = stateVal[1] or stateVal
+					end
+					local currentState = stateno()
+					if currentState == stateVal or attackerstate == stateVal then
+						statecheck = true
+						break
+					end
+				end
+			elseif type(desiredstates) == "number" then
+				-- Handle single number (flat format)
+				local currentState = stateno()
+				if currentState == desiredstates or attackerstate == desiredstates then
+					statecheck = true
+				end
 			end
 		end
+		-- Debug output for state checking (commented out to reduce log spam)
+		-- if ct == 1 and cts == 1 and ctms == 1 then
+		-- 	local currentState = stateno()
+		-- 	local desiredStateStr = "nil"
+		-- 	if desiredstates then
+		-- 		if type(desiredstates) == "table" then
+		-- 			desiredStateStr = tostring(desiredstates[1] and (type(desiredstates[1]) == "table" and desiredstates[1][1] or desiredstates[1]) or "table")
+		-- 		else
+		-- 			desiredStateStr = tostring(desiredstates)
+		-- 		end
+		-- 	end
+		-- 	if currentState ~= 0 and currentState ~= nil then
+		-- 		print("Trial " .. ct .. " Step " .. cts .. ": Current state=" .. currentState .. ", Desired=" .. desiredStateStr .. ", Statecheck=" .. tostring(statecheck) .. ", Hitcount=" .. tostring(start.trials.trial[ct].trialstep[cts].hitcount[ctms]))
+		-- 	end
+		-- end
 		if start.trials.trial[ct].trialstep[cts].animno[ctms] ~= nil then
 			animcheck = false
 			local desiredanims = start.trials.trial[ct].trialstep[cts].animno[ctms]
@@ -1707,7 +2103,24 @@ function start.f_trialsChecker()
 			end
 		end
 
-		maincharcheck = (statecheck and not(start.trials.trial[ct].trialstep[cts].isproj[ctms]) and not(start.trials.trial[ct].trialstep[cts].ishelper[ctms]) and animcheck and ((hitpausetime() > 1 and movehit() and combocount() > start.trials.combocounter) or start.trials.trial[ct].trialstep[cts].isthrow[ctms] or start.trials.trial[ct].trialstep[cts].hitcount[ctms] == 0))
+		-- For hitcount == 0, we don't require a hit, just the state
+		-- Ensure hitcount has a default value if nil (default to 0 for basic moves that don't require hits)
+		if start.trials.trial[ct].trialstep[cts].hitcount[ctms] == nil then
+			start.trials.trial[ct].trialstep[cts].hitcount[ctms] = 0
+		end
+		local hitRequired = start.trials.trial[ct].trialstep[cts].hitcount[ctms] > 0
+		local hitCondition = false
+		if hitRequired then
+			hitCondition = (hitpausetime() > 1 and movehit() and combocount() > start.trials.combocounter)
+		else
+			-- If hitcount is 0, just check state (no hit required)
+			hitCondition = true
+		end
+		maincharcheck = (statecheck and not(start.trials.trial[ct].trialstep[cts].isproj[ctms]) and not(start.trials.trial[ct].trialstep[cts].ishelper[ctms]) and animcheck and (hitCondition or start.trials.trial[ct].trialstep[cts].isthrow[ctms]))
+		-- Debug output for maincharcheck (commented out to reduce log spam)
+		-- if ct == 1 and cts == 1 and ctms == 1 and statecheck then
+		-- 	print("Trial " .. ct .. " Step " .. cts .. ": statecheck=" .. tostring(statecheck) .. ", hitRequired=" .. tostring(hitRequired) .. ", hitCondition=" .. tostring(hitCondition) .. ", maincharcheck=" .. tostring(maincharcheck))
+		-- end
 		if start.trials.trial[ct].trialstep[cts].validforvar ~= nil and maincharcheck then
 			for i = 1, #start.trials.trial[ct].trialstep[cts].validforvar, 1 do
 				if maincharcheck then
@@ -1848,29 +2261,37 @@ function start.f_trialsSuccess(successstring, index)
 	animUpdate(motif.trials_mode[successstring .. '_front_data'])
 	animDraw(motif.trials_mode[successstring .. '_front_data'])
 	start.trials.draw[successstring] = start.trials.draw[successstring] - 1
-	if index and index > 0 and start.trials.trial and #start.trials.trial > 0 and index <= #start.trials.trial and start.trials.trial[index] then
-		start.trials.trial[index].complete = true
-		start.trials.trial[index].active = false
-		if not start.trials.trialadvancement then
-			start.trials.trial[index].starttick = roundtime()
+		if index and index > 0 and start.trials.trial and #start.trials.trial > 0 and index <= #start.trials.trial and start.trials.trial[index] then
+			start.trials.trial[index].complete = true
+			start.trials.trial[index].active = false
+			if not start.trials.trialadvancement then
+				if type(roundtime) == "function" then
+					start.trials.trial[index].starttick = roundtime()
+				else
+					start.trials.trial[index].starttick = 0
+				end
+			end
 		end
-	end
-	start.trials.active = false
-	if index and index > 0 and start.trials.trial and #start.trials.trial > 0 and index < #start.trials.trial and start.trials.trial[index+1] then
-		start.trials.trial[index+1].starttick = roundtime()
-	end
+		start.trials.active = false
+		if index and index > 0 and start.trials.trial and #start.trials.trial > 0 and index < #start.trials.trial and start.trials.trial[index+1] then
+			if type(roundtime) == "function" then
+				start.trials.trial[index+1].starttick = roundtime()
+			else
+				start.trials.trial[index+1].starttick = 0
+			end
+		end
 end
 
 function start.f_trialsFade()
-	local stagelocalcoordX = stagevar("stageinfo.localcoord.x")
-	local stageboundleft = stagevar("bound.screenleft")
-	local stageboundright = stagevar("bound.screenright")
-	local dummyposx = stagevar("playerinfo.p2startx") / (stagelocalcoordX/320)
-	local dummyposy = stagevar("playerinfo.p2starty") / (stagelocalcoordX/320)
-	local playerposx = stagevar("playerinfo.p1startx") / (stagelocalcoordX/320)
-	local playerposy = stagevar("playerinfo.p1starty") / (stagelocalcoordX/320)
-	local leftbound = stagevar("camera.boundleft")
-	local rightbound = stagevar("camera.boundright")
+	local stagelocalcoordX = tonumber(stagevar("stageinfo.localcoord.x")) or 320
+	local stageboundleft = tonumber(stagevar("bound.screenleft")) or 0
+	local stageboundright = tonumber(stagevar("bound.screenright")) or 0
+	local dummyposx = (tonumber(stagevar("playerinfo.p2startx")) or 0) / (stagelocalcoordX/320)
+	local dummyposy = (tonumber(stagevar("playerinfo.p2starty")) or 0) / (stagelocalcoordX/320)
+	local playerposx = (tonumber(stagevar("playerinfo.p1startx")) or 0) / (stagelocalcoordX/320)
+	local playerposy = (tonumber(stagevar("playerinfo.p1starty")) or 0) / (stagelocalcoordX/320)
+	local leftbound = tonumber(stagevar("camera.boundleft")) or 0
+	local rightbound = tonumber(stagevar("camera.boundright")) or 0
 	local cameraPosX = 0
 	local posx = 0
 	local oppx = 0
@@ -1918,13 +2339,33 @@ function start.f_trialsFade()
 	elseif start.trials.trial[start.trials.currenttrial].dummypos == 'far' or start.trials.trial[start.trials.currenttrial].playerpos == 'far' then
 		dummyposx = 130
 		playerposx = -130
+	else
+		-- Default: Use stage start positions, but ensure minimum spacing if they're too close
+		-- If positions are 0 or very close (less than 50 pixels apart), use a comfortable spacing
+		local distance = math.abs(dummyposx - playerposx)
+		if distance < 50 or (dummyposx == 0 and playerposx == 0) then
+			-- Use comfortable spacing (80 pixels apart = 160 total distance)
+			dummyposx = 80
+			playerposx = -80
+		end
 	end
 
-	mapSet('_iksys_trialsCameraPosX', cameraPosX)
-	mapSet('_iksys_trialsDummyPosX', dummyposx)
-	mapSet('_iksys_trialsDummyPosY', dummyposy)
-	mapSet('_iksys_trialsPlayerPosX', playerposx)
-	mapSet('_iksys_trialsPlayerPosY', playerposy)
+	-- Set map variables using charMapSet on player 1 (they're read by both players in trials.zss)
+	-- These need to be set before the fade so positions are ready when TrialsReposition() is called
+	player(1)
+	charMapSet(1, '_iksys_trialsCameraPosX', cameraPosX)
+	charMapSet(1, '_iksys_trialsDummyPosX', dummyposx)
+	charMapSet(1, '_iksys_trialsDummyPosY', dummyposy)
+	charMapSet(1, '_iksys_trialsPlayerPosX', playerposx)
+	charMapSet(1, '_iksys_trialsPlayerPosY', playerposy)
+	-- Also set on player 2 to ensure they're available
+	player(2)
+	charMapSet(2, '_iksys_trialsCameraPosX', cameraPosX)
+	charMapSet(2, '_iksys_trialsDummyPosX', dummyposx)
+	charMapSet(2, '_iksys_trialsDummyPosY', dummyposy)
+	charMapSet(2, '_iksys_trialsPlayerPosX', playerposx)
+	charMapSet(2, '_iksys_trialsPlayerPosY', playerposy)
+	player(1)
 	
 	-- This function is responsible for fadein/fadeout if trialsresetonsuccess is set to true.
 	if start.trials.draw.fadeout > 0 then
@@ -1935,10 +2376,20 @@ function start.f_trialsFade()
 		start.trials.draw.fadeout = start.trials.draw.fadeout - 1
 	elseif start.trials.draw.fadein > 0 then
 		if main.fadeType == 'fadeout' then
-			mapSet('_iksys_trialsReposition', 1)
+			-- Set reposition flag before fadein starts so positions are ready
+			player(1)
+			charMapSet(1, '_iksys_trialsReposition', 1)
+			player(2)
+			charMapSet(2, '_iksys_trialsReposition', 1)
+			player(1)
 			main.f_fadeReset('fadein',motif.trials_mode)
 		elseif main.fadeType == 'fadein' then
-			mapSet('_iksys_trialsCameraReset', 1)
+			-- Reset camera after fadein completes
+			player(1)
+			charMapSet(1, '_iksys_trialsCameraReset', 1)
+			player(2)
+			charMapSet(2, '_iksys_trialsCameraReset', 1)
+			player(1)
 		end
 		main.f_fadeAnim(motif.trials_mode)
 		start.trials.draw.fadein = start.trials.draw.fadein - 1
@@ -2008,7 +2459,24 @@ function start.f_trialsMode()
 	if roundstart() then
 		start.trials = nil
 		-- Check if there's a trials file - if so, parse it
-		if start.f_getCharData(start.p[1].t_selected[1].ref).trialsdef ~= "" then
+		local charData = start.f_getCharData(start.p[1].t_selected[1].ref)
+		if charData and charData.trialsdef and charData.trialsdef ~= "" then
+			-- Ensure trialsdata exists - if not, try to find it or re-parse
+			if not charData.trialsdata or #charData.trialsdata == 0 then
+				print("trialsdata missing at roundstart, searching for it...")
+				-- Search for the character in main.t_selChars by def file
+				if charData.def then
+					for row = 1, #main.t_selChars do
+						if main.t_selChars[row].def and main.t_selChars[row].def:lower() == charData.def:lower() then
+							if main.t_selChars[row].trialsdata and #main.t_selChars[row].trialsdata > 0 then
+								charData.trialsdata = main.t_selChars[row].trialsdata
+								print("Found and restored trialsdata from row " .. row .. " with " .. #charData.trialsdata .. " trials")
+								break
+							end
+						end
+					end
+				end
+			end
 			start.f_inittrialsData()
 			trialsExist = true
  		else
@@ -2028,10 +2496,14 @@ function start.f_trialsMode()
 		-- No trials present!
 		player(2)
 		setAILevel(0)
-		mapSet('_iksys_trialsSetLife', lifemax())
+		if type(mapSet) == "function" then
+			mapSet('_iksys_trialsSetLife', lifemax())
+		end
 		player(1)
-		mapSet('_iksys_trialsDummyControl', 0)
-		mapSet('_iksys_trialsSetLife', lifemax())
+		if type(mapSet) == "function" then
+			mapSet('_iksys_trialsDummyControl', 0)
+			mapSet('_iksys_trialsSetLife', lifemax())
+		end
 		trialcounter = main.f_createTextImg(motif.trials_mode, 'trialcounter')
 		trialcounter:update({x = motif.trials_mode.trialcounter_pos[1], y = motif.trials_mode.trialcounter_pos[2], text = motif.trials_mode.trialcounter_notrialsdata_text})
 		trialcounter:draw()
@@ -2076,10 +2548,15 @@ menu.t_itemname['trialslist'] = function(t, item, cursorPosY, moveTxt, section)
 			if start.trials.trial[start.trials.currenttrial] then
 				start.trials.trial[start.trials.currenttrial].complete = false
 				start.trials.trial[start.trials.currenttrial].active = false
-				start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+				if type(roundtime) == "function" then
+					start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+				else
+					start.trials.trial[start.trials.currenttrial].starttick = 0
+				end
 			end
 		end
-		start.trials.active = false
+		-- Don't set active to false - this prevents the drawer from displaying
+		-- Instead, just reset the display timers
 		start.trials.displaytimers.totaltimer = false
 	end
 	return true
@@ -2158,10 +2635,15 @@ menu.t_itemname['nexttrial'] = function(t, item, cursorPosY, moveTxt, section)
 			if start.trials.trial[start.trials.currenttrial] then
 				start.trials.trial[start.trials.currenttrial].complete = false
 				start.trials.trial[start.trials.currenttrial].active = false
-				start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+				if type(roundtime) == "function" then
+					start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+				else
+					start.trials.trial[start.trials.currenttrial].starttick = 0
+				end
 			end
 		end
-		start.trials.active = false
+		-- Don't set active to false - this prevents the drawer from displaying
+		-- Instead, just reset the display timers
 		start.trials.displaytimers.totaltimer = false
 	end
 	return true
@@ -2177,10 +2659,15 @@ menu.t_itemname['previoustrial'] = function(t, item, cursorPosY, moveTxt, sectio
 			if start.trials.trial[start.trials.currenttrial] then
 				start.trials.trial[start.trials.currenttrial].complete = false
 				start.trials.trial[start.trials.currenttrial].active = false
-				start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+				if type(roundtime) == "function" then
+					start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+				else
+					start.trials.trial[start.trials.currenttrial].starttick = 0
+				end
 			end
 		end
-		start.trials.active = false
+		-- Don't set active to false - this prevents the drawer from displaying
+		-- Instead, just reset the display timers
 		start.trials.displaytimers.totaltimer = false
 	end
 	return true
@@ -2228,9 +2715,15 @@ end
 
 
 -- Iterate over selected characters
+-- Only run second parser if first parser didn't successfully load trials data
 for row = 1, #main.t_selChars do
     local selChar = main.t_selChars[row]
-    if selChar.def then
+    -- Skip if first parser already loaded trials data successfully
+    if selChar.trialsdata and #selChar.trialsdata > 0 then
+        -- First parser already loaded the data, skip second parser
+        print("Second parser: Skipping, first parser already loaded " .. #selChar.trialsdata .. " trials")
+    elseif selChar.def then
+        print("Second parser: First parser didn't load data, trying second parser for " .. (selChar.def or "unknown"))
         selChar.trialsdef = ""
         local deffile = loadText(selChar.def)
         -- Find trials definition
@@ -2238,7 +2731,19 @@ for row = 1, #main.t_selChars do
             line = line:gsub('%s*;.*$', '') -- remove comments
             local lcline = string.lower(line)
             if lcline:match('trials') then
-                selChar.trialsdef = selChar.dir .. (f_trimforchar(line, "=", "after") or "")
+                local path = f_trimforchar(line, "=", "after") or ""
+                path = path:gsub("^%s*(.-)%s*$", "%1") -- remove spaces
+                
+                local dir = selChar.dir or ""
+                dir = dir:gsub("^%s*(.-)%s*$", "%1") -- remove spaces
+                
+                -- Ensure dir ends with a slash if not empty
+                if dir ~= "" and dir:sub(-1) ~= "/" and dir:sub(-1) ~= "\\" then
+                    dir = dir .. "/"
+                end
+                
+                selChar.trialsdef = forceAbsolutePath(dir .. path)
+                selChar.trialsdef = selChar.trialsdef:gsub("^%s*(.-)%s*$", "%1") -- trim final string
                 break
             end
         end
@@ -2395,6 +2900,11 @@ for row = 1, #main.t_selChars do
         end
 
         selChar.trialsdata = trial
+        if #trial > 0 then
+            print("Second parser loaded " .. #trial .. " trials for " .. (selChar.def or "unknown"))
+        else
+            print("Warning: Second parser found no trials in " .. (selChar.trialsdef or "unknown"))
+        end
     end
 end
 
