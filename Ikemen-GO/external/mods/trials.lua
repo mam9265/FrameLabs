@@ -1194,7 +1194,7 @@ function start.f_trialsDummySetup()
 	end
 	player(2)
 	charMapSet(2, '_iksys_trialsDummyControl', 0)
-	if not start.trials.allclear and not start.trials.trial[start.trials.currenttrial].active then
+	if not start.trials.allclear and start.trials.currenttrial <= #start.trials.trial and start.trials.trial[start.trials.currenttrial] and not start.trials.trial[start.trials.currenttrial].active then
 		if start.trials.trial[start.trials.currenttrial].dummymode == 'stand' then
 			charMapSet(2, '_iksys_trialsDummyMode', 0)
 		elseif start.trials.trial[start.trials.currenttrial].dummymode == 'crouch' then
@@ -1626,10 +1626,12 @@ function start.f_trialsDrawer()
 			end
 			if start.trials.displaytimers.trialtimer then
 				local currenttimertext = motif.trials_mode.currenttrialtimer_text
-				local m, s, x = f_timeConvert(start.trials.trial[ct-1].elapsedtime)
-				currenttimertext = currenttimertext:gsub('%%s', m .. ":" .. s .. ":" .. x)
-				start.trials.draw.currenttrialtimer:update({text = currenttimertext})
-				start.trials.draw.currenttrialtimer:draw()
+				if start.trials.trial and ct-1 > 0 and ct-1 <= #start.trials.trial and start.trials.trial[ct-1] and start.trials.trial[ct-1].elapsedtime then
+					local m, s, x = f_timeConvert(start.trials.trial[ct-1].elapsedtime)
+					currenttimertext = currenttimertext:gsub('%%s', m .. ":" .. s .. ":" .. x)
+					start.trials.draw.currenttrialtimer:update({text = currenttimertext})
+					start.trials.draw.currenttrialtimer:draw()
+				end
 			else
 				--start.trials.draw.currenttrialtimer:update({text = "Timer Disabled"})
 				--start.trials.draw.currenttrialtimer:draw()
@@ -1809,11 +1811,22 @@ function start.f_trialsChecker()
 			end
 			player(1)
 		end
-	elseif inputtime('d') > 0 and inputtime('w') > 0 and start.trials.draw.fade == 0 and motif.trials_mode.trialresetenabled == "true" then
-		start.trials.draw.fadein = motif.trials_mode.fadein_time
-		start.trials.draw.fadeout = motif.trials_mode.fadeout_time
-		start.trials.draw.fade = start.trials.draw.fadein + start.trials.draw.fadeout
-		start.trials.draw.fadetriggered = true
+	elseif start.trials.draw.fade == 0 and motif.trials_mode.trialresetenabled == "true" then
+		-- Check for reset input (d + w)
+		-- inputtime is a .zss function, check if it exists before using it
+		-- Otherwise, use commandGetState as fallback
+		local resetPressed = false
+		if type(inputtime) == "function" then
+			resetPressed = inputtime('d') > 0 and inputtime('w') > 0
+		elseif main and main.t_cmd and main.t_cmd[1] and type(commandGetState) == "function" then
+			resetPressed = commandGetState(main.t_cmd[1], 'd') and commandGetState(main.t_cmd[1], 'w')
+		end
+		if resetPressed then
+			start.trials.draw.fadein = motif.trials_mode.fadein_time
+			start.trials.draw.fadeout = motif.trials_mode.fadeout_time
+			start.trials.draw.fade = start.trials.draw.fadein + start.trials.draw.fadeout
+			start.trials.draw.fadetriggered = true
+		end
 	else
 		start.trials.draw.fadetriggered = false
 	end
@@ -1821,11 +1834,11 @@ end
 
 function start.f_trialsSuccess(successstring, index)
 	-- This function is responsible for drawing the Success or All Clear banners after a trial is completed successfully.
-	mapSet('_iksys_trialsDummyMode', 0)
-	mapSet('_iksys_trialsGuardMode', 0)
-	mapSet('_iksys_trialsButtonJam', 0)
+	charMapSet(2, '_iksys_trialsDummyMode', 0)
+	charMapSet(2, '_iksys_trialsGuardMode', 0)
+	charMapSet(2, '_iksys_trialsButtonJam', 0)
 	player(1)
-	if not start.trials.trial[index].complete or (successstring == "allclear" and not start.trials.allclear) then
+	if (index and index > 0 and start.trials.trial and #start.trials.trial > 0 and index <= #start.trials.trial and start.trials.trial[index] and not start.trials.trial[index].complete) or (successstring == "allclear" and not start.trials.allclear) then
 		-- Play sound only once
 		sndPlay(motif.files.snd_data, motif.trials_mode[successstring .. '_snd'][1], motif.trials_mode[successstring .. '_snd'][2])
 	end
@@ -1835,13 +1848,15 @@ function start.f_trialsSuccess(successstring, index)
 	animUpdate(motif.trials_mode[successstring .. '_front_data'])
 	animDraw(motif.trials_mode[successstring .. '_front_data'])
 	start.trials.draw[successstring] = start.trials.draw[successstring] - 1
-	start.trials.trial[index].complete = true
-	start.trials.trial[index].active = false
-	start.trials.active = false
-	if not start.trials.trialadvancement then
-		start.trials.trial[index].starttick = roundtime()
+	if index and index > 0 and start.trials.trial and #start.trials.trial > 0 and index <= #start.trials.trial and start.trials.trial[index] then
+		start.trials.trial[index].complete = true
+		start.trials.trial[index].active = false
+		if not start.trials.trialadvancement then
+			start.trials.trial[index].starttick = roundtime()
+		end
 	end
-	if index ~= #start.trials.trial then
+	start.trials.active = false
+	if index and index > 0 and start.trials.trial and #start.trials.trial > 0 and index < #start.trials.trial and start.trials.trial[index+1] then
 		start.trials.trial[index+1].starttick = roundtime()
 	end
 end
@@ -2056,12 +2071,16 @@ menu.t_itemname['trialslist'] = function(t, item, cursorPosY, moveTxt, section)
 	if menu.f_valueChanged(t.items[item], motif[section]) then
 		start.trials.currenttrialstep = 1
 		start.trials.currenttrialmicrostep = 1
-		start.trials.currenttrial = menu.trialslist
-		start.trials.trial[start.trials.currenttrial].complete = false
-		start.trials.trial[start.trials.currenttrial].active = false
+		if start.trials.trial and #start.trials.trial > 0 and menu.trialslist and menu.trialslist > 0 and menu.trialslist <= #start.trials.trial then
+			start.trials.currenttrial = menu.trialslist
+			if start.trials.trial[start.trials.currenttrial] then
+				start.trials.trial[start.trials.currenttrial].complete = false
+				start.trials.trial[start.trials.currenttrial].active = false
+				start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+			end
+		end
 		start.trials.active = false
 		start.trials.displaytimers.totaltimer = false
-		start.trials.trial[start.trials.currenttrial].starttick = roundtime()
 	end
 	return true
 end
@@ -2134,12 +2153,16 @@ menu.t_itemname['nexttrial'] = function(t, item, cursorPosY, moveTxt, section)
 		start.trials.currenttrialstep = 1
 		start.trials.currenttrialmicrostep = 1
 		sndPlay(motif.files.snd_data, motif[section].cursor_done_snd[1], motif[section].cursor_done_snd[2])
-		start.trials.currenttrial = math.min(start.trials.currenttrial + 1, #start.trials.trial)
-		start.trials.trial[start.trials.currenttrial].complete = false
-		start.trials.trial[start.trials.currenttrial].active = false
+		if start.trials.trial and #start.trials.trial > 0 then
+			start.trials.currenttrial = math.min(start.trials.currenttrial + 1, #start.trials.trial)
+			if start.trials.trial[start.trials.currenttrial] then
+				start.trials.trial[start.trials.currenttrial].complete = false
+				start.trials.trial[start.trials.currenttrial].active = false
+				start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+			end
+		end
 		start.trials.active = false
 		start.trials.displaytimers.totaltimer = false
-		start.trials.trial[start.trials.currenttrial].starttick = roundtime()
 	end
 	return true
 end
@@ -2149,12 +2172,16 @@ menu.t_itemname['previoustrial'] = function(t, item, cursorPosY, moveTxt, sectio
 		start.trials.currenttrialstep = 1
 		start.trials.currenttrialmicrostep = 1
 		sndPlay(motif.files.snd_data, motif[section].cursor_done_snd[1], motif[section].cursor_done_snd[2])
-		start.trials.currenttrial = math.max(start.trials.currenttrial - 1, 1)
-		start.trials.trial[start.trials.currenttrial].complete = false
-		start.trials.trial[start.trials.currenttrial].active = false
+		if start.trials.trial and #start.trials.trial > 0 then
+			start.trials.currenttrial = math.max(start.trials.currenttrial - 1, 1)
+			if start.trials.trial[start.trials.currenttrial] then
+				start.trials.trial[start.trials.currenttrial].complete = false
+				start.trials.trial[start.trials.currenttrial].active = false
+				start.trials.trial[start.trials.currenttrial].starttick = roundtime()
+			end
+		end
 		start.trials.active = false
 		start.trials.displaytimers.totaltimer = false
-		start.trials.trial[start.trials.currenttrial].starttick = roundtime()
 	end
 	return true
 end

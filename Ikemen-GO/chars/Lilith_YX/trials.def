@@ -1,0 +1,139 @@
+; LILITH TRIALS LIST ---------------------------
+
+[TrialDef, Standing Light Punch]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
+
+;---------------------------------------------
+
+[TrialDef, Standing Medium Punch]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Standing Medium Punch
+trialstep.1.glyphs = ^Y
+trialstep.1.stateno = 210
+
+;---------------------------------------------
+
+[TrialDef, Standing Light Kick]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Standing Light Kick
+trialstep.1.glyphs = ^A
+trialstep.1.stateno = 230
+
+;---------------------------------------------
+
+[TrialDef, Standing Medium Kick]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Standing Medium Kick
+trialstep.1.glyphs = ^B
+trialstep.1.stateno = 240
+
+;---------------------------------------------
+
+[TrialDef, Crouching Light Punch]
+trial.dummymode = crouch
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Crouching Light Punch
+trialstep.1.glyphs = _D_+^X
+trialstep.1.stateno = 400
+
+;---------------------------------------------
+
+[TrialDef, Crouching Medium Punch]
+trial.dummymode = crouch
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Crouching Medium Punch
+trialstep.1.glyphs = _D_+^Y
+trialstep.1.stateno = 410
+
+;---------------------------------------------
+
+[TrialDef, Crouching Light Kick]
+trial.dummymode = crouch
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Crouching Light Kick
+trialstep.1.glyphs = _D_+^A
+trialstep.1.stateno = 430
+
+;---------------------------------------------
+
+[TrialDef, Crouching Medium Kick]
+trial.dummymode = crouch
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Crouching Medium Kick
+trialstep.1.glyphs = _D_+^B
+trialstep.1.stateno = 440
+
+;---------------------------------------------
+
+[TrialDef, Throw]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Throw
+trialstep.1.glyphs = [_B/_F]_+^X
+trialstep.1.stateno = 800
+trialstep.1.hitcount = 0
+
+;---------------------------------------------
+
+[TrialDef, Soul Flash]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Soul Flash
+trialstep.1.glyphs = _QCF_+^P
+trialstep.1.stateno = 1000
+
+;---------------------------------------------
+
+[TrialDef, Shining Blade]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Shining Blade
+trialstep.1.glyphs = _F_D_DF_+^P
+trialstep.1.stateno = 1101
+
+;---------------------------------------------
+
+[TrialDef, Basic Combo]
+trial.dummymode = stand
+trial.guardmode = none
+trial.dummybuttonjam = none
+
+trialstep.1.text = Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
+
+trialstep.2.text = Standing Medium Punch
+trialstep.2.glyphs = ^Y
+trialstep.2.stateno = 210
+
+;---------------------------------------------
+

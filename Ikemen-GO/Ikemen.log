@@ -1,10 +1,9 @@
-.\external\script\start.lua:1403: .\external\mods\trials.lua:1197: attempt to index a non-table object(nil) with key 'active'
+.\external\script\start.lua:1403: .\external\mods\trials.lua:2172: attempt to index a non-table object(nil) with key 'complete'
 stack traceback:
-	.\external\mods\trials.lua:1197: in function 'f_trialsDummySetup'
-	.\external\mods\trials.lua:1240: in function 'f_trialsDrawer'
-	.\external\mods\trials.lua:2010: in function 'k'
-	external/script/main.lua:433: in function 'run'
-	.\external\script\global.lua:250: in function 'loop'
+	.\external\mods\trials.lua:2172: in function <.\external\mods\trials.lua:2166>
+	.\external\script\menu.lua:293: in function <.\external\script\menu.lua:272>
+	.\external\script\menu.lua:525: in function 'f_run'
+	.\external\script\global.lua:254: in function 'loop'
 	<string>:1: in function <<string>:0>
 	[G]: in function 'game'
 	.\external\script\start.lua:1403: in function 'f_game'
