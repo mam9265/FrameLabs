@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - Frame Labs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #005b91;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 60px 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 60px;
+      letter-spacing: 3px;
+      margin-bottom: 40px;
+      color: #9be0e3;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: #2a006b;
+      border-radius: 40px;
+      padding: 40px;
+    }
+
+    .leaderboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #3a008b;
+    }
+
+    .header-item {
+      flex: 1;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ffd700;
+    }
+
+    .leaderboard-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1a0055;
+      margin: 15px 0;
+      padding: 20px 30px;
+      border-radius: 15px;
+      transition: background-color 0.3s, transform 0.2s;
+      border-left: 4px solid transparent;
+    }
+
+    .leaderboard-item:hover {
+      background-color: #2a0066;
+      transform: translateX(5px);
+    }
+
+    .leaderboard-item.current-user {
+      border-left-color: #ffd700;
+      background-color: #2a0066;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .rank {
+      flex: 0 0 80px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #9be0e3;
+    }
+
+    .rank.top-1 {
+      color: #ffd700;
+      font-size: 32px;
+    }
+
+    .rank.top-2 {
+      color: #c0c0c0;
+      font-size: 30px;
+    }
+
+    .rank.top-3 {
+      color: #cd7f32;
+      font-size: 30px;
+    }
+
+    .player-name {
+      flex: 1;
+      text-align: left;
+      font-size: 22px;
+      color: #9be0e3;
+      padding-left: 20px;
+    }
+
+    .player-name.current-user {
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    .score {
+      flex: 0 0 150px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ffd700;
+      text-align: right;
+    }
+
+    .medal {
+      font-size: 32px;
+      margin-right: 10px;
+    }
+
+    .loading {
+      font-size: 24px;
+      color: #9be0e3;
+      padding: 40px;
+    }
+
+    .error {
+      font-size: 20px;
+      color: #ff6b6b;
+      padding: 40px;
+      background-color: #aa0000;
+      border-radius: 15px;
+      margin: 20px 0;
+    }
+
+    .empty {
+      font-size: 20px;
+      color: #9be0e3;
+      padding: 40px;
+    }
+
+    .back-button {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .back-button:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
+
+    .refresh-button {
+      background-color: #3a008b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+      margin-top: 20px;
+    }
+
+    .refresh-button:hover {
+      background-color: #4a009b;
+      transform: scale(1.05);
+    }
+
+    .user-rank-info {
+      background-color: #1a0055;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      font-size: 20px;
+      color: #ffd700;
+    }
+  </style>
+</head>
+<body>
+  <h1>DAILY CHALLENGE LEADERBOARD</h1>
+  
+  <div class="container">
+    <div id="userRankInfo" class="user-rank-info" style="display: none;"></div>
+    
+    <div class="leaderboard-header">
+      <div class="header-item">RANK</div>
+      <div class="header-item" style="text-align: left; padding-left: 20px;">PLAYER</div>
+      <div class="header-item" style="text-align: right;">SCORE</div>
+    </div>
+
+    <div id="leaderboardContent">
+      <div class="loading">Loading leaderboard...</div>
+    </div>
+
+    <button class="refresh-button" onclick="loadLeaderboard()">🔄 REFRESH</button>
+  </div>
+
+  <a href="practiceModes.html" class="back-button">⟵ BACK</a>
+
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+  <script>
+    let currentUserId = null;
+
+    // Get current user ID from token
+    function getCurrentUserId() {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const decoded = jwt_decode(token);
+          return decoded.id;
+        }
+      } catch (err) {
+        console.error('Error decoding token:', err);
+      }
+      return null;
+    }
+
+    // Load leaderboard data
+    async function loadLeaderboard() {
+      const contentDiv = document.getElementById('leaderboardContent');
+      const userRankDiv = document.getElementById('userRankInfo');
+      
+      contentDiv.innerHTML = '<div class="loading">Loading leaderboard...</div>';
+      userRankDiv.style.display = 'none';
+
+      try {
+        const response = await fetch('/api/daily-challenge/leaderboard');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch leaderboard');
+        }
+
+        const leaderboardData = await response.json();
+
+        if (!leaderboardData || leaderboardData.length === 0) {
+          contentDiv.innerHTML = '<div class="empty">No scores yet. Be the first to complete a daily challenge!</div>';
+          return;
+        }
+
+        // Get current user ID
+        currentUserId = getCurrentUserId();
+
+        // Find current user's rank
+        let userRank = null;
+        let userEntry = null;
+        if (currentUserId) {
+          // Convert both to strings for comparison (userId might be ObjectId)
+          const currentUserIdStr = String(currentUserId);
+          userEntry = leaderboardData.find(entry => {
+            const entryUserIdStr = String(entry.userId);
+            return entryUserIdStr === currentUserIdStr;
+          });
+          if (userEntry) {
+            userRank = leaderboardData.indexOf(userEntry) + 1;
+          }
+        }
+
+        // Display user rank info if logged in
+        if (userEntry && userRank) {
+          userRankDiv.innerHTML = `Your Rank: <strong>#${userRank}</strong> | Your Score: <strong>${userEntry.score}</strong>`;
+          userRankDiv.style.display = 'block';
+        } else if (currentUserId) {
+          userRankDiv.innerHTML = 'You haven\'t completed any daily challenges yet!';
+          userRankDiv.style.display = 'block';
+        }
+
+        // Create leaderboard list
+        const list = document.createElement('ul');
+        list.className = 'leaderboard-list';
+
+        leaderboardData.forEach((entry, index) => {
+          const rank = index + 1;
+          // Convert both to strings for comparison (userId might be ObjectId)
+          const currentUserIdStr = currentUserId ? String(currentUserId) : null;
+          const entryUserIdStr = String(entry.userId);
+          const isCurrentUser = currentUserIdStr && entryUserIdStr === currentUserIdStr;
+          
+          const item = document.createElement('li');
+          item.className = `leaderboard-item ${isCurrentUser ? 'current-user' : ''}`;
+
+          // Rank with medal for top 3
+          const rankSpan = document.createElement('span');
+          rankSpan.className = 'rank';
+          if (rank === 1) {
+            rankSpan.className += ' top-1';
+            rankSpan.innerHTML = '<span class="medal">🥇</span> 1';
+          } else if (rank === 2) {
+            rankSpan.className += ' top-2';
+            rankSpan.innerHTML = '<span class="medal">🥈</span> 2';
+          } else if (rank === 3) {
+            rankSpan.className += ' top-3';
+            rankSpan.innerHTML = '<span class="medal">🥉</span> 3';
+          } else {
+            rankSpan.textContent = rank;
+          }
+
+          // Player name
+          const nameSpan = document.createElement('span');
+          nameSpan.className = `player-name ${isCurrentUser ? 'current-user' : ''}`;
+          nameSpan.textContent = entry.player_name || 'Unknown Player';
+
+          // Score
+          const scoreSpan = document.createElement('span');
+          scoreSpan.className = 'score';
+          scoreSpan.textContent = entry.score.toLocaleString();
+
+          item.appendChild(rankSpan);
+          item.appendChild(nameSpan);
+          item.appendChild(scoreSpan);
+
+          list.appendChild(item);
+        });
+
+        contentDiv.innerHTML = '';
+        contentDiv.appendChild(list);
+
+      } catch (err) {
+        console.error('Error loading leaderboard:', err);
+        contentDiv.innerHTML = `<div class="error">Error loading leaderboard: ${err.message}</div>`;
+      }
+    }
+
+    // Load leaderboard on page load
+    window.onload = function() {
+      loadLeaderboard();
+      // Auto-refresh every 30 seconds
+      setInterval(loadLeaderboard, 30000);
+    };
+  </script>
+</body>
+</html>
+

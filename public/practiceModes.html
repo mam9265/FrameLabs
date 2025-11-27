@@ -70,6 +70,25 @@
       background-color: #3a008b;
       transform: scale(1.05);
     }
+    .Leaderboard {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+    }
+    .Leaderboard:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
@@ -102,9 +121,15 @@
 
   <button class="back-button" onclick="goBack()">⟵ MAIN MENU</button>
 
+  <button class="Leaderboard" onclick="leaderboard()">LEADERBOARD</button>
+
   <script>
     function goBack() {
       window.location.href = "homePage.html";
+    }
+
+    function leaderboard() {
+      window.location.href = "leaderboard.html";
     }
 
     function launchTrainingIkemen() {
