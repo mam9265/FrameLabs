@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Challenge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #005b91;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 60px 20px;
+    }
+    h1 { font-size: 60px; letter-spacing: 3px; margin-bottom: 40px; }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #2a006b;
+      border-radius: 40px;
+      padding: 40px;
+    }
+    .challenge-info {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+    .character-name {
+      color: #ffd700;
+      font-size: 32px;
+      margin: 20px 0;
+    }
+    .status {
+      font-size: 18px;
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .status.completed {
+      background-color: #00aa00;
+      color: #fff;
+    }
+    .status.not-completed {
+      background-color: #aa0000;
+      color: #fff;
+    }
+    .button {
+      background-color: #3a008b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      padding: 20px 40px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+      margin: 10px;
+    }
+    .button:hover {
+      background-color: #4a009b;
+      transform: scale(1.05);
+    }
+    .button:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .points-display {
+      font-size: 28px;
+      color: #ffd700;
+      margin: 30px 0;
+    }
+    .back-button {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+    }
+    .back-button:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
+    .message {
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    .message.success {
+      background-color: #00aa00;
+      color: #fff;
+    }
+    .message.error {
+      background-color: #aa0000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>DAILY CHALLENGE</h1>
+  <div class="container">
+    <div class="challenge-info">
+      <div>Today's Challenge Character:</div>
+      <div class="character-name" id="characterName">Loading...</div>
+      <div id="challengeDate"></div>
+    </div>
+    
+    <div id="statusDiv" class="status not-completed">Status: Not Completed</div>
+    
+    <div class="points-display" id="pointsDisplay">Your Points: Loading...</div>
+    
+    <div id="messageDiv"></div>
+    
+    <button class="button" id="launchButton" onclick="launchChallenge()">Launch Daily Challenge</button>
+    <button class="button" id="completeButton" onclick="completeChallenge()" disabled>Claim 100 Points</button>
+  </div>
+
+  <button class="back-button" onclick="goBack()">⟵ BACK</button>
+
+  <script>
+    let userId = null;
+    let challengeData = null;
+
+    // Get userId from localStorage or prompt
+    function getUserId() {
+      const stored = localStorage.getItem('userId');
+      if (stored) {
+        return stored;
+      }
+      // Try to get from login token or session
+      const token = localStorage.getItem('token');
+      if (token) {
+        // You might need to decode JWT or get userId from another source
+        // For now, prompt user
+        const id = prompt('Please enter your User ID to track points:');
+        if (id) {
+          localStorage.setItem('userId', id);
+          return id;
+        }
+      }
+      return null;
+    }
+
+    async function loadChallengeData() {
+      try {
+        // Get today's challenge
+        const response = await fetch('/api/daily-challenge');
+        challengeData = await response.json();
+        
+        document.getElementById('characterName').textContent = challengeData.character;
+        document.getElementById('challengeDate').textContent = `Date: ${challengeData.date}`;
+        
+        // Check completion status
+        userId = getUserId();
+        if (userId) {
+          const statusResponse = await fetch(`/api/daily-challenge/status/${userId}`);
+          const status = await statusResponse.json();
+          
+          if (status.completed) {
+            document.getElementById('statusDiv').textContent = 'Status: ✅ Completed';
+            document.getElementById('statusDiv').className = 'status completed';
+            document.getElementById('completeButton').disabled = true;
+            document.getElementById('completeButton').textContent = 'Already Claimed';
+          } else {
+            document.getElementById('statusDiv').textContent = 'Status: Not Completed';
+            document.getElementById('statusDiv').className = 'status not-completed';
+            document.getElementById('completeButton').disabled = false;
+          }
+          
+          // Load user points
+          loadUserPoints();
+        } else {
+          document.getElementById('statusDiv').textContent = 'Status: Please set User ID';
+          document.getElementById('pointsDisplay').textContent = 'Your Points: Please set User ID';
+        }
+      } catch (err) {
+        console.error('Error loading challenge data:', err);
+        showMessage('Error loading challenge data', 'error');
+      }
+    }
+
+    async function loadUserPoints() {
+      if (!userId) return;
+      
+      try {
+        // Get user account to show points
+        const response = await fetch(`/api/user/${userId}/account`);
+        if (response.ok) {
+          const account = await response.json();
+          // Points might be in a different endpoint, try leaderboard
+          const lbResponse = await fetch('/api/daily-challenge/leaderboard');
+          if (lbResponse.ok) {
+            const leaderboard = await lbResponse.json();
+            const userEntry = leaderboard.find(entry => entry.userId === userId || entry.player_name === account.name);
+            const points = userEntry ? userEntry.score : (account.points || 0);
+            document.getElementById('pointsDisplay').textContent = `Your Points: ${points}`;
+          }
+        }
+      } catch (err) {
+        console.error('Error loading points:', err);
+      }
+    }
+
+    function launchChallenge() {
+      if (!userId) {
+        showMessage('Please set your User ID first', 'error');
+        return;
+      }
+
+      fetch('/api/daily-challenge/launch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: userId }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            showMessage('Error: ' + data.error, 'error');
+          } else {
+            showMessage(`Daily Challenge launched! Complete all trials to earn 100 points automatically.`, 'success');
+            // Poll for completion status
+            startCompletionPolling();
+          }
+        })
+        .catch(err => {
+          showMessage('Error launching daily challenge: ' + err.message, 'error');
+        });
+    }
+
+    function startCompletionPolling() {
+      // Poll every 5 seconds to check if challenge was completed
+      const pollInterval = setInterval(async () => {
+        if (!userId) {
+          clearInterval(pollInterval);
+          return;
+        }
+
+        try {
+          const statusResponse = await fetch(`/api/daily-challenge/status/${userId}`);
+          const status = await statusResponse.json();
+          
+          if (status.completed) {
+            clearInterval(pollInterval);
+            document.getElementById('statusDiv').textContent = 'Status: ✅ Completed';
+            document.getElementById('statusDiv').className = 'status completed';
+            document.getElementById('completeButton').disabled = true;
+            document.getElementById('completeButton').textContent = 'Points Awarded!';
+            showMessage('✅ Congratulations! You earned 100 points!', 'success');
+            loadUserPoints();
+          }
+        } catch (err) {
+          console.error('Error polling completion status:', err);
+        }
+      }, 5000); // Poll every 5 seconds
+
+      // Stop polling after 10 minutes
+      setTimeout(() => {
+        clearInterval(pollInterval);
+      }, 600000);
+    }
+
+    async function completeChallenge() {
+      if (!userId) {
+        showMessage('Please set your User ID first', 'error');
+        return;
+      }
+
+      document.getElementById('completeButton').disabled = true;
+      document.getElementById('completeButton').textContent = 'Claiming...';
+
+      try {
+        const response = await fetch('/api/daily-challenge/complete', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: userId }),
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+          showMessage('Error: ' + data.error, 'error');
+          document.getElementById('completeButton').disabled = false;
+          document.getElementById('completeButton').textContent = 'Claim 100 Points';
+        } else {
+          showMessage(`✅ ${data.message}`, 'success');
+          document.getElementById('statusDiv').textContent = 'Status: ✅ Completed';
+          document.getElementById('statusDiv').className = 'status completed';
+          document.getElementById('completeButton').textContent = 'Already Claimed';
+          document.getElementById('completeButton').disabled = true;
+          
+          // Update points display
+          if (data.totalPoints !== undefined) {
+            document.getElementById('pointsDisplay').textContent = `Your Points: ${data.totalPoints}`;
+          } else {
+            loadUserPoints();
+          }
+        }
+      } catch (err) {
+        showMessage('Error completing challenge: ' + err.message, 'error');
+        document.getElementById('completeButton').disabled = false;
+        document.getElementById('completeButton').textContent = 'Claim 100 Points';
+      }
+    }
+
+    function showMessage(text, type) {
+      const messageDiv = document.getElementById('messageDiv');
+      messageDiv.textContent = text;
+      messageDiv.className = `message ${type}`;
+      setTimeout(() => {
+        messageDiv.textContent = '';
+        messageDiv.className = '';
+      }, 5000);
+    }
+
+    function goBack() {
+      window.location.href = '../practiceModes.html';
+    }
+
+    // Load data on page load
+    loadChallengeData();
+  </script>
+</body>
+</html>
+

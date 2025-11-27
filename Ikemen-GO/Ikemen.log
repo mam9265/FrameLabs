@@ -1,12 +1,7 @@
-.\external\script\start.lua:1403: chars/guy by PotS/guy_pots.def:
-chars\guy by PotS/states/guyzss.zss
-states/guyzss.zss:254:
-Invalid data: animelemvar
+.\external\script\start.lua:328: attempt to index a non-table object(nil) with key 'total'
 stack traceback:
-	[G]: in function 'game'
-	.\external\script\start.lua:1403: in function 'f_game'
-	.\external\script\start.lua:1839: in function 'launchFight'
-	external/script/default.lua:2: in function <external/script/default.lua:0>
-	.\external\script\start.lua:1457: in function 'startFunc'
-	external/script/main.lua:4246: in main chunk
+	.\external\script\start.lua:328: in function 'f_setRounds'
+	.\external\script\start.lua:1827: in function 'launchFight'
+	.\external\mods\trials.lua:492: in function 'trials'
+	external/script/main.lua:4240: in main chunk
 	[G]: ?

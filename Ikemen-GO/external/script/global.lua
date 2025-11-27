@@ -216,6 +216,11 @@ function loop()
 			end
 			if gamemode('training') then
 				menu.f_trainingReset()
+				-- Set tutorial flag if AUTOTUTORIAL environment variable is set
+				if os.getenv("AUTOTUTORIAL") == "1" then
+					charMapSet(1, '_iksys_tutorialMode', 1, 'set')
+					charMapSet(2, '_iksys_tutorialMode', 1, 'set')
+				end
 			end
 		end
 		start.turnsRecoveryInit = false

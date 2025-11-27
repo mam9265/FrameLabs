@@ -399,7 +399,7 @@ main.t_itemname.trials = function()
 	main.f_playerInput(main.playerInput, 1)
 	main.t_pIn[2] = 1
 	if main.t_charDef[config.TrainingChar:lower()] ~= nil then
-		main.forceChar[2] = {main.t_charDef[gameOption('Config.TrainingChar'):lower()]}
+		main.forceChar[2] = {main.t_charDef[config.TrainingChar:lower()]}
   	end
 	--main.lifebar.p1score = false
 	--main.lifebar.p2aiLevel = true
@@ -415,6 +415,108 @@ main.t_itemname.trials = function()
 	main.txt_mainSelect:update({text = motif.select_info.title_trials_text})
 	setGameMode('trials')
 	hook.run("main.t_itemname")
+	
+	-- Auto-launch if AUTOTRAIN is "2" and TrainingChar is set
+	if os.getenv("AUTOTRAIN") == "2" and config.TrainingChar ~= "" and main.t_charDef[config.TrainingChar:lower()] ~= nil then
+		-- Initialize player data structures to prevent nil errors
+		if start.p == nil then
+			start.p = {}
+		end
+		if start.p[1] == nil then
+			start.p[1] = {}
+		end
+		if start.p[2] == nil then
+			start.p[2] = {}
+		end
+		-- Initialize selection arrays to prevent nil errors
+		if start.p[1].t_selected == nil then
+			start.p[1].t_selected = {}
+		end
+		if start.p[1].t_selTemp == nil then
+			start.p[1].t_selTemp = {}
+		end
+		if start.p[2].t_selected == nil then
+			start.p[2].t_selected = {}
+		end
+		if start.p[2].t_selTemp == nil then
+			start.p[2].t_selTemp = {}
+		end
+		
+		-- Get first available character name for P1
+		local p1CharName = nil
+		if main.t_orderChars and main.t_orderChars[1] and #main.t_orderChars[1] > 0 then
+			-- Use first character from order 1
+			local p1CharRef = main.t_orderChars[1][1]
+			if p1CharRef and start.f_getCharData then
+				p1CharName = start.f_getCharData(p1CharRef).char
+			end
+		end
+		
+		-- Fallback: get first playable character
+		if not p1CharName and main.t_selChars and #main.t_selChars > 0 then
+			for i = 1, #main.t_selChars do
+				if main.t_selChars[i].playable and main.t_selChars[i].char then
+					p1CharName = main.t_selChars[i].char
+					break
+				end
+			end
+		end
+		
+		if not p1CharName then
+			print("Auto-launch: No valid P1 character found, falling back to select screen")
+			return start.f_selectMode
+		end
+		
+		-- Get P2 character name from TrainingChar
+		local p2CharName = config.TrainingChar
+		
+		-- Initialize t_availableChars if needed (required by launchFight)
+		if main.t_availableChars == nil then
+			if main.f_tableCopy and main.t_orderChars then
+				main.t_availableChars = main.f_tableCopy(main.t_orderChars)
+			else
+				-- Fallback: create empty table structure
+				main.t_availableChars = {}
+			end
+		end
+		
+		-- Initialize t_savedData if needed (required by f_setRounds)
+		if start.t_savedData == nil then
+			start.t_savedData = {}
+		end
+		if start.t_savedData.time == nil then
+			start.t_savedData.time = {total = 0, matches = {}}
+		end
+		if start.t_savedData.score == nil then
+			start.t_savedData.score = {total = {0, 0}, matches = {}}
+		end
+		if start.t_savedData.win == nil then
+			start.t_savedData.win = {0, 0}
+		end
+		if start.t_savedData.lose == nil then
+			start.t_savedData.lose = {0, 0}
+		end
+		
+		-- Set team modes before launchFight
+		start.p[1].teamMode = 0 -- Single
+		start.p[1].numChars = 1
+		start.p[2].teamMode = 0 -- Single
+		start.p[2].numChars = 1
+		
+		-- Launch fight directly with character names
+		-- launchFight will handle character selection internally
+		if launchFight then
+			launchFight{
+				p1char = {[1] = p1CharName},
+				p2char = {[1] = p2CharName},
+			}
+			return nil -- Don't return select mode, fight is starting
+		else
+			print("Auto-launch: launchFight function not available, falling back to select screen")
+			return start.f_selectMode
+		end
+	end
+	
 	return start.f_selectMode
 end
 
@@ -2264,6 +2366,17 @@ function start.f_trialsSuccess(successstring, index)
 		if index and index > 0 and start.trials.trial and #start.trials.trial > 0 and index <= #start.trials.trial and start.trials.trial[index] then
 			start.trials.trial[index].complete = true
 			start.trials.trial[index].active = false
+			
+			-- Write completion marker file for each trial completed (for daily challenge)
+			if os.getenv("AUTOTRAIN") == "2" then
+				local completionFile = io.open("daily_challenge_trial_" .. index .. "_complete.txt", "w")
+				if completionFile then
+					completionFile:write("completed")
+					completionFile:close()
+					print("Daily challenge trial " .. index .. " completed - marker file written")
+				end
+			end
+			
 			if not start.trials.trialadvancement then
 				if type(roundtime) == "function" then
 					start.trials.trial[index].starttick = roundtime()

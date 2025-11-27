@@ -87,11 +87,11 @@
       <p>TRY TO ENTER THE CORRECT COMBOS FOR EACH CHARACTER.</p>
     </div>
 
-    <a href="./practiceModeScreens/basicTutorial.html" class="card">
+    <div class="card" onclick="launchTutorialIkemen()">
       <span class="emoji">📘</span>
       <h2>BASIC TUTORIAL</h2>
       <p>NEW TO FRAME LABS OR FIGHTING GAMES? LEARN THE BASICS HERE.</p>
-    </a>
+    </div>
 
     <a href="./practiceModeScreens/dailyChallenge.html" class="card">
       <span class="emoji">📅</span>
@@ -118,6 +118,25 @@
         .then(res => res.json())
         .then(data => alert(data.message))
         .catch(err => alert('Error launching Ikemen GO: ' + err.message));
+    }
+    function launchTutorialIkemen() {
+      fetch('/launch-tutorial-ikemen', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => alert(data.message))
+        .catch(err => alert('Error launching Ikemen GO: ' + err.message));
+    }
+    
+    function launchDailyChallenge() {
+      fetch('/api/daily-challenge/launch', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            alert('Error: ' + data.error);
+          } else {
+            alert('Daily Challenge launched!\nCharacter: ' + data.character + '\nDate: ' + data.date);
+          }
+        })
+        .catch(err => alert('Error launching daily challenge: ' + err.message));
     }
   </script>
 </body>

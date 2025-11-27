@@ -4185,6 +4185,11 @@ if motif.attract_mode.enabled == 1 then
 else
     if os.getenv("AUTOTRAIN") == "1" then
         print("Auto-training mode enabled.")
+        
+        -- Check if tutorial mode is enabled
+        if os.getenv("AUTOTUTORIAL") == "1" then
+            print("Tutorial mode enabled - tutorial will be displayed when training starts.")
+        end
 
         if main.t_itemname and type(main.t_itemname.training) == "function" then
             print("Launching training mode automatically.")
