@@ -1,0 +1,3054 @@
+;---------------------------------------------------------------------------
+; HIT_LIEDEAD
+[Statedef 5150]
+type    = L
+movetype= H
+physics = N
+sprpriority = -3
+
+[State 5150, 1] ;Normal anim
+type = ChangeAnim
+triggerall = Time = 0
+triggerall = SelfAnimExist(5140)
+trigger1 = (anim != [5111,5119]) && (anim != [5171,5179])
+trigger2 = !SelfAnimExist(5140 + (anim % 10))
+value = 5140
+
+[State 5150, 3] ;Hit up type anim
+type = ChangeAnim
+trigger1 = Time = 0
+trigger1 = (anim = [5111,5119]) || (anim = [5171,5179])
+trigger1 = SelfAnimExist(5140 + (anim % 10))
+value = 5140 + (anim % 10)
+
+[State 5150, 4] ;Match over anim
+type = ChangeAnim
+persistent = 0
+;trigger1 = Time = 0
+trigger1 = MatchOver = 1
+trigger1 = Anim = [5140,5149]
+trigger1 = SelfAnimExist(anim+10)
+value = anim+10
+
+[State 5150, 5] ;Switch to 5110 if liedead anim does not exist
+type = ChangeAnim
+trigger1 = Time = 0
+trigger1 = Anim != [5140,5159]
+trigger1 = Anim != [5110,5119]
+value = 5110
+
+[State 5150, 6] ;Friction
+type = VelMul
+trigger1 = 1
+x = 0.85
+
+[State 5150, 7] ;Friction
+type = VelSet
+trigger1 = Vel x < .05
+persistent = 0
+x = 0
+
+[State 5150, 8]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+;----------------------------------------------------------------
+;FATALITY # 1
+[Statedef 1000]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 0
+
+[State 4000, 1]
+type = Helper
+trigger1 = 1
+trigger1 = NumHelper(4000) = 0
+ID = 4000 
+stateno = 4000
+pos = 160, -140
+postype = left
+helpertype = normal
+name = "FATALITY_MODE" 
+keyctrl = 0
+ownpal = 1
+
+[State 220, Effect]
+type = PlaySnd
+trigger1 = var(25)= 0
+trigger1 = Time = 1
+value = S100, ifelse(random<=420,29,44)
+volume = 100
+
+[State 220, Effect]
+type = PlaySnd
+trigger1 = var(25)= 1
+trigger1 = Time = 1
+value = S100, 30
+volume = 100
+
+[State 183, 1]
+type = stopsnd
+trigger1 = time = 0
+channel = -1
+ignorehitpause = 1
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State ]
+type = width
+trigger1 = 1
+edge = 60,0
+
+[State blackness]
+type = bgpalfx
+trigger1 = !time
+time = 3
+add = 0,0, 0
+sinadd = -250,-250, -250, 75
+[State blackness]
+type = bgpalfx
+trigger1 = time = 3
+time = 9999999999999999999999999999
+add = -50,-50, -50
+
+[State 300, 7]
+type = changestate
+trigger1 = enemynear,P2bodydist x>=70
+trigger1 = time >= 50
+value = 1001
+
+[State 300, 7]
+type = changestate
+trigger1 = enemynear,P2bodydist x<70
+trigger1 = time >= 50
+value = 1002
+
+;------------------------------------------------------------------------------
+;FATALITY # 1 FWD
+[Statedef 1001]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 20
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = 3.8
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 300, 7]
+type = changestate
+trigger1 = enemynear,P2bodydist x<70
+trigger2 = Time >100
+value = 1003
+
+;------------------------------------------------------------------------------
+;FATALITY # 1 BACK
+[Statedef 1002]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 21
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = -3.2
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 300, 7]
+type = changestate
+trigger1 = enemynear,P2bodydist x>70
+trigger2 = Time >100
+value = 1003
+
+;------------------------------------------------------------------------------
+;FATALITY # 1
+[Statedef 1003]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 0
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 300, 7]
+type = changestate
+trigger1 = Time >60
+value = 1004
+
+;---------------------------------------------------------------------------
+;HAMMER MADNESS
+[Statedef 1004]
+type = S
+movetype = A
+anim = 1003
+ctrl = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 4
+trigger1 = movehit
+trigger1 = time <= 30
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (120)*const(size.xscale),(-10)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = movehit
+trigger1 = time <= 30
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (120)*const(size.xscale),(-10)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100, ifelse(random<=415,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100, 7
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100, 7
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100, 7
+volume = 255
+
+[State 1101, 5]
+type = Hitdef
+trigger1 = !Time
+attr = S, SP
+offset = 0,0
+damage = 0,0
+animtype = Hard
+hitflag = MAP
+guardflag = M
+pausetime = 0,0
+guard.pausetime = 0,0
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=450,53,54)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -2,16
+air.animtype = Back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -2,16
+down.velocity = -2,16
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .50
+air.juggle = 1
+envshake.time = 30
+envshake.freq = 250
+envshake.ampl = 6
+p2stateno = 1020
+
+[State 930, 0]
+type = Changestate
+trigger1 = movehit
+value = 1005
+
+
+[State 930, 0]
+type = Changestate
+triggerall = !movehit
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+;---------------------------------------------------------------------------
+;HAMMER MADNESS 2
+[Statedef 1005]
+type = S
+movetype = A
+anim = 1004
+ctrl = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 2
+value = S420, 5
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 10
+value = S100, 56
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 11
+trigger2 = Animelem = 19
+trigger3 = Animelem = 27
+trigger4 = Animelem = 35
+trigger5 = Animelem = 43
+trigger6 = Animelem = 51
+trigger7 = Animelem = 59
+trigger8 = Animelem = 67
+trigger9 = Animelem = 75
+trigger10 = Animelem = 83
+trigger11 = Animelem = 91
+trigger12 = Animelem = 99
+trigger13 = Animelem = 107
+trigger14 = Animelem = 115
+trigger15 = Animelem = 123
+trigger16 = Animelem = 131
+trigger17 = Animelem = 139
+trigger18 = Animelem = 147
+trigger19 = Animelem = 155
+trigger20 = Animelem = 163
+value = S100, ifelse(random<=415,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 11
+trigger2 = Animelem = 19
+trigger3 = Animelem = 27
+trigger4 = Animelem = 35
+trigger5 = Animelem = 43
+trigger6 = Animelem = 51
+trigger7 = Animelem = 59
+trigger8 = Animelem = 67
+trigger9 = Animelem = 75
+trigger10 = Animelem = 83
+trigger11 = Animelem = 91
+trigger12 = Animelem = 99
+trigger13 = Animelem = 107
+trigger14 = Animelem = 115
+trigger15 = Animelem = 123
+trigger16 = Animelem = 131
+trigger17 = Animelem = 139
+trigger18 = Animelem = 147
+trigger19 = Animelem = 155
+trigger20 = Animelem = 163
+value = S100, 7
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 11
+trigger2 = Animelem = 19
+trigger3 = Animelem = 27
+trigger4 = Animelem = 35
+trigger5 = Animelem = 43
+trigger6 = Animelem = 51
+trigger7 = Animelem = 59
+trigger8 = Animelem = 67
+trigger9 = Animelem = 75
+trigger10 = Animelem = 83
+trigger11 = Animelem = 91
+trigger12 = Animelem = 99
+trigger13 = Animelem = 107
+trigger14 = Animelem = 115
+trigger15 = Animelem = 123
+trigger16 = Animelem = 131
+trigger17 = Animelem = 139
+trigger18 = Animelem = 147
+trigger19 = Animelem = 155
+trigger20 = Animelem = 163
+value = S100, 7
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 11
+trigger2 = Animelem = 19
+trigger3 = Animelem = 27
+trigger4 = Animelem = 35
+trigger5 = Animelem = 43
+trigger6 = Animelem = 51
+trigger7 = Animelem = 59
+trigger8 = Animelem = 67
+trigger9 = Animelem = 75
+trigger10 = Animelem = 83
+trigger11 = Animelem = 91
+trigger12 = Animelem = 99
+trigger13 = Animelem = 107
+trigger14 = Animelem = 115
+trigger15 = Animelem = 123
+trigger16 = Animelem = 131
+trigger17 = Animelem = 139
+trigger18 = Animelem = 147
+trigger19 = Animelem = 155
+trigger20 = Animelem = 163
+value = S100, 7
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 14
+trigger2 = Animelem = 22
+trigger3 = Animelem = 30
+trigger4 = Animelem = 38
+trigger5 = Animelem = 46
+trigger6 = Animelem = 54
+trigger7 = Animelem = 62
+trigger8 = Animelem = 70
+trigger9 = Animelem = 78
+trigger10 = Animelem = 86
+trigger11 = Animelem = 94
+trigger12 = Animelem = 102
+trigger13 = Animelem = 110
+trigger14 = Animelem = 118
+trigger15 = Animelem = 126
+trigger16 = Animelem = 134
+trigger17 = Animelem = 142
+trigger18 = Animelem = 150
+trigger19 = Animelem = 158
+trigger20 = Animelem = 166
+value = S100,Ifelse(random<=450,53,54)
+volume = 255
+
+[State 1071, 2]
+type = envshake
+trigger1 = Animelem = 14
+trigger2 = Animelem = 22
+trigger3 = Animelem = 30
+trigger4 = Animelem = 38
+trigger5 = Animelem = 46
+trigger6 = Animelem = 54
+trigger7 = Animelem = 62
+trigger8 = Animelem = 70
+trigger9 = Animelem = 78
+trigger10 = Animelem = 86
+trigger11 = Animelem = 94
+trigger12 = Animelem = 102
+trigger13 = Animelem = 110
+trigger14 = Animelem = 118
+trigger15 = Animelem = 126
+trigger16 = Animelem = 134
+trigger17 = Animelem = 142
+trigger18 = Animelem = 150
+trigger19 = Animelem = 158
+trigger20 = Animelem = 166
+time = 20
+freq = 250
+ampl = 6
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 4
+trigger1 = Animelemtime(102)= 0
+trigger2 = Animelemtime(110)= 0
+trigger3 = Animelemtime(118)= 0
+trigger4 = Animelemtime(126)= 0
+trigger5 = Animelemtime(134)= 0
+trigger6 = Animelemtime(142)= 0
+trigger7 = Animelemtime(150)= 0
+trigger8 = Animelemtime(158)= 0
+trigger9 = Animelemtime(166)= 0
+trigger10 = Animelemtime(14)= 0
+trigger11 = Animelemtime(22)= 0
+trigger12 = Animelemtime(30)= 0
+trigger13 = Animelemtime(38)= 0
+trigger14 = Animelemtime(46)= 0
+trigger15 = Animelemtime(54)= 0
+trigger16 = Animelemtime(62)= 0
+trigger17 = Animelemtime(70)= 0
+trigger18 = Animelemtime(78)= 0
+trigger19 = Animelemtime(86)= 0
+trigger20 = Animelemtime(94)= 0
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (114)*const(size.xscale),(-5)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = Animelemtime(102)= 0
+trigger2 = Animelemtime(110)= 0
+trigger3 = Animelemtime(118)= 0
+trigger4 = Animelemtime(126)= 0
+trigger5 = Animelemtime(134)= 0
+trigger6 = Animelemtime(142)= 0
+trigger7 = Animelemtime(150)= 0
+trigger8 = Animelemtime(158)= 0
+trigger9 = Animelemtime(166)= 0
+trigger10 = Animelemtime(14)= 0
+trigger11 = Animelemtime(22)= 0
+trigger12 = Animelemtime(30)= 0
+trigger13 = Animelemtime(38)= 0
+trigger14 = Animelemtime(46)= 0
+trigger15 = Animelemtime(54)= 0
+trigger16 = Animelemtime(62)= 0
+trigger17 = Animelemtime(70)= 0
+trigger18 = Animelemtime(78)= 0
+trigger19 = Animelemtime(86)= 0
+trigger20 = Animelemtime(94)= 0
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (114)*const(size.xscale),(-5)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+
+[State ]
+type = Helper
+triggerall = numhelper(1023) = 0
+trigger1 = Animelemtime(134)= 0
+helpertype = Normal
+ID = 1023
+name = "BLOOD_FLOOR" 
+postype = p2
+pos = (0)*const(size.xscale),(0)*const(size.yscale)
+stateno = 1023
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+
+[State 4, Push]  
+type = Helper
+trigger1 = NumHelper(4651) = 0
+trigger1 = Animelemtime(102)= 0
+helpertype = normal
+name = "GORE1"
+id = 4651
+pos = 0,0 
+postype = p2
+stateno = 4651
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4652) = 0
+trigger1 = Animelemtime(110)= 0
+helpertype = normal
+name = "GORE2"
+id = 4652
+pos = 0,0 
+postype = p2
+stateno = 4652
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4653) = 0
+trigger1 = Animelemtime(118)= 0
+helpertype = normal
+name = "GORE3"
+id = 4653
+pos = 0,0 
+postype = p2
+stateno = 4653
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4654) = 0
+trigger1 = Animelemtime(126)= 0
+helpertype = normal
+name = "GORE4"
+id = 4654
+pos = 0,0 
+postype = p2
+stateno = 4654
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4655) = 0
+trigger1 = Animelemtime(134)= 0
+helpertype = normal
+name = "GORE5"
+id = 4655
+pos = 0,0 
+postype = p2
+stateno = 4655
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4656) = 0
+trigger1 = Animelemtime(142)= 0
+helpertype = normal
+name = "GORE6"
+id = 4656
+pos = 0,0 
+postype = p2
+stateno = 4656
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4657) = 0
+trigger1 = Animelemtime(150)= 0
+helpertype = normal
+name = "GORE7"
+id = 4657
+pos = 0,0 
+postype = p2
+stateno = 4657
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4658) = 0
+trigger1 = Animelemtime(158)= 0
+helpertype = normal
+name = "GORE8"
+id = 4658
+pos = 0,0 
+postype = p2
+stateno = 4658
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4659) = 0
+trigger1 = Animelemtime(166)= 0
+helpertype = normal
+name = "GORE9"
+id = 4659
+pos = 0,0 
+postype = p2
+stateno = 4659
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(4660) = 0
+trigger1 = Animelemtime(166)= 0
+helpertype = normal
+name = "GORE10"
+id = 4660
+pos = 0,0 
+postype = p2
+stateno = 4660
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+
+[State -2, TO FATALITY WIN]
+type = Varset
+trigger1 = 1
+v = 26
+value = 1
+
+[State 930, 0]
+type = Changestate
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+;-------------------------------------------------------------------
+;GORE 1
+[Statedef 4651]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = 2
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+[State ]
+type = velset
+trigger1 = time = 1
+y = 0
+x = 1.2
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+;---------------------------------------------------------------------
+;GORE 2
+[Statedef 4652]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = -1.3
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -0.4
+y = 0.6
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+;---------------------------------------------------------------------
+;GORE 3
+[Statedef 4653]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = 5
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -0.6
+y = 0.4
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+;---------------------------------------------------------------------
+;GORE 4
+[Statedef 4654]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = -30
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -1.2
+y = 1.1
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+;---------------------------------------------------------------------
+;GORE 5
+[Statedef 4655]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = 3
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -1.1
+y = 1.2
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+;---------------------------------------------------------------------
+;GORE 6
+[Statedef 4656]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = -1
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -0.8
+y = 0.9
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+
+;---------------------------------------------------------------------
+;GORE 7
+[Statedef 4657]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = 1
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -0.9
+y = 0.8
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+
+;---------------------------------------------------------------------
+;GORE 8
+[Statedef 4658]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -0.7
+y = 0.6
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = 7
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+
+;---------------------------------------------------------------------
+;GORE 9
+[Statedef 4659]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -0.6
+y = 0.7
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = 7
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+;---------------------------------------------------------------------
+;GORE 10
+[Statedef 4660]
+type = S
+movetype = I
+physics = N
+anim = ifelse(random<=420,2053,ifelse(random>420,2058,2060))
+
+[State 0, AngleAdd]
+type = AngleAdd
+trigger1 = time >0
+value = 2
+[State 0, AngleSet]
+type = AngleSet
+trigger1 = time = 0 
+value = 0
+ignorehitpause = 0
+persistent = 1
+[State 0, AngleDraw]
+type = AngleDraw
+trigger1 = time > 0
+
+[State ]
+type = velset
+trigger1 = time = 1
+x = -0.5
+y = 0.5
+
+[State ]
+type = veladd
+trigger1 = time >= 3
+y = .1
+
+[State ]
+type = veladd
+trigger1 = time >= 10
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+triggerall = time >= 5
+trigger1 = (Vel Y > 0)&&(Pos Y >= 0)
+value = 4512
+
+
+;***************************************
+;END GORE
+[Statedef 4512]
+type    = A
+movetype= I
+physics = N
+ctrl = 0
+sprpriority = 10
+
+[State 1900,stomp]
+type = playsnd
+trigger1 = Time = 0
+value = S500,ifelse(random<=460,0,1)
+volume = 255
+
+[State ]
+type = velset
+trigger1 = !time
+y = -1
+
+[State ]
+type = posset
+trigger1 = !time
+y = 0
+
+[State ]
+type = veladd
+trigger1 = 1
+y = .2
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+[State end]
+type = changestate
+trigger1 = time >10
+trigger1 = pos y >=0
+trigger1 = vel y >0
+value = 4513
+;--------------------------------------------------------------------------
+;END GORE
+[Statedef 4513]
+type    = A
+movetype= I
+physics = N
+ctrl = 0
+sprpriority = 10
+
+[State ]
+type = velset
+trigger1 = 1
+y = 0
+x = 0
+
+[State ]
+type = posset
+trigger1 = !time
+y = 0
+
+[State ]
+type = veladd
+trigger1 = 1
+y = 0
+x = 0
+
+[State ]
+type = assertspecial
+trigger1 = 1
+flag = noshadow
+
+
+
+
+
+
+
+
+;---------------------------------------------------------------------------
+;BLOOD
+[Statedef 1023]
+type    = S
+movetype= H
+physics = N
+velset = 0,0
+ctrl = 0
+anim = 1023
+
+[State 1007, Finish big]
+type = AngleDraw
+trigger1 = time = 0
+value = 0
+scale = 1,1
+
+[State 5, 0]
+type = AngleDraw
+trigger1 = time >0
+value = 0
+scale = FVar(14) * Const(size.xscale), 1.2
+
+[State -2, VarAdd]
+type = Varset
+trigger1 = time = 0
+ignorehitpause = 1
+fv = 14
+value = 1
+
+[State -2, VarAdd]
+type = Varadd 
+trigger1 = time >0
+ignorehitpause = 1
+fv = 14
+value = 0.003
+
+
+[State 5030, 2]
+type = VelSet
+trigger1 = 1
+x = 0
+y = 0
+
+[State 5030, 4]
+type = Destroyself
+trigger1 = time > 10000
+
+;---------------------------------------------------------------------------
+;HAMMER MADNESS p2 state 1
+[Statedef 1020]
+type    = S
+movetype= H
+physics = N
+velset = 0,0
+ctrl = 0
+
+[State 930, 0]
+type = Changeanim2
+trigger1 = time = 0
+value = 5030
+
+[State 5030, 2]
+type = VelSet
+trigger1 = 1
+x = 0
+y = 4
+
+[State -2, Damage]
+type = Lifeset
+trigger1 = 1
+value = 0
+
+[State 5030, 4]
+type = ChangeState
+trigger1 = time > 0
+trigger1 = Vel Y > 0
+trigger1 = Pos Y >= 0
+value = 1021
+
+
+;---------------------------------------------------------------------------
+;HAMMER MADNESS p2 state get hit
+[Statedef 1021]
+type    = S
+movetype= H
+
+[State 930, 0]
+type = Changeanim2
+trigger1 = time = 0
+value = 1021
+
+[State -2, Damage]
+type = Lifeset
+trigger1 = 1
+value = 0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = nokosnd
+
+[State 5030, 2]
+type = VelSet
+trigger1 = 1
+x = 0
+y = 0
+
+[State 5030, 2]
+type = posSet
+trigger1 = 1
+y = 0
+
+[State 1007, Finish]
+type = Angledraw
+trigger1 = time = 0
+value = 0
+scale = 1,1
+
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(102)>0
+value = 0
+scale = 1.02,0.978
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(110)>0
+value = 0
+scale = 1.04,0.956
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(118)>0
+value = 0
+scale = 1.06,0.934
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(126)>0
+value = 0
+scale = 1,0.912
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(134)>0
+value = 0
+scale = 1,0.89
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(142)>0
+value = 0
+scale = 1,0.868
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(150)>0
+value = 0
+scale = 1,0.846
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(158)>0
+value = 0
+scale = 1,0.824
+[State -2, VarAdd]
+type = AngleDraw
+trigger1 = Animelemtime(166)>0
+value = 0
+scale = 1,0.802
+
+[State 220, Effect]
+type = PlaySnd
+trigger1 = Animelem = 14
+trigger2 = Animelem = 22
+trigger3 = Animelem = 30
+trigger4 = Animelem = 38
+trigger5 = Animelem = 46
+trigger6 = Animelem = 54
+trigger7 = Animelem = 62
+trigger8 = Animelem = 70
+trigger9 = Animelem = 78
+trigger10 = Animelem = 86
+trigger11 = Animelem = 94
+value = 11, 0
+channel = 0
+
+[State 220, Effect]
+type = PlaySnd
+triggerall = AuthorName = "GM"
+trigger1 = Animelem = 14
+trigger2 = Animelem = 22
+trigger3 = Animelem = 30
+trigger4 = Animelem = 38
+trigger5 = Animelem = 46
+trigger6 = Animelem = 54
+trigger7 = Animelem = 62
+trigger8 = Animelem = 70
+trigger9 = Animelem = 78
+trigger10 = Animelem = 86
+trigger11 = Animelem = 94
+value = 11, 1
+channel = 0
+
+[State 220, Effect]
+type = PlaySnd
+triggerall = AuthorName = "OMEGAPSYCHO"
+trigger1 = Animelem = 14
+trigger2 = Animelem = 22
+trigger3 = Animelem = 30
+trigger4 = Animelem = 38
+trigger5 = Animelem = 46
+trigger6 = Animelem = 54
+trigger7 = Animelem = 62
+trigger8 = Animelem = 70
+trigger9 = Animelem = 78
+trigger10 = Animelem = 86
+trigger11 = Animelem = 94
+value = 11, 1
+channel = 0
+
+[State 220, Effect]
+type = PlaySnd
+triggerall = AuthorName = "Phantom.of.the.Server"
+trigger1 = Animelem = 14
+trigger2 = Animelem = 22
+trigger3 = Animelem = 30
+trigger4 = Animelem = 38
+trigger5 = Animelem = 46
+trigger6 = Animelem = 54
+trigger7 = Animelem = 62
+trigger8 = Animelem = 70
+trigger9 = Animelem = 78
+trigger10 = Animelem = 86
+trigger11 = Animelem = 94
+value = 11, 1
+channel = 0
+
+[State 220, Effect]
+type = PlaySnd
+triggerall = AuthorName = "warusaki3"
+trigger1 = Animelem = 14
+trigger2 = Animelem = 22
+trigger3 = Animelem = 30
+trigger4 = Animelem = 38
+trigger5 = Animelem = 46
+trigger6 = Animelem = 54
+trigger7 = Animelem = 62
+trigger8 = Animelem = 70
+trigger9 = Animelem = 78
+trigger10 = Animelem = 86
+trigger11 = Animelem = 94
+value = 110, 0
+channel = 0
+
+[State 220, Effect]
+type = PlaySnd
+triggerall = AuthorName = "bad darkness"
+trigger1 = Animelem = 14
+trigger2 = Animelem = 22
+trigger3 = Animelem = 30
+trigger4 = Animelem = 38
+trigger5 = Animelem = 46
+trigger6 = Animelem = 54
+trigger7 = Animelem = 62
+trigger8 = Animelem = 70
+trigger9 = Animelem = 78
+trigger10 = Animelem = 86
+trigger11 = Animelem = 94
+value = 5950, 1
+channel = 0
+
+;-----------------------------------------------------------------
+;FATALITY HELPER
+[StateDef 4000]
+type = S
+movetype = A
+physics = S
+anim = 7000
+velset = 0,0
+ctrl = 1
+
+[State 7000, 1]
+type = HitDef
+trigger1 = !time
+trigger1 = P2StateType != A
+attr = S, SA
+damage = 0,0
+animtype = Heavy
+hitflag = MF
+guardflag = A 
+priority = 7
+pausetime = 0,3
+sparkxy = 0,0
+sparkno = -1
+gurad.sparkno = -1
+hitsound = -1
+guardsound = -1
+ground.type = High
+ground.slidetime = 0
+ground.hittime = 0
+ground.velocity = 0
+air.velocity = 0
+air.fall = 1
+fall = 0
+numhits = 0
+p2stateno = 4010
+
+[State 300, 5]
+type = DestroySelf
+trigger1 = Time >100
+
+;---------------------------------------------------------------------------------------
+;DIE
+[Statedef 4010]
+type = S
+movetype= H
+physics = S
+juggle = 1
+ctrl = 0
+velset = 0,0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State 49999, 1]
+type = LifeSet
+trigger1 = 1
+value = 1
+
+[State 49999, 5]
+type = ChangeAnim2
+trigger1 = !time
+value = 49999
+
+[State 444, 0]
+type = Changestate
+trigger1 = time >=400
+value = 5150
+
+;-----------------------------------------------------------------
+;FATALITY HELPER 2
+[StateDef 4018]
+type = S
+movetype = A
+physics = S
+anim = 7000
+velset = 0,0
+ctrl = 1
+
+[State 7000, 1]
+type = HitDef
+trigger1 = !time
+trigger1 = P2StateType != A
+attr = S, SA
+damage = 0,0
+animtype = Heavy
+hitflag = MF
+guardflag = A 
+priority = 7
+pausetime = 0,3
+sparkxy = 0,0
+sparkno = -1
+gurad.sparkno = -1
+hitsound = -1
+guardsound = -1
+ground.type = High
+ground.slidetime = 0
+ground.hittime = 0
+ground.velocity = 0
+air.velocity = 0
+air.fall = 1
+fall = 0
+numhits = 0
+p2stateno = 4019
+
+[State 300, 5]
+type = DestroySelf
+trigger1 = Time >100
+
+;---------------------------------------------------------------------------------------
+;DIE
+[Statedef 4019]
+type = S
+movetype= H
+physics = S
+juggle = 1
+ctrl = 0
+velset = 0,0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State 49999, 1]
+type = LifeSet
+trigger1 = 1
+value = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = nokosnd
+
+[State 49999, 5]
+type = ChangeAnim2
+trigger1 = !time
+value = 49999
+
+;This prevent freeze game
+[State 49999, 5]
+type = ChangeState
+trigger1 = time >350
+value = 4020
+
+;---------------------------------------------------------------------------------------
+;INVISIBLE
+[Statedef 4020]
+type = S
+movetype= H
+physics = N
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = NoBarDisplay
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = nokosnd
+
+[State 49999, 1]
+type = LifeSet
+trigger1 = 1
+value = 0
+
+[State 49999, 1]
+type = POSSet
+trigger1 = 1
+y = 9000
+
+[State 49999, 5]
+type = ChangeAnim2
+trigger1 = !time
+value = 9999
+
+[State 444, 0]
+type = Changestate
+trigger1 = time >=240
+value = 5150
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;----------------------------------------------------------------
+;FATALITY # 2
+[Statedef 2000]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 0
+
+[State 4000, 1]
+type = Helper
+trigger1 = 1
+trigger1 = NumHelper(4000) = 0
+ID = 4000 
+stateno = 4000
+pos = 160, -140
+postype = left
+helpertype = normal
+name = "FATALITY_MODE" 
+keyctrl = 0
+ownpal = 1
+
+[State 220, Effect]
+type = PlaySnd
+trigger1 = var(25)= 0
+trigger1 = Time = 1
+value = S100, ifelse(random<=420,29,44)
+volume = 100
+
+[State 220, Effect]
+type = PlaySnd
+trigger1 = var(25)= 1
+trigger1 = Time = 1
+value = S100, 30
+volume = 100
+
+[State 183, 1]
+type = stopsnd
+trigger1 = time = 0
+channel = -1
+ignorehitpause = 1
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State ]
+type = width
+trigger1 = 1
+edge = 0,0
+
+[State blackness]
+type = bgpalfx
+trigger1 = !time
+time = 3
+add = 0,0, 0
+sinadd = -250,-250, -250, 75
+[State blackness]
+type = bgpalfx
+trigger1 = time = 3
+time = 9999999999999999999999999
+add = -50,-50, -50
+
+[State 300, 7]
+type = changestate
+trigger1 = enemynear,P2bodydist x>=20
+trigger1 = time >= 50
+value = 2001
+
+[State 300, 7]
+type = changestate
+trigger1 = enemynear,P2bodydist x<20
+trigger1 = time >= 50
+value = 2002
+
+;------------------------------------------------------------------------------
+;FATALITY # 2 FWD
+[Statedef 2001]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 20
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = 3.8
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 300, 7]
+type = changestate
+trigger1 = enemynear,P2bodydist x<20
+trigger2 = Time >100
+value = 2003
+
+;------------------------------------------------------------------------------
+;FATALITY # 2 BACK
+[Statedef 2002]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 21
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = -3.2
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 300, 7]
+type = changestate
+trigger1 = enemynear,P2bodydist x>20
+trigger2 = Time >100
+value = 2003
+
+;------------------------------------------------------------------------------
+;FATALITY # 2
+[Statedef 2003]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 0
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 300, 7]
+type = changestate
+trigger1 = Time >40
+value = 2004
+
+;---------------------------------------------------------------------------
+;THROUGH HEART UPPER
+[Statedef 2004]
+type = S
+movetype = A
+anim = 2004
+ctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = movehit
+trigger1 = time <= 18
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (48)*const(size.xscale),(-144)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = movehit
+trigger1 = time <= 10
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (48)*const(size.xscale),(-144)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 1
+value = S100, 56
+volume = 255
+
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 4
+value = S100, 7
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 4
+value = S100, 7
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 4
+value = S100, 7
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 5
+value = S100, 6
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 5
+value = S100, 6
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 5
+value = S100, 6
+volume = 255
+
+[State 1101, 5]
+type = Hitdef
+trigger1 = !Time
+attr = S, SP
+offset = 0,0
+damage = 0,0
+animtype = Hard
+hitflag = MAP
+guardflag = M
+pausetime = 0,0
+guard.pausetime = 0,0
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,6
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -2,16
+air.animtype = Back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -2,16
+down.velocity = -2,16
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .30
+air.juggle = 1
+envshake.time = 35
+envshake.freq = 290
+envshake.ampl = 7
+p2stateno = 2100
+kill = 0
+
+[State 3, 1]
+type = SprPriority
+trigger1 = 1
+value = -20
+
+[State 930, 0]
+type = Changestate
+trigger1 = animtime = 0
+value = 2005
+
+;------------------------------------------------------------------------------
+;FATALITY # 2
+[Statedef 2005]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 2005
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State ]
+type = Helper
+triggerall = numhelper(2015) = 0
+trigger1 = time <=10
+helpertype = Normal
+ID = 2015
+name = "SPARK" 
+postype = p1
+pos = (0)*const(size.xscale),(-166)*const(size.yscale)
+stateno = 2015
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelemtime(1) = 0
+value = S420,8
+volume = 255
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelemtime(1) = 0
+value = S420,8
+volume = 255
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelemtime(1) = 0
+value = S420,8
+volume = 255
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 300, 7]
+type = changestate
+trigger1 = time >550
+value = 2006
+
+;------------------------------------------------------------------------------
+;FATALITY # 2 RAIN
+[Statedef 2006]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 2006
+
+[State -2, TO FATALITY WIN]
+type = Varset
+trigger1 = 1
+v = 27
+value = 1
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 5
+value = S100,58
+volume = 255
+persistent = 1
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 5
+value = S100,58
+volume = 255
+persistent = 1
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 5
+value = S100,58
+volume = 255
+persistent = 1
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 300, 7]
+type = changestate
+trigger1 = roundstate != 2
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+[State ]
+type = Helper
+triggerall = numhelper(6517) <= 15
+trigger1 = timemod = 7,3
+trigger1 = time >40
+helpertype = Normal
+ID = 6517
+name = "BLOOD_BATH_1" 
+postype = p1
+pos = var(12),-450
+stateno = 6517
+ownpal = 1
+keyctrl = 0
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 15
+trigger1 = timemod = 13,3
+trigger1 = time >50
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_2" 
+postype = p1
+pos = var(12),-430
+stateno = 6518
+ownpal = 1
+keyctrl = 0
+[State ]
+type = Helper
+triggerall = numhelper(6519) <= 15
+trigger1 = timemod = 13,3
+trigger1 = time >45
+helpertype = Normal
+ID = 6519
+name = "BLOOD_BATH_3" 
+postype = p1
+pos = var(12),-420
+stateno = 6518
+ownpal = 1
+keyctrl = 0
+
+
+
+
+[State 4, Push]  
+type = Helper
+trigger1 = NumHelper(8651) = 0
+trigger1 = time = 45
+helpertype = normal
+name = "GORE1"
+id = 8651
+postype = p1
+pos = var(12),-420
+stateno = 8651
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8652) = 0
+trigger1 = time = 53
+helpertype = normal
+name = "GORE2"
+id = 8652
+postype = p1
+pos = var(12),-420
+stateno = 8652
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8653) = 0
+trigger1 = time = 61
+helpertype = normal
+name = "GORE3"
+id = 8653
+postype = p1
+pos = var(12),-420
+stateno = 8653
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8654) = 0
+trigger1 = time = 69
+helpertype = normal
+name = "GORE4"
+id = 8654
+postype = p1
+pos = var(12),-420
+stateno = 8654
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8655) = 0
+trigger1 = time = 77
+helpertype = normal
+name = "GORE5"
+id = 8655
+postype = p1
+pos = var(12),-420
+stateno = 8655
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8656) = 0
+trigger1 = time = 85
+helpertype = normal
+name = "GORE6"
+id = 8656
+postype = p1
+pos = var(12),-420
+stateno = 8656
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8657) = 0
+trigger1 = time = 93
+helpertype = normal
+name = "GORE7"
+id = 8657
+postype = p1
+pos = var(12),-420
+stateno = 8657
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8658) = 0
+trigger1 = time = 101
+helpertype = normal
+name = "GORE8"
+id = 8658
+postype = p1
+pos = var(12),-420
+stateno = 8658
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8659) = 0
+trigger1 = time = 109
+helpertype = normal
+name = "GORE9"
+id = 8659
+postype = p1
+pos = var(12),-420
+stateno = 8659
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8660) = 0
+trigger1 = time = 117
+helpertype = normal
+name = "GORE10"
+id = 8660
+postype = p1
+pos = var(12),-420
+stateno = 8660
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8661) = 0
+trigger1 = time = 125
+helpertype = normal
+name = "GORE11"
+id = 8661
+postype = p1
+pos = var(12),-420
+stateno = 8661
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8662) = 0
+trigger1 = time = 133
+helpertype = normal
+name = "GORE12"
+id = 8662
+postype = p1
+pos = var(12),-420
+stateno = 8662
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8663) = 0
+trigger1 = time = 141
+helpertype = normal
+name = "GORE13"
+id = 8663
+postype = p1
+pos = var(12),-420
+stateno = 8663
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8664) = 0
+trigger1 = time = 149
+helpertype = normal
+name = "GORE14"
+id = 8664
+postype = p1
+pos = var(12),-420
+stateno = 8664
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8665) = 0
+trigger1 = time = 157
+helpertype = normal
+name = "GORE15"
+id = 8665
+postype = p1
+pos = var(12),-420
+stateno = 8665
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8670) = 0
+trigger1 = time = 165
+helpertype = normal
+name = "GORE16"
+id = 8670
+postype = p1
+pos = var(12),-420
+stateno = 8670
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8671) = 0
+trigger1 = time = 173
+helpertype = normal
+name = "GORE17"
+id = 8671
+postype = p1
+pos = var(12),-420
+stateno = 8671
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8672) = 0
+trigger1 = time = 181
+helpertype = normal
+name = "GORE18"
+id = 8672
+postype = p1
+pos = var(12),-420
+stateno = 8672
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8673) = 0
+trigger1 = time = 189
+helpertype = normal
+name = "GORE19"
+id = 8673
+postype = p1
+pos = var(12),-420
+stateno = 8673
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8674) = 0
+trigger1 = time = 197
+helpertype = normal
+name = "GORE20"
+id = 8674
+postype = p1
+pos = var(12),-420
+stateno = 8674
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8675) = 0
+trigger1 = time = 205
+helpertype = normal
+name = "GORE21"
+id = 8675
+postype = p1
+pos = var(12),-420
+stateno = 8675
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8686) = 0
+trigger1 = time = 213
+helpertype = normal
+name = "GORE22"
+id = 8686
+postype = p1
+pos = var(12),-420
+stateno = 8686
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8680) = 0
+trigger1 = time = 221
+helpertype = normal
+name = "GORE23"
+id = 8680
+postype = p1
+pos = var(12),-420
+stateno = 8680
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8681) = 0
+trigger1 = time = 229
+helpertype = normal
+name = "GORE24"
+id = 8681
+postype = p1
+pos = var(12),-420
+stateno = 8681
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8682) = 0
+trigger1 = time = 237
+helpertype = normal
+name = "GORE25"
+id = 8682
+postype = p1
+pos = var(12),-420
+stateno = 8682
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8683) = 0
+trigger1 = time = 245
+helpertype = normal
+name = "GORE26"
+id = 8683
+postype = p1
+pos = var(12),-420
+stateno = 8683
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8684) = 0
+trigger1 = time = 253
+helpertype = normal
+name = "GORE27"
+id = 8684
+postype = p1
+pos = var(12),-420
+stateno = 8684
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8685) = 0
+trigger1 = time = 261
+helpertype = normal
+name = "GORE28"
+id = 8685
+postype = p1
+pos = var(12),-420
+stateno = 8685
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+[State 4, Push]
+type = Helper
+trigger1 = NumHelper(8686) = 0
+trigger1 = time = 270
+helpertype = normal
+name = "GORE29"
+id = 8686
+postype = p1
+pos = var(12),-420
+stateno = 8686
+keyctrl = 0
+ownpal = 1
+size.xscale = 1.0 +((EnemyNear,Const(Size.Ground.Front)+EnemyNear,Const(Size.Ground.Back))-35.0)/40.0
+size.yscale = 1.0 -((EnemyNear,Const(Size.Head.Pos.Y)+115.5))/115.5
+
+
+
+
+
+;------------------------------------------------------------------------------
+;FATALITY # 2 P2
+[Statedef 2100]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 2100
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State 3, 1]
+type = SprPriority
+trigger1 = 1
+value = 20
+
+[State ]
+type = velset
+trigger1 = time <2
+x = 0
+y = -20
+
+[State ]
+type = velset
+trigger1 = time = 500
+x = 0
+y = 0
+
+[State 300, 7]
+type = changeanim2
+trigger1 = time = 0
+value = 5030
+
+
+[State 5030, 4]
+type = ChangeState
+trigger1 = time >=100
+value = 2101
+
+;------------------------------------------------------------------------------
+;FATALITY # 2 P2
+[Statedef 2101]
+type    = S
+movetype= H
+physics = N
+ctrl = 0
+SprPriority = -14
+
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State 3, 1]
+type = SprPriority
+trigger1 = 1
+value = 20
+
+[State ]
+type = posset
+trigger1 = 1
+y = 5000
+
+[State 300, 7]
+type = changeanim2
+trigger1 = 1
+value = 9999
+
+
+[State 443, 0]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State 5030, 2]
+type = VelSet
+trigger1 = Time = 0
+x = 0
+y = 0
+
+[State 5030, 1]
+type = veladd
+trigger1 = 1
+y = 0
+
+[State -2, Damage]
+type = Lifeset
+trigger1 = time >423
+value = 0
+
+
+[State 444, 0]
+type = Changestate
+trigger1 = time >425
+value = 5150
+;---------------------------------------------------------------------------
+;P2 STATE FROM: SPIKE TO DEATH
+[Statedef 5150]
+type    = L
+movetype= H
+physics = N
+ctrl = 0
+
+[State 1, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = NoShadow
+
+[State 443, 0]
+type = ChangeAnim2
+trigger1 = 1
+value = 10000
+
+
+
+
+
+
+;------------------------------------------------------------------------------
+;FATALITY # 2 SPARK
+[Statedef 2015]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 2015
+
+[State 3, 1]
+type = SprPriority
+trigger1 = 1
+value = 5
+
+[State 1, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = NoShadow
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = timemod = 24,3
+trigger1 = time <250
+value = S100, 57
+volume = 255
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = 0
+
+[State 300, 5]
+type = Changestate
+trigger1 = Time>= 300
+value = 2016
+
+;------------------------------------------------------------------------------
+;FATALITY # 2 SPARK UP
+[Statedef 2016]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 2015
+
+[State ]
+type = velset
+trigger1 = time = 0
+x = 0
+y = -15
+
+[State 3, 1]
+type = SprPriority
+trigger1 = 1
+value = 5
+
+[State 1, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = NoShadow
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Time = 0
+value = S100, 60
+volume = 255
+
+[State 300, 5]
+type = Changestate
+trigger1 = Time>= 100
+value = 2017
+
+;------------------------------------------------------------------------------
+;FATALITY # 2 SPARK UP
+[Statedef 2017]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 2015
+
+[State ]
+type = velset
+trigger1 = time = 0
+x = 0
+y = -15
+
+[State 3, 1]
+type = SprPriority
+trigger1 = 1
+value = 5
+
+[State 1, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = NoShadow
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Time = 0
+value = S100, 59
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Time = 0
+value = S100, 59
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Time = 0
+value = S100, 13
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Time = 0
+value = S100, 13
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Time = 0
+value = S100, 31
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Time = 0
+value = S100, 31
+volume = 255
+
+[State 1071, 2]
+type = envshake
+trigger1 = time = 0
+time = 50
+freq = 270
+ampl = 8
+
+[State 300, 5]
+type = DestroySelf
+trigger1 = time>=300

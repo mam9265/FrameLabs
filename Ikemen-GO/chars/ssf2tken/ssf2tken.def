@@ -1,0 +1,36 @@
+[Info]
+name ="SSF2T Ken"        				
+displayname ="Ken" 
+versiondate =02,05,2009    
+mugenversion =11,22,2000
+author ="Vegeta 20XX"         				
+pal.defaults =6,3,4,2  
+	
+; Files for the player
+[Files]
+trials  =trials.def
+cmd     =superturbo.cmd
+stcommon=superturbo.cns
+st      =superturbo.cns 
+cns     =superturbo.cns	
+sprite  =superturbo.sff 
+anim    =superturbo.air 
+sound   =superturbo.snd 
+pal1=st1.act
+pal2=st2.act
+pal3=st1.act
+pal4=st2.act
+pal5=st1.act
+pal6=st2.act
+pal7=st1.act
+pal8=st2.act
+pal9=st1.act
+pal10=st2.act
+pal11=st1.act
+pal12=st2.act
+
+; Arcade mode
+[Arcade]
+;intro.storyboard = .def
+ending.storyboard =ending.def
+intro.storyboard=

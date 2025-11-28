@@ -1,0 +1,32 @@
+; Definition file for scorpion
+; Contains all the filenames needed for the character
+
+; Player information 
+ 
+[Info]
+name             ="Scorpion-By cliff-A"
+displayname      ="Scorpion"
+versiondate      =06/10/12
+mugenversion     =
+author           ="Cliff-A"
+pal.defaults     =1,2,3,4
+
+
+[Files]
+trials      =trials.def
+cmd         =AI-Patch\AI-ToGo.cmd
+cns         =CNS-States\Cliff-Scorpion.cns
+st          =CNS-States\Cliff-Scorpion.cns
+stcommon    =CNS-States\common1.cns
+sprite      =Sprites\Cliff-Scorpion.sff
+anim        =Sprites\Cliff-Scorpion.air
+sound       =Sounds\Cliff-Scorpion.snd
+pal1=Palettes\Cliff-Scorpion1.act
+pal2=Palettes\Cliff-Scorpion2.act
+pal3=Palettes\Cliff-Scorpion3.act
+pal4=Palettes\Cliff-Scorpion4.act
+
+
+[Arcade]
+intro.storyboard  =Intro/intro.def
+ending.storyboard =Ending/ending.def

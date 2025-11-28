@@ -1,0 +1,179 @@
+[TrialDef, Standing Light Punch]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
+
+[TrialDef, Standing Strong Punch]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Strong Punch
+trialstep.1.glyphs = ^Y
+trialstep.1.stateno = 210
+
+[TrialDef, Standing Fierce Punch]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Fierce Punch
+trialstep.1.glyphs = ^Z
+trialstep.1.stateno = 220
+
+[TrialDef, Standing Light Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Light Kick
+trialstep.1.glyphs = ^A
+trialstep.1.stateno = 230
+
+[TrialDef, Standing Strong Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Strong Kick
+trialstep.1.glyphs = ^B
+trialstep.1.stateno = 240
+
+[TrialDef, Standing Fierce Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Fierce Kick
+trialstep.1.glyphs = ^C
+trialstep.1.stateno = 250
+
+[TrialDef, Crouching Light Punch]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Light Punch
+trialstep.1.glyphs = _D^X
+trialstep.1.stateno = 400
+
+[TrialDef, Crouching Strong Punch]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Strong Punch
+trialstep.1.glyphs = _D^Y
+trialstep.1.stateno = 410
+
+[TrialDef, Crouching Fierce Punch]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Fierce Punch
+trialstep.1.glyphs = _D^Z
+trialstep.1.stateno = 420
+
+[TrialDef, Crouching Light Kick]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Light Kick
+trialstep.1.glyphs = _D^A
+trialstep.1.stateno = 430
+
+[TrialDef, Crouching Strong Kick]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Strong Kick
+trialstep.1.glyphs = _D^B
+trialstep.1.stateno = 440
+
+[TrialDef, Crouching Fierce Kick]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Fierce Kick
+trialstep.1.glyphs = _D^C
+trialstep.1.stateno = 450
+
+[TrialDef, Air Light Punch]
+trial.dummymode = jump
+
+trialstep.1.text = Air Light Punch
+trialstep.1.glyphs = _AIR^X
+trialstep.1.stateno = 600
+
+[TrialDef, Air Strong Punch]
+trial.dummymode = jump
+
+trialstep.1.text = Air Strong Punch
+trialstep.1.glyphs = _AIR^Y
+trialstep.1.stateno = 610
+
+[TrialDef, Air Fierce Punch]
+trial.dummymode = jump
+
+trialstep.1.text = Air Fierce Punch
+trialstep.1.glyphs = _AIR^Z
+trialstep.1.stateno = 620
+
+[TrialDef, Air Light Kick]
+trial.dummymode = jump
+
+trialstep.1.text = Air Light Kick
+trialstep.1.glyphs = _AIR^A
+trialstep.1.stateno = 630
+
+[TrialDef, Air Strong Kick]
+trial.dummymode = jump
+
+trialstep.1.text = Air Strong Kick
+trialstep.1.glyphs = _AIR^B
+trialstep.1.stateno = 640
+
+[TrialDef, Air Fierce Kick]
+trial.dummymode = jump
+
+trialstep.1.text = Air Fierce Kick
+trialstep.1.glyphs = _AIR^C
+trialstep.1.stateno = 650
+
+[TrialDef, Basic Combo 1]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
+
+trialstep.2.text = Standing Strong Punch
+trialstep.2.glyphs = ^Y
+trialstep.2.stateno = 210
+
+[TrialDef, Basic Combo 2]
+trial.dummymode = stand
+
+trialstep.1.text = Standing Light Kick
+trialstep.1.glyphs = ^A
+trialstep.1.stateno = 230
+
+trialstep.2.text = Standing Strong Kick
+trialstep.2.glyphs = ^B
+trialstep.2.stateno = 240
+
+[TrialDef, Crouching Combo]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Light Punch
+trialstep.1.glyphs = _D^X
+trialstep.1.stateno = 400
+
+trialstep.2.text = Crouching Strong Punch
+trialstep.2.glyphs = _D^Y
+trialstep.2.stateno = 410
+
+[TrialDef, Psycho Crusher]
+trial.dummymode = stand
+
+trialstep.1.text = Psycho Crusher
+trialstep.1.glyphs = _QCB^X
+trialstep.1.stateno = 1000
+
+[TrialDef, Head Press]
+trial.dummymode = stand
+
+trialstep.1.text = Head Press
+trialstep.1.glyphs = _DU^X
+trialstep.1.stateno = 1100
+
+[TrialDef, Knee Press]
+trial.dummymode = stand
+
+trialstep.1.text = Knee Press
+trialstep.1.glyphs = _QCB^A
+trialstep.1.stateno = 1050

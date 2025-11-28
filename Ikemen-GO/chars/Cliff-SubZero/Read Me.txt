@@ -1,0 +1,162 @@
+$----------------------------------------------------------------------------------------------$
+[Subzero's Readme]
+
+Name: Subzero
+Movies, Series, Games: Mortal combat... 
+Author: CLIFF-A
+Version Date: 05/22/12
+Mugen Version: Mugen 1.0 & 1.1
+
+
+:Info:
+I was to lazy To add the 5000's required sprites in.
+
+----------------------------------------------------$
+*Team: Cs-team
+
+*======My Youtbe Channel:
+User: Name; Karasgold
+http://www.youtube.com/user/karasgold?feature=mhee
+
+*Site: Csmugen.ucoz.com
+
+*Char by: Cliff-A
+
+
+*Sprite ripped by: Ant19831983
+
+
+*Special thanks to these people i took sprites and ideas from:
+-juano16
+-Mgssj3
+-Vx
+-chuchoryu, for the ending, took it from his jin char.
+-deebee kaw guage code.
+
+$----------------------------------------------------------------------------------------------$
+
+               -How to trigger fatality movelist while in game-
+
+*Fatality Movelist is in the char itself, when fatality state activate press S(enter).
+
+*Show mercy = Down, and A+S(ENTER)
+
+$----------------------------------------------------------------------------------------------$
+
+
+                     -Subzero's Basic movements-
+
+
+*Walk Forward                                = Forward
+
+*Walk Backward                               = Back
+
+*Jump Forward                                = Forward,  Forward
+
+*Hop Back                                    = Back, Back
+
+*Jump                                        = Up
+
+*Crouch                                      = Down
+
+*Guard = Coruch, Air, Standing               = C
+
+*Roll When HP is below power <= 499          = Hold Forward and C+y, or A+B, or Z+X
+ 
+*Dash Forward When HP is Above power >= 500  = Hold Forward and C+y, or A+B, or Z+X 
+
+*Counter freeze HP above power >= 500        = Hold Back, A, or B
+
+*Taunt                                       = S(ENTER)
+
+$----------------------------------------------------------------------------------------------$
+
+
+                     -Subzero's Standing basic Attacks-
+
+*Punch Low                                   = Z
+
+*Punch High                                  = X
+
+*Weak Combo Set                              = B, B, B, B    
+
+*Strong Combo Set                            = A, A, A, A, A 
+
+*Random, Kick Chanager                       = Y
+
+*Killer Kick                                 = Hold Forward and B
+
+*Trip Sliding Kick                           = Hold Forward and A
+
+*Grab Throw                                  = Hold Forward and Y, or Z
+
+$----------------------------------------------------------------------------------------------$
+
+
+                       -Subzero's Crouching Attacks-
+
+*Uppercut                                    = Down, X
+
+*Trip Kick                                   = Down, Z
+
+*Nut Punch                                   = Down, Y    
+
+*Kick Up                                     = Down, A 
+
+*Kick Low                                    = Down, B
+
+$----------------------------------------------------------------------------------------------$
+
+
+                        -Subzero's Jumping Attacks-
+
+*Punch                                       = Up, A
+
+*Kick                                        = Up, X
+
+*Killer Kick                                 = Up, Y 
+
+$----------------------------------------------------------------------------------------------$
+
+
+                         -Subzero's Special Moves-
+
+*Zero Point Break                             = Down, Backward, Z
+
+*Ice Dagger                                   = Down, Forward, Z
+
+*Freeze Floor                                 = Down, Backward, Y 
+
+*Rush Kick                                    = Down, Forward, Y 
+
+*Freeze                                       = Down, Forward, A
+
+*Ice Clone Freeze                             = Down, Backward, A 
+
+*Air Freeze, Jump First                       = (AIR) Down, Forward, A
+
+*Air Ice Clone Freeze, Jump First             = (AIR) Down, Backward, A
+
+$----------------------------------------------------------------------------------------------$
+
+
+                          -Subzero's Hyper Moves-
+
+*Super Hyper Combo                            = Down, Forward, Down, Forward, Z   
+
+*Super Hyper Combo                            = Down, Forward, Down, Forward, C  
+
+*Super Hyper Combo                            = Down, Forward, Down, Forward, B   
+
+:---------------------------------------------------------> 
+
+
+*Kori Blade                                   = Down, Backward, Down, Backward, Z
+ 
+*Kori Blade                                   = Down, Backward, Down, Backward, C
+ 
+*Kori Blade                                   = Down, Backward, Down, Backward, B 
+ 
+$----------------------------------------------------------------------------------------------$
+
+

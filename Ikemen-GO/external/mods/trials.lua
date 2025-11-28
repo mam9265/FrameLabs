@@ -394,7 +394,16 @@ end
 --;===========================================================
 --; main.lua
 --;===========================================================
-main.t_itemname.trials = function()
+-- Override the trials function to ensure it goes to character select
+-- Function signature must match what menu system expects (can accept t, item parameters)
+print("Trials module: Overriding main.t_itemname['trials'] function")
+-- Verify the override worked
+local originalTrials = main.t_itemname['trials']
+print("Trials module: Original function type: " .. type(originalTrials))
+-- Define the trials function
+main.t_itemname['trials'] = function(t, item)
+	print("Trials function called from external module - override successful!")
+	print("Trials: Parameters - t=" .. tostring(t) .. ", item=" .. tostring(item))
 	setHomeTeam(1)
 	main.f_playerInput(main.playerInput, 1)
 	main.t_pIn[2] = 1
@@ -416,8 +425,10 @@ main.t_itemname.trials = function()
 	setGameMode('trials')
 	hook.run("main.t_itemname")
 	
-	-- Auto-launch if AUTOTRAIN is "2" and TrainingChar is set
-	if os.getenv("AUTOTRAIN") == "2" and config.TrainingChar ~= "" and main.t_charDef[config.TrainingChar:lower()] ~= nil then
+	-- Auto-launch only for daily challenge (when AUTOTRAIN == "3")
+	-- AUTOTRAIN == "2" will go to character selection (regular trials)
+	-- Regular trials (no AUTOTRAIN or AUTOTRAIN != "3") will also go to character selection
+	if os.getenv("AUTOTRAIN") == "3" and config.TrainingChar ~= "" and main.t_charDef[config.TrainingChar:lower()] ~= nil then
 		-- Initialize player data structures to prevent nil errors
 		if start.p == nil then
 			start.p = {}
@@ -517,7 +528,32 @@ main.t_itemname.trials = function()
 		end
 	end
 	
-	return start.f_selectMode
+	-- Regular trials mode - go to character selection
+	-- Return the function for the menu system to call after fadeout
+	print("Trials: Setting up character select mode")
+	print("Trials: Checking if start.f_selectMode exists...")
+	if start and start.f_selectMode then
+		if type(start.f_selectMode) == "function" then
+			print("Trials: start.f_selectMode is a function, returning it")
+			return start.f_selectMode
+		else
+			print("ERROR: start.f_selectMode exists but is not a function! Type: " .. type(start.f_selectMode))
+		end
+	else
+		print("ERROR: start.f_selectMode does not exist!")
+		if not start then
+			print("ERROR: start table does not exist!")
+		end
+	end
+	print("Trials: Falling back to nil return")
+	return nil
+end
+print("Trials module: Override complete. main.t_itemname['trials'] type: " .. type(main.t_itemname['trials']))
+-- Verify the function is accessible
+if main.t_itemname['trials'] then
+	print("Trials module: Function is accessible and ready")
+else
+	print("ERROR: Trials function is not accessible after override!")
 end
 
 --;===========================================================
@@ -2368,7 +2404,7 @@ function start.f_trialsSuccess(successstring, index)
 			start.trials.trial[index].active = false
 			
 			-- Write completion marker file for each trial completed (for daily challenge)
-			if os.getenv("AUTOTRAIN") == "2" then
+			if os.getenv("AUTOTRAIN") == "3" then
 				local completionFile = io.open("daily_challenge_trial_" .. index .. "_complete.txt", "w")
 				if completionFile then
 					completionFile:write("completed")

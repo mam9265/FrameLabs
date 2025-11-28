@@ -1813,7 +1813,7 @@ function main.f_addChar(line, playable, loading, slot)
 			main.t_selChars[row].playable = playable
 			local t_info = getCharInfo(row - 1)
 			main.t_selChars[row] = main.f_tableMerge(main.t_selChars[row], t_info)
-			main.t_selChars[row].dir = main.t_selChars[row].def:gsub('[^/]+%.def$', '')
+			main.t_selChars[row].dir = main.t_selChars[row].def:gsub('[^/]+%.[Dd][Ee][Ff]$', '')
 			if playable then
 				for _, v in ipairs({'intro', 'ending', 'arcadepath', 'ratiopath'}) do
 					if main.t_selChars[row][v] ~= '' then
@@ -1918,7 +1918,7 @@ function main.f_addStage(file, hidden)
 	if t_info.attachedchardef ~= '' then
 		main.t_selStages[stageNo].attachedChar = getCharAttachedInfo(t_info.attachedchardef)
 		if main.t_selStages[stageNo].attachedChar ~= nil then
-			main.t_selStages[stageNo].attachedChar.dir = main.t_selStages[stageNo].attachedChar.def:gsub('[^/]+%.def$', '')
+			main.t_selStages[stageNo].attachedChar.dir = main.t_selStages[stageNo].attachedChar.def:gsub('[^/]+%.[Dd][Ee][Ff]$', '')
 		end
 	end
 	--music
@@ -2915,17 +2915,17 @@ main.t_itemname = {
 		return start.f_selectMode
 	end,
 	--TRIALS
-	['trials'] = function()
+	-- Note: Trials function is now handled by external module (trials.lua)
+	-- The external module should override this function when it loads
+	['trials'] = function(t, item)
+		print("WARNING: main.lua trials function called - external module override may have failed!")
+		-- External module should override this, but if it doesn't, use this fallback
 		setHomeTeam(1)
 		main.f_playerInput(main.playerInput, 1)
 		main.t_pIn[2] = 1
-
-		-- Force player 2 character if defined
 		if main.t_charDef[config.TrainingChar:lower()] ~= nil then
 			main.forceChar[2] = {main.t_charDef[config.TrainingChar:lower()]}
 		end
-
-		-- Set some UI / menu flags
 		main.selectMenu[2] = true
 		main.stageMenu = true
 		main.teamMenu[1].ratio = false
@@ -2934,17 +2934,12 @@ main.t_itemname = {
 		main.teamMenu[1].tag = false
 		main.teamMenu[1].turns = false
 		main.teamMenu[2].single = true
-
-		-- Update menu text
 		if motif and motif.select_info and motif.select_info.title_trials_text then
 			main.txt_mainSelect:update({text = motif.select_info.title_trials_text})
 		end
-
-		-- Set the game mode to trials
 		setGameMode('trials')
 		hook.run("main.t_itemname")
-
-		-- Return the function that opens the select menu
+		print("main.lua trials: Returning start.f_selectMode")
 		return start.f_selectMode
 	end,
 	--VS MODE / TEAM VERSUS
@@ -3132,7 +3127,12 @@ function main.f_createMenu(tbl, bool_bgreset, bool_main, bool_f1, bool_del)
 			end
 			if main.menu.f ~= nil and not main.fadeActive then
 				main.f_unlock(false)
-				main.menu.f()
+				if type(main.menu.f) == "function" then
+					print("Menu system: Executing main.menu.f() function")
+					main.menu.f()
+				else
+					print("ERROR: main.menu.f is not a function! Type: " .. type(main.menu.f))
+				end
 				main.f_default()
 				main.f_unlock(false)
 				t = main.f_hiddenItems(tbl.items)
@@ -3198,19 +3198,28 @@ function main.f_createMenu(tbl, bool_bgreset, bool_main, bool_f1, bool_del)
 				elseif main.f_input(main.t_players, main.f_extractKeys(motif[main.group].menu_accept_key)) then
 					demoFrameCounter = 0
 					local f = t[item].itemname
+					print("Menu: Item selected - itemname: " .. tostring(f))
 					if f == 'back' then
 						sndPlay(motif.files.snd_data, motif[main.group].cancel_snd[1], motif[main.group].cancel_snd[2])
 						break
 					elseif f == 'exit' then
 						break
 					elseif main.t_itemname[f] == nil then
+						print("Menu: main.t_itemname['" .. f .. "'] is nil")
+						if f == 'trials' then
+							print("ERROR: Trials function not found in main.t_itemname!")
+							print("Available keys in main.t_itemname:")
+							for k, v in pairs(main.t_itemname) do
+								print("  - " .. tostring(k) .. " (" .. type(v) .. ")")
+							end
+						end
 						if t_storyModeList[f] then
 							f = 'storyarc'
 						elseif f:match('^bonus_') then
 							f = 'bonus'
 						elseif f:match('^ip_') then
 							f = 'serverconnect'
-						elseif tbl.submenu[f].loop ~= nil and #tbl.submenu[f].items > 0 then
+						elseif tbl.submenu[f] and tbl.submenu[f].loop ~= nil and #tbl.submenu[f].items > 0 then
 							if motif.title_info['cursor_' .. f .. '_snd'] ~= nil then
 								sndPlay(motif.files.snd_data, motif.title_info['cursor_' .. f .. '_snd'][1], motif.title_info['cursor_' .. f .. '_snd'][2])
 							else
@@ -3223,11 +3232,20 @@ function main.f_createMenu(tbl, bool_bgreset, bool_main, bool_f1, bool_del)
 						end
 					end
 					if f ~= '' then
+						print("Menu: Processing item '" .. f .. "'")
 						main.f_default()
 						if f == 'joinadd' then
 							tbl.items = main.t_itemname[f](t, item)
-						elseif main.t_itemname[f] ~= nil then
-							main.menu.f = main.t_itemname[f](t, item)
+					elseif main.t_itemname[f] ~= nil then
+						print("Menu: Found main.t_itemname['" .. f .. "'], calling it")
+						if f == 'trials' then
+							print("Menu system: Calling main.t_itemname['trials'] function")
+						end
+						main.menu.f = main.t_itemname[f](t, item)
+						print("Menu: Function returned type: " .. type(main.menu.f))
+						if f == 'trials' then
+							print("Menu system: Trials function returned: " .. type(main.menu.f))
+						end
 						end
 						if main.menu.f ~= nil then
 							if motif.title_info['cursor_' .. f .. '_snd'] ~= nil then
@@ -4228,10 +4246,49 @@ else
     end
 
     if os.getenv("AUTOTRAIN") == "2" then
-        print("Auto-trail mode enabled.")
+        print("Auto-trial mode enabled (regular trials - character select).")
 
         if main.t_itemname and type(main.t_itemname.trials) == "function" then
-            print("Launching trail mode automatically.")
+            print("Launching trial mode automatically for regular trials (character select).")
+
+            if type(main.f_default) == "function" then
+                main.f_default()
+            end
+
+            local startFunc = main.t_itemname.trials()
+
+            if motif and main.group and motif[main.group] then
+                main.f_fadeReset('fadeout', motif[main.group])
+            end
+
+            if type(main.f_unlock) == "function" then
+                main.f_unlock(false)
+            end
+
+            if type(startFunc) == "function" then
+                startFunc()
+            end
+
+            if type(main.f_default) == "function" then
+                main.f_default()
+            end
+
+            if type(main.f_unlock) == "function" then
+                main.f_unlock(false)
+            end
+
+            main.menu.loop()
+            return
+        else
+            print("Trial mode entry not found, falling back to default menu.")
+        end
+    end
+
+    if os.getenv("AUTOTRAIN") == "3" then
+        print("Auto-trial mode enabled (daily challenge).")
+
+        if main.t_itemname and type(main.t_itemname.trials) == "function" then
+            print("Launching trial mode automatically for daily challenge.")
 
             if type(main.f_default) == "function" then
                 main.f_default()

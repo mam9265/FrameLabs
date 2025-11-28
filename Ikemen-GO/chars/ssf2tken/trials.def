@@ -1,0 +1,200 @@
+[TrialDef, Near Standing Light Punch]
+trial.dummymode = stand
+
+trialstep.1.text = Near Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
+
+[TrialDef, Near Standing Medium Punch]
+trial.dummymode = stand
+
+trialstep.1.text = Near Standing Medium Punch
+trialstep.1.glyphs = ^Y
+trialstep.1.stateno = 205
+
+[TrialDef, Near Standing Hard Punch]
+trial.dummymode = stand
+
+trialstep.1.text = Near Standing Hard Punch
+trialstep.1.glyphs = ^Z
+trialstep.1.stateno = 210
+
+[TrialDef, Near Standing Light Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Near Standing Light Kick
+trialstep.1.glyphs = ^A
+trialstep.1.stateno = 220
+
+[TrialDef, Near Standing Medium Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Near Standing Medium Kick
+trialstep.1.glyphs = ^B
+trialstep.1.stateno = 225
+
+[TrialDef, Near Standing Hard Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Near Standing Hard Kick
+trialstep.1.glyphs = ^C
+trialstep.1.stateno = 230
+
+[TrialDef, Far Standing Light Punch]
+trial.dummymode = stand
+
+trialstep.1.text = Far Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 240
+
+[TrialDef, Far Standing Medium Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Far Standing Medium Kick
+trialstep.1.glyphs = ^B
+trialstep.1.stateno = 265
+
+[TrialDef, Far Standing Hard Kick]
+trial.dummymode = stand
+
+trialstep.1.text = Far Standing Hard Kick
+trialstep.1.glyphs = ^C
+trialstep.1.stateno = 270
+
+[TrialDef, Crouching Light Punch]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Light Punch
+trialstep.1.glyphs = _D^X
+trialstep.1.stateno = 300
+
+[TrialDef, Crouching Medium Punch]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Medium Punch
+trialstep.1.glyphs = _D^Y
+trialstep.1.stateno = 305
+
+[TrialDef, Crouching Hard Punch]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Hard Punch
+trialstep.1.glyphs = _D^Z
+trialstep.1.stateno = 310
+
+[TrialDef, Crouching Light Kick]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Light Kick
+trialstep.1.glyphs = _D^A
+trialstep.1.stateno = 320
+
+[TrialDef, Crouching Medium Kick]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Medium Kick
+trialstep.1.glyphs = _D^B
+trialstep.1.stateno = 325
+
+[TrialDef, Crouching Hard Kick]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Hard Kick
+trialstep.1.glyphs = _D^C
+trialstep.1.stateno = 330
+
+[TrialDef, Jump Light Punch]
+trial.dummymode = jump
+
+trialstep.1.text = Jump Light Punch
+trialstep.1.glyphs = _AIR^X
+trialstep.1.stateno = 340
+
+[TrialDef, Jump Medium Punch]
+trial.dummymode = jump
+
+trialstep.1.text = Jump Medium Punch
+trialstep.1.glyphs = _AIR^Y
+trialstep.1.stateno = 345
+
+[TrialDef, Jump Hard Punch]
+trial.dummymode = jump
+
+trialstep.1.text = Jump Hard Punch
+trialstep.1.glyphs = _AIR^Z
+trialstep.1.stateno = 350
+
+[TrialDef, Jump Light Kick]
+trial.dummymode = jump
+
+trialstep.1.text = Jump Light Kick
+trialstep.1.glyphs = _AIR^A
+trialstep.1.stateno = 355
+
+[TrialDef, Jump Medium Kick]
+trial.dummymode = jump
+
+trialstep.1.text = Jump Medium Kick
+trialstep.1.glyphs = _AIR^B
+trialstep.1.stateno = 360
+
+[TrialDef, Jump Hard Kick]
+trial.dummymode = jump
+
+trialstep.1.text = Jump Hard Kick
+trialstep.1.glyphs = _AIR^C
+trialstep.1.stateno = 365
+
+[TrialDef, Basic Combo 1]
+trial.dummymode = stand
+
+trialstep.1.text = Near Standing Light Punch
+trialstep.1.glyphs = ^X
+trialstep.1.stateno = 200
+
+trialstep.2.text = Near Standing Medium Punch
+trialstep.2.glyphs = ^Y
+trialstep.2.stateno = 205
+
+[TrialDef, Basic Combo 2]
+trial.dummymode = stand
+
+trialstep.1.text = Near Standing Light Kick
+trialstep.1.glyphs = ^A
+trialstep.1.stateno = 220
+
+trialstep.2.text = Near Standing Medium Kick
+trialstep.2.glyphs = ^B
+trialstep.2.stateno = 225
+
+[TrialDef, Crouching Combo]
+trial.dummymode = crouch
+
+trialstep.1.text = Crouching Light Punch
+trialstep.1.glyphs = _D^X
+trialstep.1.stateno = 300
+
+trialstep.2.text = Crouching Medium Punch
+trialstep.2.glyphs = _D^Y
+trialstep.2.stateno = 305
+
+[TrialDef, Hadouken]
+trial.dummymode = stand
+
+trialstep.1.text = Hadouken
+trialstep.1.glyphs = _QCF^X
+trialstep.1.stateno = 1100
+
+[TrialDef, Shoryuken]
+trial.dummymode = stand
+
+trialstep.1.text = Shoryuken
+trialstep.1.glyphs = _DSF^X
+trialstep.1.stateno = 1200
+
+[TrialDef, Tatsumaki Senpuu Kyaku]
+trial.dummymode = stand
+
+trialstep.1.text = Tatsumaki Senpuu Kyaku
+trialstep.1.glyphs = _QCB^A
+trialstep.1.stateno = 1300

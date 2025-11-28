@@ -1,0 +1,170 @@
+$----------------------------------------------------------------------------------------------$
+[Scorpion's Readme]
+
+Name: Scorpion
+Movies, Series, Games: Mortal combat... 
+Author: CLIFF-A
+Version Date: 06/10/12
+Mugen Version: Mugen 1.0 & 1.1
+
+
+:Info:
+I was to lazy To add the 5000's required sprites in.
+
+----------------------------------------------------$
+*Team: Cs-team
+
+*======My Youtbe Channel:
+User: Name; Karasgold
+http://www.youtube.com/user/karasgold?feature=mhee
+
+*Site: Csmugen.ucoz.com
+
+*Char by: Cliff-A
+
+
+*Sprite ripped by: Ant19831983
+
+
+*Special thanks to these people i took sprites and ideas from:
+-juano16
+-Mgssj3
+-Vx
+-chuchoryu, for the ending, took it from his jin char.
+-deebee kaw guage code.
+
+$----------------------------------------------------------------------------------------------$
+
+               -How to trigger fatality movelist while in game-
+
+*Fatality Movelist is in the char itself, when fatality state activate press S(enter).
+
+*Show mercy = Down, and A+S(ENTER)
+
+$----------------------------------------------------------------------------------------------$
+
+
+
+                     -Scorpion's Basic movements-
+
+
+*Walk Forward                                = Forward
+
+*Walk Backward                               = Backward
+
+*Jump Forward                                = Forward,  Forward
+
+*Hop Back                                    = Back, Back
+
+*Jump                                        = Up
+
+*Crouch                                      = Down
+
+*Guard = Coruch, Air, Standing               = C
+
+*Roll When HP is below power <= 499          = Hold Forward and C+y, or A+B, or Z+X
+ 
+*Dash Forward When HP is Above power >= 500  = Hold Forward and C+y, or A+B, or Z+X 
+
+*Taunt                                       = S(ENTER)
+
+*Teleport                                    = Down, Backward, Z = (Info = You can Hold Back or forward while teleporting)
+
+*Teleport                                    = Down, Forward, Z = (Info = You can Hold Back or forward while teleporting)
+
+*Teleport                                    = (AIR) Down, Forward, A = (Info = You can Hold Back while teleporting)
+
+*Teleport                                    = (AIR) Down, Backward, A = (Info = You can Hold Back while teleporting)
+
+*Teleport                                    = (AIR) Down, Forward, x = (Info = You can Hold Back while teleporting)
+
+*Teleport                                    = (AIR) Down, Backward, x = (Info = You can Hold Back while teleporting)
+
+$----------------------------------------------------------------------------------------------$
+
+
+                     -Scorpion's Standing basic Attacks-
+
+*Punch Low                                   = Z
+
+*Punch High                                  = X
+
+*Weak Combo Set                              = B, B, B, B    
+
+*Strong Combo Set                            = A, A, A, A, A 
+
+*Random, Kick Chanager                       = Y
+
+*Killer Kick                                 = Hold Forward and B
+
+*Trip Sliding Kick                           = Hold Forward and A
+
+*Grab Throw                                  = Hold Forward and Y, or Z
+
+*Slice Upper Body                            = Hold Back, A+B
+
+*Slice Lower Body                            = Hold Back, A+X
+
+$----------------------------------------------------------------------------------------------$
+
+
+                       -Scorpion's Crouching Attacks-
+
+*Uppercut                                    = Down, X
+
+*Trip Kick                                   = Down, Z
+
+*Nut Punch                                   = Down, Y    
+
+*Kick Up                                     = Down, A 
+
+*Kick Low                                    = Down, B
+
+$----------------------------------------------------------------------------------------------$
+
+
+                        -Scorpion's Jumping Attacks-
+
+*Punch                                       = Up, A
+
+*Kick                                        = Up, X
+
+*Killer Kick                                 = Up, Y 
+
+$----------------------------------------------------------------------------------------------$
+
+
+                         -Scorpion's Special Moves-
+
+*Teleport Back Kick                          = Down, Backward, Y 
+
+*Teleport Forward Fire Punch                 = Down, Forward, Y 
+
+*Spear Get Over Here                         = Down, Forward, A
+
+*Fire Breath                                 = Down, Backward, A 
+
+*Teleport Back Kick                          = (AIR) Down, backward, Y 
+
+$----------------------------------------------------------------------------------------------$
+
+
+                          -Scorpion's Hyper Moves-
+
+*Super Hyper Combo                            = Down, Forward, Down, Forward, Z 
+
+*Super Hyper Combo                            = Down, Forward, Down, Forward, C 
+
+*Super Hyper Combo                            = Down, Forward, Down, Forward, B  
+
+:---------------------------------------------------------> 
+
+*Super Hyper Combo                            = Down, Backward, Down, Backward, Z 
+
+*Super Hyper Combo                            = Down, Backward, Down, Backward, C 
+
+*Super Hyper Combo                            = Down, Backward, Down, Backward, B 
+
+$----------------------------------------------------------------------------------------------$
+
+

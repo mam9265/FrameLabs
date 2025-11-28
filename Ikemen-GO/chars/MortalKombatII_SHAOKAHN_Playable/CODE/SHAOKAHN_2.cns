@@ -1,0 +1,7451 @@
+; SHAO KAHN FROM MORTAL KOMBAT II & 3 BY OMEGAPSYCHO
+
+[Data]
+life = 1000		
+power = 3000
+attack = 101
+defence = 110
+fall.defence_up = 0
+liedown.time = 20
+airjuggle = 20	
+sparkno = 2		
+guard.sparkno = 40
+KO.echo = 0		
+volume = 255	
+IntPersistIndex = 0	
+IntPersistIndex = 25,58
+FloatPersistIndex = 40
+
+  				
+[Size]
+xscale = .88
+yscale = .88
+ground.back = 20
+ground.front = 20
+air.back = 35	
+air.front = 35
+height = 50
+attack.dist = 150	
+proj.attack.dist = 90	
+proj.doscale = 1 
+head.pos = 20, -100
+mid.pos = 0, -45
+shadowoffset = .5
+draw.offset = 0,0	
+
+[Velocity]
+walk.fwd  = 3.8
+walk.back = -3.2
+run.fwd  = 0, 0
+run.back = 0,0
+jump.neu = 0,-10.8
+jump.back = -5
+jump.fwd = 5
+
+[Movement]
+airjump.num = 0
+airjump.height = 0
+yaccel = .56
+stand.friction = 0.00000000000000000000000000000000001
+crouch.friction = 0 .0000000000000000000000000000000001
+
+;---------------------------------------------------------------------------
+; Lose
+[Statedef 170]
+type = S
+ctrl = 0
+anim = 170
+velset = 0,0
+
+[State 52, 3]
+type = CtrlSet
+trigger1 = 1
+value = 0
+
+[State 170, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+;---------------------------------------------------------------------------
+; DRAWGAME (Time over)
+[Statedef 175]
+type = S
+ctrl = 0
+velset = 0,0
+
+[State 175, 2]
+type = ChangeAnim
+trigger1 = Time = 0
+value = 175
+
+[State 175, 3]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+
+;---------------------------------------------------------------------------
+; Win Fatality
+[Statedef 178]
+type = S
+ctrl = 0
+anim = 185
+velset = 0,0
+ctrl = 0
+
+[State 52, 3]
+type = CtrlSet
+trigger1 = 1
+value = 0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = NoBarDisplay
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 0
+value = S100,14
+
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = 1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = -1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 200
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 200
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(19) = 1
+trigger1 = time = 200
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(19) = 1
+trigger1 = time = 200
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 50
+value = S100,72
+volume = 255
+[State 7, deadsound]
+type = PlaySnd
+triggerall = life >= lifemax
+triggerall = time = 200
+trigger1 = Var(17) = 1
+trigger2 = Var(19) = 1
+value = S100,ifelse(random<=420,66,67)
+volume = 255
+
+
+[State 5151, 0]
+type = AssertSpecial
+trigger1 = Time = [0,500]
+flag = RoundNotOver
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+;---------------------------------------------------------------------------
+; Win Fatality
+[Statedef 179]
+type = S
+ctrl = 0
+anim = 186
+velset = 0,0
+ctrl = 0
+
+[State 52, 3]
+type = CtrlSet
+trigger1 = 1
+value = 0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = NoBarDisplay
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 0
+value = S100,14
+
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = 1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = -1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 350
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 350
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(19) = 1
+trigger1 = time = 350
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(19) = 1
+trigger1 = time = 350
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 230
+value = S100,ifelse(random<=420,70,71)
+volume = 255
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 80
+value = S100,37
+volume = 255
+[State 7, deadsound]
+type = PlaySnd
+triggerall = life >= lifemax
+triggerall = time = 350
+trigger1 = Var(17) = 1
+trigger2 = Var(19) = 1
+value = S100,4
+volume = 255
+
+
+[State 5151, 0]
+type = AssertSpecial
+trigger1 = Time = [0,500]
+flag = RoundNotOver
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+
+;---------------------------------------------------------------------------
+; Win
+[Statedef 180]
+type = S
+ctrl = 0
+velset = 0,0
+
+[State 52, 3]
+type = CtrlSet
+trigger1 = 1
+value = 0
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 1
+movecamera = 0,0
+
+[State ]
+type = width
+trigger1 = 1
+edge = 0,0
+
+[State 300, 7]
+type = changestate
+triggerall = facing = 1 && enemy,facing = -1
+triggerall = enemy,life<=0
+trigger1 = enemynear,P2bodydist x>=50
+trigger1 = var(26) = 0
+trigger1 = var(27) = 0
+value = 181
+ctrl = 0
+[State 300, 7]
+type = changestate
+triggerall = facing = 1 && enemy,facing = -1
+triggerall = enemy,life<=0
+trigger1 = enemynear,P2bodydist x<50
+trigger1 = var(26) = 0
+trigger1 = var(27) = 0
+value = 182
+ctrl = 0
+[State 300, 7]
+type = changestate
+triggerall = facing = -1 && enemy,facing = 1
+triggerall = enemy,life<=0
+trigger1 = enemynear,P2bodydist x>=50
+trigger1 = var(26) = 0
+trigger1 = var(27) = 0
+value = 181
+ctrl = 0
+[State 300, 7]
+type = changestate
+triggerall = facing = -1 && enemy,facing = 1
+triggerall = enemy,life<=0
+trigger1 = enemynear,P2bodydist x<50
+trigger1 = var(26) = 0
+trigger1 = var(27) = 0
+value = 182
+ctrl = 0
+
+[State 300, 7]
+type = changestate
+triggerall = var(25) = 1
+triggerall = var(26) = 0
+triggerall = var(27) = 0
+trigger1 = facing = -1 && enemy,facing = -1
+trigger2 = facing = 1 && enemy,facing = 1
+value = 178
+ctrl = 0
+
+[State 300, 7]
+type = changestate
+triggerall = var(25) = 0
+triggerall = var(26) = 0
+triggerall = var(27) = 0
+trigger1 = facing = -1 && enemy,facing = -1
+trigger2 = facing = 1 && enemy,facing = 1
+value = 179
+ctrl = 0
+
+[State 300, 7]
+type = changestate
+trigger1 = enemy,life>0
+trigger1 = var(25) = 1
+trigger1 = var(26) = 0
+trigger1 = var(27) = 0
+value = 178
+ctrl = 0
+
+[State 300, 7]
+type = changestate
+trigger1 = enemy,life>0
+trigger1 = var(25) = 0
+trigger1 = var(26) = 0
+trigger1 = var(27) = 0
+value = 179
+ctrl = 0
+
+[State 190, 2];shao kahn fatality 1
+type = ChangeState
+trigger1 = var(26) = 1
+trigger1 = var(25) = 1
+value = 185
+ctrl = 0
+
+[State 190, 2];quan-chi fatality 1
+type = ChangeState
+trigger1 = var(26) = 1
+trigger1 = var(25) = 0
+value = 186
+ctrl = 0
+
+[State 190, 2];shao kahn fatality 2
+type = ChangeState
+trigger1 = var(27) = 1
+trigger1 = var(25) = 1
+value = 187
+ctrl = 0
+
+[State 190, 2];quan-chi fatality 2
+type = ChangeState
+trigger1 = var(27) = 1
+trigger1 = var(25) = 0
+value = 188
+ctrl = 0
+
+;------------------------------------------------------------------------------
+;win FWD
+[Statedef 181]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 20
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = 3.8
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+
+[State 300, 7]
+type = changestate
+triggerall = var(25)= 1
+trigger1 = enemynear,P2bodydist x<50
+trigger2 = Time >100
+value = 183
+
+[State 300, 7]
+type = changestate
+triggerall = var(25)= 0
+trigger1 = enemynear,P2bodydist x<50
+trigger2 = Time >100
+value = 184
+
+
+;------------------------------------------------------------------------------
+;win BACK
+[Statedef 182]
+type    = S
+movetype= I
+physics = N
+ctrl = 0
+anim = 21
+
+[State ]
+type = velset
+trigger1 = time = 0
+y = 0
+x = -3.2
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+
+[State 300, 7]
+type = changestate
+triggerall = var(25)= 1
+trigger1 = enemynear,P2bodydist x>50
+trigger2 = Time >100
+value = 183
+
+[State 300, 7]
+type = changestate
+triggerall = var(25)= 0
+trigger1 = enemynear,P2bodydist x>50
+trigger2 = Time >100
+value = 184
+
+
+;---------------------------------------------------------------------------
+; Win Fatality
+[Statedef 183]
+type = S
+ctrl = 0
+anim = 1839
+velset = 0,0
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 0
+value = S100,14
+
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = 1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = -1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 200
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 200
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(19) = 1
+trigger1 = time = 200
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(19) = 1
+trigger1 = time = 200
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 60
+value = S101,var(32)
+volume = 255
+
+[State 5151, 0]
+type = AssertSpecial
+trigger1 = Time = [0,430]
+flag = RoundNotOver
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+
+
+;---------------------------------------------------------------------------
+; Win Fatality
+[Statedef 184]
+type = S
+ctrl = 0
+anim = 1849
+velset = 0,0
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 0
+value = S100,14
+
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = 1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = -1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 350
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 350
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(19) = 1
+trigger1 = time = 350
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(19) = 1
+trigger1 = time = 350
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 230
+value = S101,var(32)
+volume = 255
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 80
+value = S100,37
+volume = 255
+
+[State 5151, 0]
+type = AssertSpecial
+trigger1 = Time = [0,650]
+flag = RoundNotOver
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+
+;---------------------------------------------------------------------------
+; Win Fatality
+[Statedef 185]
+type = S
+ctrl = 0
+anim = 185
+velset = 0,0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = NoBarDisplay
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 0
+value = S100,14
+
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = 1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = -1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 200
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 200
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(19) = 1
+trigger1 = time = 200
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(19) = 1
+trigger1 = time = 200
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = time >440
+ID = 184
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = time >440
+ID = 183
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 50
+value = S100,72
+volume = 255
+[State 7, deadsound]
+type = PlaySnd
+triggerall = life >= lifemax
+triggerall = time = 200
+trigger1 = Var(17) = 1
+trigger2 = Var(19) = 1
+value = S100,ifelse(random<=420,66,67)
+volume = 255
+
+[State 4, FATALITY TEXT]
+type = Helper
+trigger1 = life >= lifemax
+trigger1 = time = 320
+trigger1 = NumHelper(7700) = 0
+trigger2 = life < lifemax
+trigger2 = time = 200
+trigger2 = Numhelper(7700) = 0
+helpertype = normal
+name = "FATALITY_MSG"
+id = 7700
+pos = 0,0
+postype = right
+stateno = 7700
+sprpriority = 95
+keyctrl = 0
+ownpal = 1
+size.xscale = 1
+size.yscale = 1
+
+[State 5151, 0]
+type = AssertSpecial
+trigger1 = Time = [0,1000]
+flag = RoundNotOver
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+
+
+;---------------------------------------------------------------------------
+; Win Fatality
+[Statedef 186]
+type = S
+ctrl = 0
+anim = 186
+velset = 0,0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = NoBarDisplay
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 0
+value = S100,14
+
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = 1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = -1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 350
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 350
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(19) = 1
+trigger1 = time = 350
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(19) = 1
+trigger1 = time = 350
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = time >440
+ID = 184
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = time >440
+ID = 183
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 230
+value = S100,ifelse(random<=420,70,71)
+volume = 255
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 80
+value = S100,37
+volume = 255
+[State 7, deadsound]
+type = PlaySnd
+triggerall = life >= lifemax
+triggerall = time = 350
+trigger1 = Var(17) = 1
+trigger2 = Var(19) = 1
+value = S100,4
+volume = 255
+
+
+[State 4, FATALITY TEXT]
+type = Helper
+trigger1 = life >= lifemax
+trigger1 = time = 470
+trigger1 = NumHelper(7700) = 0
+trigger2 = life < lifemax
+trigger2 = time = 350
+trigger2 = Numhelper(7700) = 0
+helpertype = normal
+name = "FATALITY_MSG"
+id = 7700
+pos = 0,0
+postype = right
+stateno = 7700
+sprpriority = 95
+keyctrl = 0
+ownpal = 1
+size.xscale = 1
+size.yscale = 1
+
+[State 5151, 0]
+type = AssertSpecial
+trigger1 = Time = [0,1000]
+flag = RoundNotOver
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+;---------------------------------------------------------------------------
+; Win Fatality
+[Statedef 187]
+type = S
+ctrl = 0
+anim = 187
+velset = 0,0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = NoBarDisplay
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 0
+value = S100,14
+
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = 1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = -1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 200
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 200
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(19) = 1
+trigger1 = time = 200
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(19) = 1
+trigger1 = time = 200
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = time >440
+ID = 184
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = time >440
+ID = 183
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 50
+value = S100,72
+volume = 255
+[State 7, deadsound]
+type = PlaySnd
+triggerall = life >= lifemax
+triggerall = time = 200
+trigger1 = Var(17) = 1
+trigger2 = Var(19) = 1
+value = S100,ifelse(random<=420,66,67)
+volume = 255
+
+
+[State 4, FATALITY TEXT]
+type = Helper
+triggerall = 1
+trigger1 = life >= lifemax
+trigger1 = time = 320
+trigger1 = NumHelper(7700) = 0
+trigger2 = life < lifemax
+trigger2 = time = 200
+trigger2 = Numhelper(7700) = 0
+helpertype = normal
+name = "FATALITY_MSG"
+id = 7700
+pos = 0,0
+postype = right
+stateno = 7700
+sprpriority = 95
+keyctrl = 0
+ownpal = 1
+size.xscale = 1
+size.yscale = 1
+
+[State 5151, 0]
+type = AssertSpecial
+trigger1 = Time = [0,1000]
+flag = RoundNotOver
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+
+;---------------------------------------------------------------------------
+; Win Fatality
+[Statedef 188]
+type = S
+ctrl = 0
+anim = 188
+velset = 0,0
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = 1
+flag = NoBarDisplay
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 0
+value = S100,14
+
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = 1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, SHAO KAHN WINS]
+type = Explod
+trigger1 = facing = -1
+trigger1 = NumExplod(182) = 0
+anim = 182
+ID = 182
+pos = -170,50
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 350
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, FLAWLESS VICTORY]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(17) = 1
+trigger1 = Var(19) = 0
+trigger1 = time = 350
+trigger1 = NumExplod(183) = 0
+anim = 183
+ID = 183
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = 1
+trigger1 = Var(19) = 1
+trigger1 = time = 350
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+[State 2000, DOUBLE FLAWLESS]
+type = Explod
+trigger1 = life >= lifemax
+trigger1 = facing = -1
+trigger1 = Var(19) = 1
+trigger1 = time = 350
+trigger1 = NumExplod(184) = 0
+anim = 184
+ID = 184
+pos = -170,100
+sprpriority = 70
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 1,1
+ownpal = 1
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = time >440
+ID = 184
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = time >440
+ID = 183
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 230
+value = S100,ifelse(random<=420,70,71)
+volume = 255
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = time = 80
+value = S100,37
+volume = 255
+[State 7, deadsound]
+type = PlaySnd
+triggerall = life >= lifemax
+triggerall = time = 350
+trigger1 = Var(17) = 1
+trigger2 = Var(19) = 1
+value = S100,4
+volume = 255
+
+
+[State 4, FATALITY TEXT]
+type = Helper
+trigger1 = life >= lifemax
+trigger1 = time = 470
+trigger1 = NumHelper(7700) = 0
+trigger2 = life < lifemax
+trigger2 = time = 350
+trigger2 = Numhelper(7700) = 0
+helpertype = normal
+name = "FATALITY_MSG"
+id = 7700
+pos = 0,0
+postype = right
+stateno = 7700
+sprpriority = 95
+keyctrl = 0
+ownpal = 1
+size.xscale = 1
+size.yscale = 1
+
+[State 5151, 0]
+type = AssertSpecial
+trigger1 = Time = [0,1000]
+flag = RoundNotOver
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+
+;---------------------------------------------------------------------------
+; PREINTRO
+[Statedef 190]
+type = S
+ctrl = 0
+velset = 0,0
+
+[State 190, 1]
+type = ChangeAnim
+trigger1 = SelfAnimExist(190)
+value = 190
+
+[State 190, 2] ;Go straight to intro.
+type = ChangeState
+trigger1 = 1
+value = ifelse(random<=450,191,ifelse(random>450,193,192))
+
+;---------------------------------------------------------------------------
+;INTRO
+[Statedef 191]
+type = S
+ctrl = 0
+anim = 197
+velset = 0,0
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 2
+value = S410,var(10)
+volume = 255
+[State 191, 3] ;Change to stand state when done
+type = ChangeState
+trigger1 = animtime = 0
+value = 0
+;---------------------------------------------------------------------------
+[Statedef 192]
+type = S
+ctrl = 0
+anim = 198
+velset = 0,0
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 2
+value = S420,var(11)
+volume = 255
+[State 191, 3] ;Change to stand state when done
+type = ChangeState
+trigger1 = animtime = 0
+value = 0
+;---------------------------------------------------------------------------
+[Statedef 193]
+type = S
+ctrl = 0
+anim = 199
+velset = 0,0
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 2
+value = S420, 5
+volume = 255
+[State 191, 3] ;Change to stand state when done
+type = ChangeState
+trigger1 = animtime = 0
+value = 0
+;---------------------------------------------------------------------------
+; Taunt (LAUGH FAST)
+[Statedef 195]
+type = S
+ctrl = 0
+anim = 195
+velset = 0,0
+
+[State -2, Lifeadd]
+type = Lifeadd
+trigger1 = Time = 0
+value = 20
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 2
+value = S400,var(4)
+channel = 7
+volume = 255
+
+[State 191, 3] ;Change to stand state when done
+type = ChangeState
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+;---------------------------------------------------------------------------
+; Taunt (LAUGH LONG)
+[Statedef 196]
+type = S
+ctrl = 0
+anim = 196
+velset = 0,0
+
+[State -2, Lifeadd]
+type = Lifeadd
+trigger1 = Time = 0
+value = 30
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 2
+value = S400,var(3)
+channel = 7
+volume = 255
+
+[State 191, 3] ;Change to stand state when done
+type = ChangeState
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+
+;---------------------------------------------------------------------------
+; Taunt (TAUNT FAST)
+[Statedef 197]
+type = S
+ctrl = 0
+anim = 197
+velset = 0,0
+
+[State -2, Lifeadd]
+type = Lifeadd
+trigger1 = Time = 0
+value = 20
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 2
+value = S410,var(10)
+channel = 7
+volume = 255
+
+[State 191, 3] ;Change to stand state when done
+type = ChangeState
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+;---------------------------------------------------------------------------
+; Taunt (TAUNT LONG)
+[Statedef 198]
+type = S
+ctrl = 0
+anim = 198
+velset = 0,0
+
+[State -2, Lifeadd]
+type = Lifeadd
+trigger1 = Time = 0
+value = 30
+
+[State 7, deadsound]
+type = PlaySnd
+trigger1 = animelem = 2
+value = S420,var(11)
+channel = 7
+volume = 255
+
+[State 191, 3] ;Change to stand state when done
+type = ChangeState
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+;****************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;---------------------------------------------------------------------------
+;STRONG PUNCH
+[Statedef 200]
+type = S
+movetype = A
+anim = 200
+velset = 0,0
+ctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 4
+trigger1 = movehit
+trigger1 = time <= 10
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (80)*const(size.xscale),(-110)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = movehit
+trigger1 = time <= 10
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (80)*const(size.xscale),(-110)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 4
+value = S100, ifelse(random<=415,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 4
+value = S100, 7
+
+[State 1101, 5]
+type = Hitdef
+trigger1 = time = 0
+attr = S, NA
+offset = 0,0
+damage = 130,0
+animtype = Hard
+hitflag = MA
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=410,6,13)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -9,-10
+air.animtype = Back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -9,-10
+down.hittime = 12
+down.velocity = -9,0
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .50
+air.juggle = 1
+envshake.time = 22
+envshake.freq = 190
+envshake.ampl = 5
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 0
+Ctrl = 1
+
+;---------------------------------------------------------------------------
+;STRONG KICK
+[Statedef 250]
+type = S
+movetype = A
+anim = 250
+velset = 0,0
+ctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 4
+trigger1 = movehit
+trigger1 = time <= 20
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (110)*const(size.xscale),(-85)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = movehit
+trigger1 = time <= 20
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (110)*const(size.xscale),(-85)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 4
+value = S100, ifelse(random<=415,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 4
+value = S100, 7
+
+[State 1101, 5]
+type = Hitdef
+trigger1 = time = 0
+attr = S, NA
+offset = 0,0
+damage = 140,0
+animtype = Hard
+hitflag = MA
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=410,6,13)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -9,-10
+air.animtype = Back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -9,-10
+down.hittime = 12
+down.velocity = -9,0
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .50
+air.juggle = 1
+envshake.time = 22
+envshake.freq = 190
+envshake.ampl = 5
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 0
+Ctrl = 1
+
+;----------------------------------------------------------------------------
+;NEAR PUNCH
+[Statedef 260]
+type = S
+movetype = A
+physics = S
+ctrl = 0
+anim = 260
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 2
+trigger1 = movehit
+trigger1 = time <= 13
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (62)*const(size.xscale),(-100)*const(size.yscale) 
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8692) = 0
+trigger1 = movehit
+trigger1 = time <= 13
+helpertype = Normal
+ID = 8692
+name = "BLOOD_SPLAT_2" 
+postype = p1
+pos = (62)*const(size.xscale),(-100)*const(size.yscale)  
+stateno = 8692
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 650, Effect]
+type = PlaySnd
+trigger1 = AnimElem = 3
+value = S100, 7
+volume = 255
+
+[State 1101, 5]
+type = Hitdef
+trigger1 = time = 0
+attr = S, NA
+offset = 0,0
+damage = 120,0
+animtype = Hard
+hitflag = MA
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=410,6,13)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -5,10
+air.animtype = Back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -5,10
+down.hittime = 12
+down.velocity = -5,10
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .50
+air.juggle = 1
+envshake.time = 15
+envshake.freq = 80
+envshake.ampl = 3
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+
+[State 1100, ChangeState]
+type = ChangeState
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+;----------------------------------------------------------------
+;UPPERCUT
+[Statedef 300]
+type    = S
+movetype= A
+physics = N
+poweradd= 0
+ctrl = 0
+anim = 300
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = movehit
+trigger1 = time <= 18
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (48)*const(size.xscale),(-144)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = movehit
+trigger1 = time <= 10
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (48)*const(size.xscale),(-144)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = anim = 300
+trigger1 = Animelem = 3
+value = S100, Ifelse(random<=410,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = anim = 300
+trigger1 = Animelem = 4
+value = S100, 7
+volume = 255
+
+[State 300, 0]
+type = Hitdef
+trigger1 = Time = 0
+damage = 150,5
+pausetime = 1,1
+attr = S, NA
+guardflag = M
+animtype = heavy
+air.animtype = back
+priority = 4, hit
+sparkno = -1
+guard.sparkno = -1
+sparkxy = 0, 0
+hitsound = S100,Ifelse(random<=410,6,13)
+guardsound = S100,10
+ground.type = high
+air.type = high
+ground.slidetime = 10
+guard.slidetime = 15
+ground.hittime = 10
+guard.hittime = 15
+ground.velocity = -2, -23
+air.velocity = -2, -23
+guard.velocity = -19
+air.cornerpush.veloff = -30
+ground.cornerpush.veloff = -30
+yaccel = .5
+fall = 1
+fall.recover = 0
+envshake.time = 38
+envshake.freq = 299
+envshake.ampl = 5
+fall.xvelocity = 0
+fall.yvelocity = 0
+p2facing = 1
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+guard.kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+
+[State 300, 4]
+type = ChangeAnim
+Trigger1 = movehit
+persistent = 0
+value = 301
+
+[State 300, 5]
+type = movehitreset
+Trigger1 = animelem >= 5
+
+[State 300, 6]
+type = Playsnd
+triggerall = Var(25 )= 0
+trigger1 = movehit && random >= 300
+persistent = 0
+value = S200,var(8)
+abspan = 1
+Volume = 255
+
+[State 300, 6]
+type = Playsnd
+triggerall = Var(25 )= 1
+trigger1 = movehit && random >= 300
+persistent = 0
+value = S400,var(9)
+Volume = 255
+
+[State 300, 7]
+type = changestate
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+
+;----------------------------------------------------------------
+;FIRE BALL
+[Statedef 500]
+type    = S
+movetype= A
+physics = N
+ctrl = 0
+anim = 500
+sprpriority = 1
+
+[State 220, Effect]
+type = PlaySnd
+trigger1 = Animelemtime(5) = 0
+value = S100, 19
+
+[State 220, Effect]
+type = PlaySnd
+trigger1 = Animelemtime(4) = 0
+value = S100, ifelse(random<=400,12,8)
+volume = 255
+
+[State 1040, 3]
+type = projectile
+trigger1 = AnimElem = 5
+projanim = 501  
+projhitanim = 502
+offset = (64)*const(size.xscale),(-101)*const(size.yscale)
+velocity = 10
+remvelocity = 0
+sprpriority = -3   
+accel = 0, 0
+attr = S, SP
+damage = 100,10
+animtype = Hard
+hitflag = MAP
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=410,6,13)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -9,-10
+air.animtype = Back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -9,-10
+down.hittime = 12
+down.velocity = -9,0
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .50
+air.juggle = 1
+envshake.time = 22
+envshake.freq = 220
+envshake.ampl = 5
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+
+[State 300, 7]
+type = changestate
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+;----------------------------------------------------------------
+;ARROW
+[Statedef 510]
+type    = S
+movetype= A
+physics = N
+ctrl = 0
+anim = 510
+sprpriority = 1
+
+[State 220, Effect]
+type = PlaySnd
+trigger1 = Animelemtime(6) = 0
+value = S100, 48
+
+[State 1040, 3]
+type = projectile
+trigger1 = AnimElem = 6
+projanim = 511
+projhitanim = 512
+offset = (66)*const(size.xscale),(-105)*const(size.yscale)
+velocity = 6
+remvelocity = 0
+sprpriority = -3   
+accel = 0,ifelse(command = "holddown",.2,ifelse(command = "holdup",-0.2,0))
+attr = S, SP
+damage = 100,10
+animtype = Hard
+hitflag = MAP
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,47
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -9,-10
+air.animtype = Back
+fall = 0
+air.fall = 0
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -9,-10
+down.hittime = 12
+down.velocity = -9,0
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .50
+air.juggle = 1
+envshake.time = 22
+envshake.freq = 220
+envshake.ampl = 5
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+
+[State 4000, 1]
+type = Helper
+trigger1 = animelemtime(3) = 0
+trigger1 = NumHelper(513) = 0
+ID = 513
+stateno = 513
+pos = 0, 0
+postype = p1
+helpertype = normal
+name = "ARROW-1" 
+keyctrl = 0
+ownpal = 1
+size.xscale = (1)*const(size.xscale)
+size.yscale = (1)*const(size.yscale)
+
+[State 300, 7]
+type = changestate
+trigger1 = animtime = 0
+value = 0
+ctrl = 1
+
+;-----------------------------------------------------------------
+;ARROW-1
+[StateDef 513]
+type = S
+movetype = I
+physics = N
+anim = 513
+velset = 0,0
+
+[State 1, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = NoAutoTurn
+flag2 = NoShadow
+
+[State 3, 1]
+type = SprPriority
+trigger1 = 1
+value = 2
+
+[State 6, 0]
+type = BindToParent
+trigger1 = 1
+pos = 0,0
+
+[State 300, 5]
+type = DestroySelf
+trigger1 = animtime = 0
+trigger2 = parent,stateno != 510
+trigger2 = 1
+
+;---------------------------------------------------------------------------
+;GRAB & POUND
+[Statedef 600]
+type = S
+movetype = A
+anim = 600
+velset = 0,0
+ctrl = 0
+
+[State 800, 1]
+type = HitDef
+trigger1 = p2name != "MOTARO"
+Trigger1 = 1
+attr = SC, NT
+priority = 4, miss  
+sparkno = -1          
+sprpriority = 1              
+p1stateno = 601      
+p2stateno = 602       
+guard.dist = 0 
+fall = 1
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+
+[State 352, 0]
+type = targetbind
+trigger1 = movehit
+pos = 0, 0
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 0
+Ctrl = 1
+
+;---------------------------------------------------------------------------
+;GRAB & POUND THROW
+[Statedef 601]
+type = S
+movetype = A
+anim = 601
+velset = 0,0
+ctrl = 0
+
+[State 200, 3]
+type = VelSet
+trigger1 = Time = 0
+x = 0
+y = 0
+
+[State 200, 3]
+type = PosSet
+trigger1 = 1
+y = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 1
+value = S400, var(4)
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100,ifelse(random<=420,8,12)
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 5
+value = S100,Ifelse(random<=420,6,13)
+volume = 255
+
+[State 201, 347]
+type = EnvShake
+trigger1 = animelem = 5
+time = 35
+freq = 310
+ampl = 7
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = animelem = 5
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (65)*const(size.xscale),(-130)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = animelem = 5
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (65)*const(size.xscale),(-130)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = animelem = 5
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (65)*const(size.xscale),(-130)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = animelem = 5
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (65)*const(size.xscale),(-130)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = animelem = 5
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (65)*const(size.xscale),(-130)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = animelem = 5
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (65)*const(size.xscale),(-130)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 12
+trigger1 = animelem = 5
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (65)*const(size.xscale),(-130)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = animelem = 5
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (65)*const(size.xscale),(-130)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+trigger2 = roundstate != 2
+trigger3 = win
+value = 0
+Ctrl = 1
+
+;---------------------------------------------------------------------------
+;P2 STATE 1 GRAB & POUND THROW
+[Statedef 602]
+type = S
+movetype = A
+velset = 0,0
+ctrl = 0 
+
+[State 150, 1]
+type = turn
+trigger1 = time = 0
+trigger1 = P2Dist X < -4
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State 5030, 2]
+type = posset
+trigger1 = !time
+y = 0
+
+[State 5030, 2]
+type = posset
+trigger1 = 1
+y = 1
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 820, 2]
+type = ChangeAnim2
+triggerall = Name != "SHANG TSUNG"
+Trigger1 = Time = 0
+value = 5000
+
+[State 820, 2]
+type = ChangeAnim
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 5000
+
+;KANO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 11500;1
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 12500;2
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 13500;3
+;CAGE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 14500;4
+;SCORPION
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 15500;5
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 16500;6
+;SONYA
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = Time = 0
+value = 17500;7
+;REPTILE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 18500;8
+;ERMAC
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 19500;9
+
+
+[State 1000, 3]
+type = SprPriority
+trigger1 = Time = 0
+value = 10
+
+[State 930, 0]
+type = Changestate
+trigger1 = time>1
+value = 603
+;---------------------------------------------------------------------------
+;P2 STATE 1 GRAB & POUND THROW
+[Statedef 603]
+type = S
+movetype = A
+velset = 0,0
+ctrl = 0 
+
+[State 150, 1]
+type = turn
+trigger1 = time = 0
+trigger1 = P2Dist X < -4
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State 5030, 2]
+type = posset
+trigger1 = facing = -1
+trigger1 = time = 0
+x = (enemynear,pos x +70)*enemy,const(size.xscale)
+y = (0)*enemynear,const(size.yscale) 
+
+[State 5030, 2]
+type = posset
+trigger1 = facing = 1
+trigger1 = time = 0
+x = (enemynear,pos x -70)*enemynear,const(size.xscale)
+y = (0)*enemynear,const(size.yscale) 
+
+[State 5030, 2]
+type = posadd
+trigger1 = animelemtime(1) = 1
+x = (0)*enemynear,const(size.xscale) 
+y = (-132)*enemynear,const(size.yscale)   ;
+[State 5030, 2]
+type = posadd
+trigger1 = ANIMELEM = 2
+x = (35)*enemynear,const(size.xscale) 
+y = (-21)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = ANIMELEM = 3
+x = (-10)*enemynear,const(size.xscale) 
+y = (0)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = ANIMELEM = 4
+x = (5)*enemynear,const(size.xscale) 
+y = (14)*enemynear,const(size.yscale) 
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 820, 2]
+type = ChangeAnim2
+triggerall = Name != "SHANG TSUNG"
+Trigger1 = Time = 0
+value = 602
+
+[State 820, 2]
+type = ChangeAnim2
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 602
+
+;KANO
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 60231
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 60232
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 60233
+;CAGE
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 60234
+;SCORPION
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 60235
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 60236
+;SONYA
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = Time = 0
+value = 60237
+;REPTILE
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 60238
+;ERMAC
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 60239
+
+
+[State 1000, 3]
+type = SprPriority
+triggerall = Name != "SHANG TSUNG"
+trigger1 = Time = 0
+value = -3
+
+[State 1000, 3]
+type = SprPriority
+triggerall = Name = "SHANG TSUNG"
+trigger1 = Time = 0
+value = 90
+
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 604
+
+;-------------------------------------------------------------------------------------------
+;P2 STATE 2 GRAB & POUND THROW (P2 FALL)
+[Statedef 604]
+type    = A
+movetype= H
+physics = N
+ctrl = 0
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State -2, TargetLifeadd]
+type = Lifeadd
+trigger1 = Time = 2
+kill = ifelse(enemy,var(58)= 0,1,0)
+value = -140
+
+
+[State -2, TargetLifeadd]
+type = Posadd
+trigger1 = time = 0
+x = (0)*enemynear,const(size.xscale) 
+y = (50)*enemynear,const(size.yscale) 
+
+[State 443, 0]
+type = ChangeAnim
+triggerall = Name != "SHANG TSUNG"
+trigger1 = Time = 0 && AnimExist(5900)
+value = 5900
+
+[State 443, 0]
+type = ChangeAnim
+triggerall = Name != "SHANG TSUNG"
+trigger1 = Time = 0 && !AnimExist(5900)
+value = 5052
+
+[State 443, 0]
+type = ChangeAnim
+triggerall = Name != "SHANG TSUNG"
+trigger1 = Time = 0 && !AnimExist(5052)
+value = 5030
+
+[State 820, 2]
+type = ChangeAnim
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 5030
+
+;KANO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 11530;1
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 12530;2
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 13530;3
+;CAGE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 14530;4
+;SCORPION
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 15530;5
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 16530;6
+;SONYA
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = Time = 0
+value = 17530;7
+;REPTILE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 18530;8
+;ERMAC
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 19530;9
+
+[State 443, 0]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State 5030, 2]
+type = VelSet
+trigger1 = Time = 0
+x = -15
+y = -4
+
+[State 5030, 1]
+type = veladd
+trigger1 = 1
+y = .2
+
+[State 5030, 4]
+type = SelfState
+trigger1 = time > 0
+trigger1 = Vel Y > 0
+trigger1 = Pos Y >= 0
+value = 5100
+
+;---------------------------------------------------------------------------
+;THROW
+[Statedef 700]
+type = S
+movetype = A
+anim = 1
+velset = 0,0
+ctrl = 0
+
+[State 800, 1]
+type = HitDef
+trigger1 = p2name != "MOTARO"
+Trigger1 = 1
+attr = SC, NT
+priority = 4, miss  
+sparkno = -1          
+sprpriority = 1              
+p1stateno = 701      
+p2stateno = 702
+guard.dist = 0 
+fall = 1
+kill = !var(58) || 1*p2stateno = 49999 ; Thanks to Equinócio   ;)
+
+[State 352, 0]
+type = targetbind
+trigger1 = movehit
+pos = 0, 0
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 0
+ctrl = 1
+
+;---------------------------------------------------------------------------
+;THROW GET
+[Statedef 701]
+type = S
+movetype = A
+anim = 700
+velset = 0,0
+ctrl = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = animelem = 2
+value = S100,ifelse(random<=420,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = animelem = 8
+value = S100,12
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = animelem = 8
+value = S100,12
+volume = 255
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = animelem = 12
+value = S100,0
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = animelem = 12
+value = S100,0
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = animelem = 12
+value = S100,0
+volume = 255
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 0
+Ctrl = 1
+
+;---------------------------------------------------------------------------
+;P2 STATE 1 Throw
+[Statedef 702]
+type = S
+movetype = A
+velset = 0,0
+ctrl = 0 
+
+[State 150, 1]
+type = turn
+trigger1 = time = 0
+trigger1 = P2Dist X < -4
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State 5030, 2]
+type = posset
+trigger1 = facing = -1
+trigger1 = Animelem = 1
+x = (enemynear,pos x +65)*enemynear,const(size.xscale)
+y = 0
+
+[State 5030, 2]
+type = posset
+trigger1 = facing = 1
+trigger1 = Animelem = 1
+x = (enemynear,pos x -65)*enemynear,const(size.xscale)
+y = 0
+
+[State 5030, 2]
+type = posset
+trigger1 = 1
+y = 0
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 820, 2]
+type = ChangeAnim2
+triggerall = Name != "SHANG TSUNG"
+Trigger1 = Time = 0
+value = 5000
+
+[State 820, 2]
+type = ChangeAnim
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 5000
+
+;KANO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 11500;1
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 12500;2
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 13500;3
+;CAGE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 14500;4
+;SCORPION
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 15500;5
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 16500;6
+;SONYA
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = Time = 0
+value = 17500;7
+;REPTILE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 18500;8
+;ERMAC
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 19500;9
+
+[State 1000, 3]
+type = SprPriority
+trigger1 = Animelem = 1
+value = 10
+
+[State 930, 0]
+type = Changestate
+trigger1 = time>1
+value = 703
+;---------------------------------------------------------------------------
+;P2 STATE 2 Throw
+[Statedef 703]
+type = S
+movetype = A
+velset = 0,0
+ctrl = 0 
+
+[State 150, 1]
+type = turn
+trigger1 = time = 0
+trigger1 = P2Dist X < -4
+
+
+[State -2, ScreenBound]
+type = ScreenBound
+trigger1 = 1
+value = 0
+movecamera = 0,0
+
+[State 5030, 2]
+type = posset
+trigger1 = facing = -1
+trigger1 = Animelem = 1
+x = (enemynear,pos x +100)*enemynear,const(size.xscale)
+y = (enemynear,pos y -100)*enemynear,const(size.yscale)
+
+[State 5030, 2]
+type = posset
+trigger1 = facing = 1
+trigger1 = Animelem = 1
+x = (enemynear,pos x -100)*enemynear,const(size.xscale)
+y = (enemynear,pos y -100)*enemynear,const(size.yscale)
+
+
+
+
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 2
+x = (-32)*enemynear,const(size.xscale) 
+y = (-105)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 3
+x = (14)*enemynear,const(size.xscale) 
+y = (-36)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 4
+x = (25)*enemynear,const(size.xscale) 
+y = (-28)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 5
+x = (24)*enemynear,const(size.xscale) 
+y = (12)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 6
+x = (8)*enemynear,const(size.xscale) 
+y = (12)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 7
+x = (-53)*enemynear,const(size.xscale) 
+y = (12)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 8
+x = (12)*enemynear,const(size.xscale) 
+y = (-12)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 9
+x = (48)*enemynear,const(size.xscale) 
+y = (-30)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 10
+x = (50)*enemynear,const(size.xscale) 
+y = (30)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 11
+x = (39)*enemynear,const(size.xscale) 
+y = (60)*enemynear,const(size.yscale) 
+[State 5030, 2]
+type = posadd
+trigger1 = Animelem = 12
+x = (-30)*enemynear,const(size.xscale) 
+y = (75)*enemynear,const(size.yscale) 
+
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 820, 2]
+type = ChangeAnim2
+triggerall = Name != "SHANG TSUNG"
+Trigger1 = Time = 0
+value = 702
+
+[State 820, 2]
+type = ChangeAnim2
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 702
+
+;KANO
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 70231
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 70232
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 70233
+;CAGE
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 70234
+;SCORPION
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 70235
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 70236
+;SONYA
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = Time = 0
+value = 70237
+;REPTILE
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 70238
+;ERMAC
+[State 820, 2]
+type = ChangeAnim2
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 60200000
+value = 70239
+
+
+[State 1000, 3]
+type = SprPriority
+trigger1 = 1
+value = -3
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 704
+
+;-------------------------------------------------------------------------------------------
+;P2 STATE Throw 3
+[Statedef 704]
+type    = A
+movetype= H
+physics = N
+ctrl = 0
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State -2, TargetLifeadd]
+type = Lifeadd
+trigger1 = Time = 2
+kill = ifelse(enemy,var(58)= 0,1,0)
+value = -125
+
+
+[State -2, TargetLifeadd]
+type = Posset
+trigger1 = time = 0
+y = 7
+
+[State 443, 0]
+type = ChangeAnim
+trigger1 = Name != "SHANG TSUNG"
+trigger1 = 1
+value = 5050
+
+[State 820, 2]
+type = ChangeAnim
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 5050
+
+;KANO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 11550;1
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 12550;2
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 13550;3
+;CAGE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 14550;4
+;SCORPION
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 15550;5
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 16550;6
+;SONYA
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = 1
+value = 17550;7
+;REPTILE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 18550;8
+;ERMAC
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = 1
+trigger1 = prevstateno != 505500000
+value = 19550;9
+
+
+[State 443, 0]
+type = PlayerPush
+trigger1 = 1
+value = 0
+
+[State 5030, 2]
+type = VelSet
+trigger1 = Time = 0
+x = 3
+y = -4
+
+[State 5030, 1]
+type = veladd
+trigger1 = 1
+y = .3
+
+[State 201, 347]
+type = EnvShake
+trigger1 = time = 0
+time = 50
+freq = 90
+ampl = 6
+
+[State 5030, 4]
+type = SelfState
+trigger1 = time > 0
+trigger1 = Vel Y > 0
+trigger1 = Pos Y >= 9
+value = 5100
+
+;---------------------------------------------------------------------------
+;HAMMER SMASH
+[Statedef 750]
+type = S
+movetype = A
+anim = 750
+velset = 0,0
+ctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 4
+trigger1 = movehit
+trigger1 = time <= 20
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (120)*const(size.xscale),(-110)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = movehit
+trigger1 = time <= 20
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (120)*const(size.xscale),(-110)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100, ifelse(random<=415,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100, 7
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100, 7
+volume = 255
+[State 7, Danger]
+type = PlaySnd
+trigger1 = Animelem = 3
+value = S100, 7
+volume = 255
+
+[State 1101, 5]
+type = Hitdef
+trigger1 = p2Statetype = A
+trigger2 = enemynear,Statetype = A
+attr = S, NA
+offset = 0,0
+damage = 150,10
+animtype = Hard
+hitflag = MA
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=450,53,54)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -2,16
+air.animtype = Back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -2,16
+down.hittime = 12
+down.velocity = -2,16
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .50
+air.juggle = 1
+envshake.time = 30
+envshake.freq = 250
+envshake.ampl = 6
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+
+
+[State 1101, 5]
+type = Hitdef
+triggerall = time = 0 
+trigger1 = p2Statetype != A
+trigger2 = enemynear,Statetype != A
+attr = S, NA
+offset = 0,0
+damage = 150,10
+animtype = Hard
+hitflag = MA
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=450,53,54)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 22
+ground.hittime  = 30
+air.hittime = 30
+ground.velocity = -2,16
+air.animtype = Back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 40
+air.velocity = -2,16
+down.hittime = 12
+down.velocity = -2,16
+down.hittime = 30
+guard.ctrltime = 15
+yaccel = .50
+air.juggle = 1
+envshake.time = 30
+envshake.freq = 250
+envshake.ampl = 6
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+p2stateno = 751
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 0
+ctrl = 1
+
+;---------------------------------------------------------------------------
+;P2 STATE 1 HAMMER SMASH
+[Statedef 751]
+type = S
+movetype = A
+velset = 0,0
+ctrl = 0 
+
+;MALE
+[State 220, Effect]
+type = PlaySnd
+triggerall = Var(32) = 0
+triggerall = Var(37) = 0
+trigger1 = time = 1
+trigger1 = Name = "SHANG TSUNG"
+value = S100,Ifelse(random<=700,27,28)
+volume = 255
+;LIU KANG
+[State 220, Effect]
+type = PlaySnd
+triggerall = Var(32) = 1
+trigger1 = time = 1
+trigger1 = Name = "SHANG TSUNG"
+value = S100,62
+volume = 255
+;SONYA
+[State 220, Effect]
+type = PlaySnd
+triggerall = Var(37) = 1
+trigger1 = time = 1
+trigger1 = Name = "SHANG TSUNG"
+value = S100,120
+volume = 255
+
+[State 220, Effect]
+type = PlaySnd
+triggerall = time = 1
+trigger1 = time = 1
+value = 11, 0
+[State 220, Effect]
+type = PlaySnd
+triggerall = time = 1
+trigger1 = AuthorName = "GM"
+trigger2 = AuthorName = "Phantom.of.the.Server"
+trigger3 = AuthorName = "OMEGAPSYCHO"
+value = 11, 1
+[State 220, Effect]
+type = PlaySnd
+triggerall = time = 1
+trigger1 = AuthorName = "warusaki3"
+value = 110, 0
+[State 220, Effect]
+type = PlaySnd
+triggerall = time = 1
+trigger1 = AuthorName = "bad darkness"
+value = 5950, 1
+
+[State -2, TargetLifeadd]
+type = Lifeadd
+trigger1 = Time = 0
+kill = ifelse(enemy,var(58)= 0,1,0)
+value = -100
+
+[State 150, 1]
+type = turn
+trigger1 = time = 0
+trigger1 = P2Dist X < -4
+
+[State 5030, 2]
+type = posset
+trigger1 = 1
+y = 0
+
+[State 443, 0]
+type = ChangeAnim
+triggerall = Name != "SHANG TSUNG"
+trigger1 = Time = 0 && AnimExist(5300)
+value = 5300
+
+
+[State 820, 2]
+type = ChangeAnim
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = Time = 0
+value = 5300
+
+;KANO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = Time = 0
+value = 11800
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = Time = 0
+value = 12800
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = Time = 0
+value = 13800
+;CAGE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = Time = 0
+value = 14800
+;SCORPION
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = Time = 0
+value = 15800
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = Time = 0
+value = 16800
+;SONYA
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = Time = 0
+value = 17800
+;REPTILE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = Time = 0
+value = 18800
+;ERMAC
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = Time = 0
+value = 19800
+
+[State 443, 0]
+type = ChangeAnim
+trigger1 = Name != "SHANG TSUNG"
+trigger1 = Time = 0 && !AnimExist(5300)
+value = 5000
+
+[State 930, 0]
+type = Selfstate
+trigger1 = time >= 100
+value = 5050
+
+;---------------------------------------------------------------------------
+;SHADOW CHARGE
+[Statedef 760]
+type = S
+movetype = A
+anim = 760
+velset = 0,0
+ctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 4
+trigger1 = movehit
+trigger1 = time <= 20
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (70)*const(size.xscale),(-80)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = movehit
+trigger1 = time <= 20
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (70)*const(size.xscale),(-80)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = anim != 761
+trigger1 = Animelem = 2
+value = S100, ifelse(random<=415,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = anim != 761
+trigger1 = Animelem = 2
+value = S100, ifelse(random<=500,50,ifelse(random>500,51,52))
+Volume = 255
+
+[State 352,6]
+type = VelSet
+triggerall = 1
+trigger1 = MoveGuarded
+x = 0
+y = 0
+
+[State 352,6]
+type = VelSet
+trigger1 = time = 0
+y = 0
+
+[State 352,6]
+type = VelSet
+trigger1 = anim != 761
+trigger1 = animelem = 1
+x = 3
+
+[State 352,6]
+type = VelSet
+trigger1 = anim != 761
+trigger1 = animelem = 2
+x = 6
+
+[State 352,6]
+type = VelSet
+trigger1 = anim != 761
+trigger1 = animelem = 3
+x = 8
+
+
+[State 352,6]
+type = Veladd
+trigger1 = animelem = 4
+x = -0.7
+
+[State 352,6]
+type = Velset
+trigger1 = animelem >= 5
+x = 0
+
+[State 352,6]
+type = Velset
+trigger1 = movehit
+x = 0
+
+[State 352,6]
+type = Changeanim
+trigger1 = anim != 761
+trigger1 = movehit
+value = 761
+
+[State 1101, 5]
+type = Hitdef
+trigger1 = time = 0 
+attr = S, NA
+offset = 0,0
+damage = 120,12
+animtype = Light
+hitflag = MA
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=410,6,13)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 15
+ground.velocity = -2,-5
+air.velocity = -9,-3
+down.velocity = -2,1
+down.hittime = 1
+ground.hittime  = 21
+air.hittime = 30
+guard.ctrltime = 45
+air.animtype = back
+fall.animtype = back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 1
+yaccel = .65
+air.juggle = 1
+envshake.time = 22
+envshake.freq = 190
+envshake.ampl = 5
+p2facing = 1
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+p2stateno = 761
+
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 1 || palno = [7,12]
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 0,70,0
+PalContrast =  0,200,0
+time = 20
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 2
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 70,0,0
+PalContrast =  200,0,0
+time = 20
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 3
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 30,0,90
+PalContrast =  150,0,230
+time = 20
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 4
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 10,75,90
+PalContrast =  50,190,230
+time = 20
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 5
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 70,70,0
+PalContrast =  200,200,0
+time = 20
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 6
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 10,40,100
+PalContrast =  50,80,250
+time = 20
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+
+[State 930, 0]
+type = Changestate
+trigger1 = Animtime = 0
+value = 0
+Ctrl = 1
+
+
+;-------------------------------------------------------------------------------------------
+;P2 STATE 1
+[Statedef 761]
+type    = A
+movetype= H
+physics = N
+ctrl = 0
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 443, 0]
+type = ChangeAnim
+triggerall = Name != "SHANG TSUNG"
+Trigger1 = 1
+value = 5030
+
+[State 820, 2]
+type = ChangeAnim
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = 1
+value = 5030
+
+;KANO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = 1
+value = 11530;1
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = 1
+value = 12530;2
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = 1
+value = 13530;3
+;CAGE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = 1
+value = 14530;4
+;SCORPION
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = 1
+value = 15530;5
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = 1
+value = 16530;6
+;SONYA
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = 1
+value = 17530;7
+;REPTILE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = 1
+value = 18530;8
+;ERMAC
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = 1
+value = 19530;9
+
+[State 443, 0]
+type = PlayerPush
+trigger1 = 1
+value = 1
+
+[State 5030, 2]
+type = velset
+trigger1 = P2Dist X < -4
+trigger1 = time = 0
+x = 5.8
+y = -2
+
+[State 5030, 2]
+type = velset
+trigger1 = P2Dist X >0
+trigger1 = time = 0
+x = -5.8
+y = -2
+
+[State 5030, 1]
+type = veladd
+trigger1 = 1
+y = .4
+
+[State 5030, 4]
+type = SelfState
+trigger1 = time > 0
+trigger1 = Vel Y > 0
+trigger1 = Pos Y >= 0
+value = 5110
+
+
+[State 5030, 4]
+type = SelfState
+trigger1 = life <=0
+trigger1 = time > 0
+trigger1 = Vel Y > 0
+trigger1 = Pos Y >= 0
+value = 5050
+
+
+;---------------------------------------------------------------------------
+;SHADOW CHARGE UP
+[Statedef 770]
+type = A
+movetype = A
+physics = N
+anim = 770
+velset = 0,0
+ctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(6518) <= 4
+trigger1 = movehit
+trigger1 = time <= 30
+helpertype = Normal
+ID = 6518
+name = "BLOOD_BATH_R" 
+postype = p1
+pos = (64)*const(size.xscale),(-75)*const(size.yscale)
+stateno = 6518
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State ]
+type = Helper
+triggerall = numhelper(8691) = 0
+trigger1 = movehit
+trigger1 = time <= 30
+helpertype = Normal
+ID = 8691
+name = "BLOOD_SPLAT_1" 
+postype = p1
+pos = (64)*const(size.xscale),(-75)*const(size.yscale)
+stateno = 8691
+ignorehitpause = 1
+ownpal = 1
+keyctrl = 0
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = anim != 761
+trigger1 = Animelem = 2
+value = S100, ifelse(random<=415,8,12)
+
+[State 7, Danger]
+type = PlaySnd
+trigger1 = anim != 761
+trigger1 = Animelem = 2
+value = S100, ifelse(random<=500,50,ifelse(random>500,51,52))
+Volume = 255
+
+[State 352,6]
+type = VelSet
+triggerall = 1
+trigger1 = MoveGuarded
+x = 0
+y = 0
+
+
+
+[State 352,6]
+type = VelSet
+trigger1 = anim != 761
+trigger1 = animelem = 2
+x = 4
+y = -2
+
+[State 352,6]
+type = VelSet
+trigger1 = anim != 761
+trigger1 = animelem = 3
+x = 9
+y = -3
+
+[State 352,6]
+type = Velset
+trigger1 = time>25
+x = 0
+
+[State 352,6]
+type = Velset
+trigger1 = movehit
+trigger2 = time >=34
+x = 0
+y = 0
+
+[State 352,6]
+type = Changeanim
+trigger1 = anim != 771
+trigger1 = movehit
+value = 771
+
+[State 1101, 5]
+type = Hitdef
+triggerall = time = 0
+trigger1 = p2statetype = A
+trigger2 = Enemynear,statetype = A
+attr = S, NA
+offset = 0,0
+damage = 90,9
+animtype = Light
+hitflag = MA
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,13
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=410,6,13)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 15
+ground.velocity = -2,-5
+air.velocity = -9,-3
+down.velocity = -2,1
+down.hittime = 1
+ground.hittime  = 21
+air.hittime = 30
+guard.ctrltime = 45
+air.animtype = back
+fall.animtype = back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 1
+yaccel = .65
+air.juggle = 1
+envshake.time = 22
+envshake.freq = 190
+envshake.ampl = 5
+p2facing = 1
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+p2stateno = 761
+
+[State 1101, 5]
+type = Hitdef
+triggerall = time = 0
+trigger1 = p2statetype != A
+trigger2 = Enemynear,statetype != A
+attr = S, NA
+offset = 0,0
+damage = 90,9
+animtype = Light
+hitflag = MAP
+guardflag = M
+pausetime = 10,4
+guard.pausetime = 10,0
+sparkno = -1
+guard.sparkno = -1
+sparkxy = -9999,-8888
+hitsound = S100,Ifelse(random<=410,6,13)
+guardsound = S100,10
+ground.type = Low
+ground.slidetime = 100
+ground.velocity = -17,0
+air.velocity = -17,0
+down.velocity = -17,0
+down.hittime = 58
+ground.hittime  = 58
+air.hittime = 58
+guard.ctrltime = 58
+air.animtype = back
+fall.animtype = back
+fall = 1
+air.fall = 1
+fall.recover = 0
+air.recover = 0
+fall.recovertime = 1
+yaccel = .65
+air.juggle = 1
+envshake.time = 22
+envshake.freq = 190
+envshake.ampl = 5
+p2facing = 1
+kill = !var(58) || 1*p2stateno = 49999; Thanks to Equinócio   ;)
+p2stateno = 771
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 1 || palno = [7,12]
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 0,70,0
+PalContrast =  0,200,0
+time = 26
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 2
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 70,0,0
+PalContrast =  200,0,0
+time = 26
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 3
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 30,0,90
+PalContrast =  150,0,230
+time = 26
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 4
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 10,75,90
+PalContrast =  50,190,230
+time = 26
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 5
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 70,70,0
+PalContrast =  200,200,0
+time = 26
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State -2, PUFF'S SHADOWS ]
+type = Afterimage
+triggerall = palno = 6
+trigger1 = time = 0
+trans = add
+palcolor = 255
+palpostbright = 10,40,100
+PalContrast =  50,80,250
+time = 26
+length  = 8
+TimeGap = 2
+FrameGap = 1
+persistent = 1
+
+[State 930, 0]
+type = Changestate
+trigger1 = anim = 770
+trigger1 = time >=35
+value = 50
+
+[State 930, 0]
+type = Changestate
+trigger1 = anim = 771
+trigger1 = animtime = 0
+value = 50
+
+
+;-------------------------------------------------------------------------------------------
+;P2 STATE 1
+[Statedef 771]
+type    = A
+movetype= H
+physics = N
+ctrl = 0
+
+[State 181, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 820, 2]
+type = ChangeAnim2
+triggerall = Name != "SHANG TSUNG"
+Trigger1 = Time = 0
+value = 5000
+
+[State 820, 2]
+type = ChangeAnim
+triggerall = Var(31) = 0
+triggerall = Var(32) = 0
+triggerall = Var(33) = 0
+triggerall = Var(34) = 0
+triggerall = Var(35) = 0
+triggerall = Var(36) = 0
+triggerall = Var(37) = 0
+triggerall = Var(38) = 0
+triggerall = Var(39) = 0
+triggerall = Name = "SHANG TSUNG"
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 5000
+
+;KANO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(31) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 11900;1
+;LIU-KANG
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(32) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 12900;2
+;RAYDEN
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(33) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 13900;3
+;CAGE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(34) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 14900;4
+;SCORPION
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(35) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 15900;5
+;SUB-ZERO
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(36) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 16900;6
+;SONYA
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(37) = 1
+Trigger1 = Time = 0
+value = 17900;7
+;REPTILE
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(38) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 18900;8
+;ERMAC
+[State 820, 2]
+type = ChangeAnim
+trigger1 = Name = "SHANG TSUNG"
+trigger1 = Var(39) = 1
+Trigger1 = Time = 0
+trigger1 = prevstateno != 500000000
+value = 19900;9
+
+
+[State 443, 0]
+type = PlayerPush
+trigger1 = 1
+value = 1
+
+[State 5030, 2]
+type = velset
+trigger1 = P2Dist X < -4
+trigger1 = time = 0
+x = 8
+y = 0
+
+[State 5030, 2]
+type = velset
+trigger1 = P2Dist X >0
+trigger1 = time = 0
+x = -8
+y = 0
+
+[State 5030, 1]
+type = veladd
+triggerall = 1
+trigger1 = roundstate = 2
+trigger2 = alive
+trigger3 = life >0
+x = .3
+
+[State 5030, 1]
+type = veladd
+triggerall = 1
+trigger1 = roundstate != 2
+trigger2 = !alive
+trigger3 = life <=0
+x = .17
+
+
+;[State 5030, 2]
+;type = velset
+;trigger1 = roundstate != 2
+;trigger2 = !alive
+;trigger3 = life <=0
+;x = 0
+;y = 0
+
+[State 5030, 4]
+type = Changestate
+trigger1 = time<3
+trigger1 = Pos Y <-5
+value = 761
+
+[State 5030, 4]
+type = SelfState
+trigger1 = alive
+trigger1 = time >= 30
+value = 0
+ctrl = 1
+
+
+[State 5030, 4]
+type = SelfState
+trigger1 = life <=0
+trigger1 = time >= 45
+value = 5050
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;---------------------------------------------------------------------------
+;MOVE LIST RANDOM
+[Statedef 10444]
+ctrl = 0
+anim = 9999
+
+[State 5030, 4]
+type = Changestate
+trigger1 = parent,var(25) = 1
+trigger1 = time >1
+value = ifelse(random<=430,10555,ifelse(random>430,10777,10999))
+
+[State 5030, 4]
+type = Changestate
+trigger1 = parent,var(25) = 0
+trigger1 = time >1
+value = ifelse(random<=430,10666,ifelse(random>430,10888,11000))
+
+;---------------------------------------------------------------------------
+;MOVE LIST SHAO KHAN 1
+[Statedef 10555]
+ctrl = 0
+anim = 9999
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100, 20
+volume = -40
+abspan = 0
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,55
+volume = 255
+channel = 6
+abspan = 0
+Loop = 1
+
+[State BACKGROUND] 
+type = explod
+trigger1 = numexplod(11001) = 0
+trigger1 = time>1
+;trigger1 = !time
+id = 11001
+anim = 110018
+pos = 0,0
+bindtime = -1
+sprpriority = 80
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+postype = left
+ownpal = 1
+scale = 0.8,0.90
+
+[State MOVE LIST] 
+type = explod
+trigger1 = numexplod(11002) = 0
+trigger1 = time>1
+id = 11002
+anim = 11002
+pos = 100,4
+bindtime = -1
+sprpriority = 81
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State MOVES] 
+type = explod
+trigger1 = numexplod(11003) = 0
+trigger1 = time>1
+id = 11003
+anim = 11003
+pos = 50,30
+bindtime = -1
+sprpriority = 82
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State ANNOUNCER] 
+type = explod
+trigger1 = numexplod(11004) = 0
+trigger1 = time>1
+id = 11004
+anim = 11004
+pos = 100,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State QUAN-CHI] 
+type = explod
+trigger1 = numexplod(11005) = 0
+trigger1 = time>1
+id = 11005
+anim = 11005
+pos = 80,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State SHAO KHAN] 
+type = explod
+trigger1 = numexplod(11006) = 0
+trigger1 = time>1
+id = 11006
+anim = 11006
+pos = 240,160
+sprpriority = 83
+bindtime = -1
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 2] 
+type = explod
+trigger1 = numexplod(11008) = 0
+trigger1 = time>1
+id = 11008
+anim = 11007
+pos = 208,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 11002
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 11999
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = Time <=1
+
+;---------------------------------------------------------------------------
+;MOVE LIST QUAN-CHI 1
+[Statedef 10666]
+ctrl = 0
+anim = 9999
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = Time <=1
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100, 20
+volume = -40
+abspan = 0
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,55
+volume = 255
+channel = 6
+abspan = 0
+Loop = 1
+
+[State BACKGROUND] 
+type = explod
+trigger1 = numexplod(11001) = 0
+trigger1 = time>1
+;trigger1 = !time
+id = 11001
+anim = 110018
+pos = 0,0
+bindtime = -1
+sprpriority = 80
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+postype = left
+ownpal = 1
+scale = 0.8,0.90
+
+
+[State MOVE LIST] 
+type = explod
+trigger1 = numexplod(11002) = 0
+trigger1 = time>1
+id = 11002
+anim = 11002
+pos = 100,4
+bindtime = -1
+sprpriority = 81
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State MOVES] 
+type = explod
+trigger1 = numexplod(11003) = 0
+trigger1 = time>1
+id = 11003
+anim = 11003
+pos = 50,30
+bindtime = -1
+sprpriority = 82
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State ANNOUNCER] 
+type = explod
+trigger1 = numexplod(11004) = 0
+trigger1 = time>1
+id = 11004
+anim = 11004
+pos = 100,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State QUAN-CHI] 
+type = explod
+trigger1 = numexplod(11005) = 0
+trigger1 = time>1
+id = 11005
+anim = 11005
+pos = 80,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State SHAO KHAN] 
+type = explod
+trigger1 = numexplod(11006) = 0
+trigger1 = time>1
+id = 11006
+anim = 11006
+pos = 240,160
+sprpriority = 83
+bindtime = -1
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+
+[State DRAGON LOGO 1] 
+type = explod
+trigger1 = numexplod(11007) = 0
+trigger1 = time>1
+id = 11007
+anim = 11007
+pos = 90,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 11001
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 12000
+
+;---------------------------------------------------------------------------
+;MOVE LIST SHAO KHAN 2
+[Statedef 10777]
+ctrl = 0
+anim = 9999
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100, 20
+volume = -40
+abspan = 0
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,22
+volume = 255
+channel = 6
+abspan = 0
+Loop = 1
+
+[State BACKGROUND] 
+type = explod
+trigger1 = numexplod(11001) = 0
+trigger1 = time>1
+;trigger1 = !time
+id = 11001
+anim = 110019
+pos = 0,0
+bindtime = -1
+sprpriority = 80
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+postype = left
+ownpal = 1
+scale = 0.9,0.75
+
+[State MOVE LIST] 
+type = explod
+trigger1 = numexplod(11002) = 0
+trigger1 = time>1
+id = 11002
+anim = 11002
+pos = 100,4
+bindtime = -1
+sprpriority = 81
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State MOVES] 
+type = explod
+trigger1 = numexplod(11003) = 0
+trigger1 = time>1
+id = 11003
+anim = 11003
+pos = 50,30
+bindtime = -1
+sprpriority = 82
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State ANNOUNCER] 
+type = explod
+trigger1 = numexplod(11004) = 0
+trigger1 = time>1
+id = 11004
+anim = 11004
+pos = 100,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State QUAN-CHI] 
+type = explod
+trigger1 = numexplod(11005) = 0
+trigger1 = time>1
+id = 11005
+anim = 11005
+pos = 80,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State SHAO KHAN] 
+type = explod
+trigger1 = numexplod(11006) = 0
+trigger1 = time>1
+id = 11006
+anim = 11006
+pos = 240,160
+sprpriority = 83
+bindtime = -1
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 2] 
+type = explod
+trigger1 = numexplod(11008) = 0
+trigger1 = time>1
+id = 11008
+anim = 11007
+pos = 208,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 11002
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 11999
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = Time <=1
+
+;---------------------------------------------------------------------------
+;MOVE LIST QUAN-CHI 2
+[Statedef 10888]
+ctrl = 0
+anim = 9999
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = Time <=1
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100, 20
+volume = -40
+abspan = 0
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,22
+volume = 255
+channel = 6
+abspan = 0
+Loop = 1
+
+[State BACKGROUND] 
+type = explod
+trigger1 = numexplod(11001) = 0
+trigger1 = time>1
+;trigger1 = !time
+id = 11001
+anim = 110019
+pos = 0,0
+bindtime = -1
+sprpriority = 80
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+postype = left
+ownpal = 1
+scale = 0.9,0.75
+
+[State MOVE LIST] 
+type = explod
+trigger1 = numexplod(11002) = 0
+trigger1 = time>1
+id = 11002
+anim = 11002
+pos = 100,4
+bindtime = -1
+sprpriority = 81
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State MOVES] 
+type = explod
+trigger1 = numexplod(11003) = 0
+trigger1 = time>1
+id = 11003
+anim = 11003
+pos = 50,30
+bindtime = -1
+sprpriority = 82
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State ANNOUNCER] 
+type = explod
+trigger1 = numexplod(11004) = 0
+trigger1 = time>1
+id = 11004
+anim = 11004
+pos = 100,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State QUAN-CHI] 
+type = explod
+trigger1 = numexplod(11005) = 0
+trigger1 = time>1
+id = 11005
+anim = 11005
+pos = 80,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State SHAO KHAN] 
+type = explod
+trigger1 = numexplod(11006) = 0
+trigger1 = time>1
+id = 11006
+anim = 11006
+pos = 240,160
+sprpriority = 83
+bindtime = -1
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+
+[State DRAGON LOGO 1] 
+type = explod
+trigger1 = numexplod(11007) = 0
+trigger1 = time>1
+id = 11007
+anim = 11007
+pos = 90,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 11001
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 12000
+
+
+;---------------------------------------------------------------------------
+;MOVE LIST SHAO KHAN 3
+[Statedef 10999]
+ctrl = 0
+anim = 9999
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100, 20
+volume = -40
+abspan = 0
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,23
+volume = 255
+channel = 6
+abspan = 0
+Loop = 1
+
+[State BACKGROUND] 
+type = explod
+trigger1 = numexplod(11001) = 0
+trigger1 = time>1
+;trigger1 = !time
+id = 11001
+anim = 11001
+pos = 0,0
+bindtime = -1
+sprpriority = 80
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+postype = left
+ownpal = 1
+scale = 0.8,0.8
+
+[State MOVE LIST] 
+type = explod
+trigger1 = numexplod(11002) = 0
+trigger1 = time>1
+id = 11002
+anim = 11002
+pos = 100,4
+bindtime = -1
+sprpriority = 81
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State MOVES] 
+type = explod
+trigger1 = numexplod(11003) = 0
+trigger1 = time>1
+id = 11003
+anim = 11003
+pos = 50,30
+bindtime = -1
+sprpriority = 82
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State ANNOUNCER] 
+type = explod
+trigger1 = numexplod(11004) = 0
+trigger1 = time>1
+id = 11004
+anim = 11004
+pos = 100,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State QUAN-CHI] 
+type = explod
+trigger1 = numexplod(11005) = 0
+trigger1 = time>1
+id = 11005
+anim = 11005
+pos = 80,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State SHAO KHAN] 
+type = explod
+trigger1 = numexplod(11006) = 0
+trigger1 = time>1
+id = 11006
+anim = 11006
+pos = 240,160
+sprpriority = 83
+bindtime = -1
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 2] 
+type = explod
+trigger1 = numexplod(11008) = 0
+trigger1 = time>1
+id = 11008
+anim = 11007
+pos = 208,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 11002
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 11999
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = Time <=1
+
+;---------------------------------------------------------------------------
+;MOVE LIST QUAN-CHI 3
+[Statedef 11000]
+ctrl = 0
+anim = 9999
+
+[State 3002]
+Type = RemoveExplod
+trigger1 = Time <=1
+
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100, 20
+volume = -40
+abspan = 0
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,23
+volume = 255
+channel = 6
+abspan = 0
+Loop = 1
+
+[State BACKGROUND] 
+type = explod
+trigger1 = numexplod(11001) = 0
+trigger1 = time>1
+;trigger1 = !time
+id = 11001
+anim = 11001
+pos = 0,0
+bindtime = -1
+sprpriority = 80
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+postype = left
+ownpal = 1
+scale = 0.8,0.8
+
+[State MOVE LIST] 
+type = explod
+trigger1 = numexplod(11002) = 0
+trigger1 = time>1
+id = 11002
+anim = 11002
+pos = 100,4
+bindtime = -1
+sprpriority = 81
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State MOVES] 
+type = explod
+trigger1 = numexplod(11003) = 0
+trigger1 = time>1
+id = 11003
+anim = 11003
+pos = 50,30
+bindtime = -1
+sprpriority = 82
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State ANNOUNCER] 
+type = explod
+trigger1 = numexplod(11004) = 0
+trigger1 = time>1
+id = 11004
+anim = 11004
+pos = 100,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State QUAN-CHI] 
+type = explod
+trigger1 = numexplod(11005) = 0
+trigger1 = time>1
+id = 11005
+anim = 11005
+pos = 80,160
+bindtime = -1
+sprpriority = 83
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State SHAO KHAN] 
+type = explod
+trigger1 = numexplod(11006) = 0
+trigger1 = time>1
+id = 11006
+anim = 11006
+pos = 240,160
+sprpriority = 83
+bindtime = -1
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+
+[State DRAGON LOGO 1] 
+type = explod
+trigger1 = numexplod(11007) = 0
+trigger1 = time>1
+id = 11007
+anim = 11007
+pos = 90,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 11001
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 12000
+;---------------------------------------------------------------------------
+;MOVE LIST first move
+[Statedef 11001]
+ctrl = 0
+anim = 9999
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,25
+abspan = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 2] 
+type = explod
+trigger1 = !time
+id = 11008
+anim = 11007
+pos = 208,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11007
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 11002
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 11999
+
+[State -2, 0]
+type = ParentVarset
+trigger1 = 1
+v = 25
+value = 1
+
+;---------------------------------------------------------------------------
+;MOVE LIST second move
+[Statedef 11002]
+ctrl = 0
+anim = 9999
+
+[State -2, 0]
+type = ParentVarset
+trigger1 = 1
+v = 25
+value = 0
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,24
+abspan = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 1] 
+type = explod
+trigger1 = !time
+id = 11007
+anim = 11007
+pos = 90,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11008
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 11001
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 12000
+
+
+;---------------------------------------------------------------------------
+;MOVE LIST SHAO KHAN FAKE 1
+[Statedef 13999]
+ctrl = 0
+anim = 9999
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+[State MOVE LIST] 
+type = explod
+trigger1 = numexplod(11002) = 0
+trigger1 = time>1
+id = 11002
+anim = 11002
+pos = 100,4
+bindtime = -1
+sprpriority = 81
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State MOVES] 
+type = explod
+trigger1 = numexplod(11003) = 0
+trigger1 = time>1
+id = 11003
+anim = 11003
+pos = 50,30
+bindtime = -1
+sprpriority = 82
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 2] 
+type = explod
+trigger1 = numexplod(11008) = 0
+trigger1 = time>1
+id = 11008
+anim = 11007
+pos = 208,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11002
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11003
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11007
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11008
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11009
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11010
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11011
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11012
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11013
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11014
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11015
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11016
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11017
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11018
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11019
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 14002
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 11999
+
+;---------------------------------------------------------------------------
+;MOVE LIST QUAN-CHI
+[Statedef 14000]
+ctrl = 0
+anim = 9999
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 1
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 1
+flag = NoBarDisplay
+
+
+[State MOVE LIST] 
+type = explod
+trigger1 = numexplod(11002) = 0
+trigger1 = time>1
+id = 11002
+anim = 11002
+pos = 100,4
+bindtime = -1
+sprpriority = 81
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State MOVES] 
+type = explod
+trigger1 = numexplod(11003) = 0
+trigger1 = time>1
+id = 11003
+anim = 11003
+pos = 50,30
+bindtime = -1
+sprpriority = 82
+ontop = 1
+persistent = 0
+ignorehitpause = 1
+PauseMoveTime = -1
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 1] 
+type = explod
+trigger1 = numexplod(11007) = 0
+trigger1 = time>1
+id = 11007
+anim = 11007
+pos = 90,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11002
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11003
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11007
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11008
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11009
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11010
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11011
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11012
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11013
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11014
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11015
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11016
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11017
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11018
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 11019
+
+[State 3002]
+Type = RemoveExplod
+Trigger1 = time<=1
+ID = 110019
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 14001
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 12000
+;---------------------------------------------------------------------------
+;MOVE LIST first move
+[Statedef 14001]
+ctrl = 0
+anim = 9999
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,25
+abspan = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 2] 
+type = explod
+trigger1 = !time
+id = 11008
+anim = 11007
+pos = 208,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11007
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 14002
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 11999
+
+[State -2, 0]
+type = ParentVarset
+trigger1 = 1
+v = 25
+value = 1
+
+;---------------------------------------------------------------------------
+;MOVE LIST second move
+[Statedef 14002]
+ctrl = 0
+anim = 9999
+
+[State -2, 0]
+type = ParentVarset
+trigger1 = 1
+v = 25
+value = 0
+
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,24
+abspan = 0
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= timerfreeze
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= nofg
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= noBG
+time = -1
+persistent = 1
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = Time > 0
+flag= nobardisplay
+time = -1
+persistent = 1
+
+[State 5610, 8]
+type = AssertSpecial
+trigger1 = time > 0
+flag = NoBarDisplay
+
+[State 3001]
+Type = Pause
+Trigger1 = 1
+Time = 10
+MoveTime = 10
+
+[State DRAGON LOGO 1] 
+type = explod
+trigger1 = !time
+id = 11007
+anim = 11007
+pos = 90,190
+bindtime = 10
+sprpriority = 84
+ontop = 1
+persistent = 10
+ignorehitpause = 1
+PauseMoveTime = 10
+postype = left
+ownpal = 1
+scale = 1,1
+
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11008
+
+[State 5650, 5]
+type = Changestate
+Trigger1 = Time >20
+Trigger1 = parent,Command = "start"
+Trigger2 = var(40) = 1
+Trigger3 = roundstate != 2
+Trigger4 = lose
+Trigger5 = win
+value = 11005
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "back"
+Trigger2 = parent,Command = "fwd"
+value = 14001
+
+[State 5650, 5]
+type = Changestate
+Triggerall = time >6
+Trigger1 = parent,Command = "up"
+Trigger2 = parent,Command = "down"
+value = 12000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;------------------------------------------------------------------------------
+;MOVE LIST END
+[StateDef 11005]
+Type = S
+Ctrl = 0
+
+[State 3002]
+Type = Pause
+Trigger1 = Time = 0
+Time = 0
+
+[State 3002]
+Type = BGPalFX
+Trigger1 = Time = 0
+Time = 1
+
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11001
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11002
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11003
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11004
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11005
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11006
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11007
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11008
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11009
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11010
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11011
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11012
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11013
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11014
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11015
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11016
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11017
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11018
+[State 3002]
+Type = RemoveExplod
+Trigger1 = 1
+ID = 11019
+
+
+[state a]
+type = stopsnd
+trigger1 = 1
+channel = 6
+ignorehitpause = 1
+
+
+[State 3002]
+Type = Destroyself
+Trigger1 = time >2
+
+
+
+
+
+
+
+
+
+;---------------------------------------------------------------------------
+; Override common states (use same number to override) :
+;---------------------------------------------------------------------------
+
+;---------------------------------------------------------------------------
+; States that are always executed (use statedef -2)
+;---------------------------------------------------------------------------
+
+[Statedef -2]
+
+[state a]
+type = stopsnd
+trigger1 = Movetype = H
+channel = 7
+ignorehitpause = 1
+
+[State -3, win]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 32
+range = 1,5
+
+[State -3, laugh long]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 3
+range = 6,14
+
+[State -3, SHAO KHAN GRAB & laugh fast]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 4
+range = 1,5
+
+[State -3, SHAO KHAN HURT Low]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 5
+range = 1,3
+
+[State -3, SHAO KHAN HURT Heavy]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 6
+range = 4,5
+
+[State -3, ANNOUNCER QUAN-CHI]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 8
+range = 1,21
+
+[State -3, ANNOUNCER SHAO KHAN HIMSELF]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 9
+range = 1,15
+
+[State -3, TAUNT 1]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 10
+range = 1,8
+
+[State -3, TAUNT 2]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 11
+range = 1,8
+
+
+[State -3, FALL GORE]
+type = VarRandom
+trigger1 = 1
+ignorehitpause = 1
+v = 12
+range = -30,30
+
+
+[State -2, Guarding]
+type = AssertSpecial
+trigger1 = 1
+flag = nostandguard
+flag2 = nocrouchguard
+flag3 = noairguard
+
+[State -2, NO SLOW]
+type = AssertSpecial
+trigger1 = 1
+ignorehitpause = 1
+flag = nokoslow
+
+[State -2]
+type = NotHitBy
+trigger1 = p2name != "KINTARO"
+trigger1 = p2name != "MOTARO"
+trigger1 = p2name != "GORO"
+trigger1 = p2name != "SHAO KAHN"
+value = , NT,ST,HT
+time = -1
+
+[State 6, 2]
+type = PlayerPush
+trigger1 = 1
+value = 1
+
+[State 10, 2]
+type = Varset
+trigger1 = Win
+trigger1 = life >= lifemax
+trigger1 = roundstate = 3 || roundstate = 4
+v = 17
+value = 1
+
+[State 10, 3]
+type = Varset
+trigger1 = var(17) = 1
+trigger1 = roundstate = 0 || roundstate = 1 || roundstate = 2
+v = 18
+value = 1
+
+[State 10, 2]
+type = Varset
+trigger1 = var(18) = 1
+trigger1 = Win
+trigger1 = life >= lifemax
+trigger1 = roundstate = 3 || roundstate = 4
+v = 19
+value = 1
+
+
+;*********explodes
+
+
+[State -2, 1]
+type = Explod
+trigger1 = var(40) = 0
+trigger1 = facing = 1
+trigger1 = NumExplod(10000) = 0
+trigger1 = 1
+anim = 10000
+ID = 10000
+pos = 4,235
+sprpriority = 50
+postype = Left
+bindtime = -1
+ignorehitpause = 1
+scale = 0.25,0.25
+ownpal = 1
+
+[State -2, 1]
+type = Explod
+trigger1 = var(40) = 0
+trigger1 = facing = -1
+trigger1 = NumExplod(10000) = 0
+trigger1 = 1
+anim = 10000
+ID = 10000
+pos = -30,235
+sprpriority = 50
+postype = right
+bindtime = -1
+ignorehitpause = 1
+scale = 0.25,0.25
+ownpal = 1
+
+[State 981]
+type = RemoveExplod
+trigger1 = roundstate = 0
+trigger2 = roundstate = 1
+trigger3 = roundstate = 3
+trigger4 = roundstate = 4
+trigger5 = var(40) = 1
+ID = 10000
+
+
+[State -1, MOVE LIST]
+type = Helper
+triggerall = var(40) = 0
+triggerall = Numhelper(11000) = 0
+triggerall = roundstate = 2
+triggerall = stateno != [700,705]
+triggerall = stateno != [600,605]
+trigger1 = command = "start"
+trigger1 = movetype != H
+helpertype = normal
+name = "MOVE_LIST1"
+id = 11000
+pos = 0,0
+sprpriority = 90
+postype = Left
+stateno = 10444
+KeyCtrl = 1
+ownpal = 1
+removetime = -1
+ignorehitpause = 0
+
+
+;************FATALITY*************
+
+[State -2, 1] 
+type = varset
+triggerall = NumEnemy = 1
+triggerall = NumPartner = 0
+trigger1 = Win >= 1
+trigger1 = NumHelper(7000) = 0
+v = 58
+value = 1
+
+[State -2, 2] 
+type = varset
+trigger1 = Win >= 1
+trigger1 = NumHelper(7000) = 1
+trigger1 = p2life != 0
+trigger2 = var(35) = 1
+v = 58
+value = 0
+
+[State -2, 3] 
+type = AttackMulSet
+triggerall = !Var(58) 
+triggerall = p2Life <= 1
+trigger1 = Win = 0 
+trigger1 = RoundNo != 1 
+trigger2 = P2StateNo = 49999
+value = 9999
+
+[State -2, FATALITY TIME ONE TIME]
+type = Varset
+trigger1 = NumHelper(7000) = 1
+v = 35
+value = 1
+[State -2, FATALITY TIME ONE TIME]
+type = Varset
+trigger1 = NumHelper(7000) = 1
+v = 19
+value = 1
+
+[State -2, 1] 
+type = varset
+trigger1 = 1
+trigger1 = var(19)= 1
+trigger1 = roundstate = 0 || roundstate = 1
+v = 58
+value = 1
+
+[State -2, FATALITY TIME ONE TIME]
+type = Varset
+trigger1 = 1
+trigger1 = var(35)= 1
+trigger1 = roundstate = 0 || roundstate = 1
+v = 35
+value = 0
+
+
+[State -2, FATALITY win 1]
+type = Varset
+trigger1 = roundstate = 0 || roundstate = 1
+v = 26
+value = 0
+
+[State -2, FATALITY win 2]
+type = Varset
+trigger1 = roundstate = 0 || roundstate = 1
+v = 27
+value = 0
+
+[State -2, FATALITY win 3]
+type = Varset
+trigger1 = roundstate = 0 || roundstate = 1
+v = 28
+value = 0
+
+[State -3,Display.de.Tela]
+type = DisplayToClipboard
+trigger1 = var(35) = 1
+text = "var 35 activada    YES"
+[State -3,Display.de.Tela]
+type = DisplayToClipboard
+trigger1 = var(35) = 0
+text = "var 35 desactivada   NO"
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = roundno = 1
+trigger1 = roundstate = 0 || roundstate = 1
+flag = Nomusic
+
+[State 5650, 1]
+type = AssertSpecial
+trigger1 = roundno = 1
+trigger1 = roundstate = 0 || roundstate = 1
+flag= timerfreeze
+time = -1
+persistent = 1
+
+
+[State -2, FATALITY TIME ONE TIME]
+type = Varset
+trigger1 = 1
+trigger1 = Roundno = 1
+trigger1 = Win = 0
+trigger1 = roundstate = 0 || roundstate = 1
+v = 58
+value = 0
+
+[State -2, FATALITY TIME ONE TIME]
+type = Varset
+trigger1 = enemy,name = "MOTARO"
+trigger1 = 1
+v = 58
+value = 0

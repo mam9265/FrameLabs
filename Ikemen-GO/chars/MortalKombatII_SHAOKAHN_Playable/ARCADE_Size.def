@@ -1,0 +1,32 @@
+;SHAO KAHN. Ripeado y compilado por OMEGAPSYCHO
+;From "Mortal Kombat II"
+; E-mail: OMEGAPSYCHO@hotmail.com
+;vercion 1.2 (100%)          OMEGAPSYCHO@Hotmail.com
+
+[Info]
+name = "SHAO KAHN"    
+displayname = "SHAO KAHN"	
+versiondate = 08,24,2009 
+author = "OMEGAPSYCHO"  
+pal.defaults = 1
+
+; Files for the player
+[Files]
+cmd     = CODE\SHAOKAHN.cmd   ;Command set
+cns     = CODE\SHAOKAHN_1.cns   ;Constants
+st      =  CODE\SHAOKAHN_1.cns   ;States
+st1    =  CODE\SHAOKAHN2.cns
+st2     = CODE\SHAOKAHN3.cns  
+st3     = CODE\SHAOKAHN4.cns  
+st4    =  CODE\SHAOKAHN5.cns  
+st5    =  CODE\SHAOKAHN6.cns
+stcommon = CODE\common_SHAOKAHN.cns
+sprite  = SHAOKAHN.SFF
+anim    = CODE\SHAOKAHN.air   ;Animation
+sound  = SHAOKAHN.snd   ;Sound
+pal1   = CODE\SHAOKAHN_1.ACT
+pal2   = CODE\SHAOKAHN_2.ACT
+pal3   = CODE\SHAOKAHN_3.ACT
+pal4   = CODE\SHAOKAHN_4.ACT
+pal5   = CODE\SHAOKAHN_5.ACT
+pal6   = CODE\SHAOKAHN_6.ACT

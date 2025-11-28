@@ -1415,16 +1415,20 @@ end
 --; MODES LOOP
 --;===========================================================
 function start.f_selectMode()
+	print("start.f_selectMode() called")
 	start.f_selectReset(true)
 	while true do
 		--select screen
+		print("start.f_selectMode: Calling start.f_selectScreen()")
 		if not start.f_selectScreen() then
+			print("start.f_selectMode: start.f_selectScreen() returned false, returning to main menu")
 			sndPlay(motif.files.snd_data, motif.select_info.cancel_snd[1], motif.select_info.cancel_snd[2])
 			main.f_bgReset(motif[main.background].bg)
 			main.f_fadeReset('fadein', motif[main.group])
 			main.f_playBGM(false, motif.music.title_bgm, motif.music.title_bgm_loop, motif.music.title_bgm_volume, motif.music.title_bgm_loopstart, motif.music.title_bgm_loopend)
 			return
 		end
+		print("start.f_selectMode: start.f_selectScreen() returned true, continuing")
 		--first match
 		if start.reset then
 			main.t_availableChars = main.f_tableCopy(main.t_orderChars)
@@ -1933,9 +1937,15 @@ if main.t_sort.select_info.teammenu == nil then
 end
 
 function start.f_selectScreen()
+	print("start.f_selectScreen() called")
+	print("  main.selectMenu[1] = " .. tostring(main.selectMenu[1]))
+	print("  main.selectMenu[2] = " .. tostring(main.selectMenu[2]))
+	print("  selScreenEnd = " .. tostring(selScreenEnd))
 	if (not main.selectMenu[1] and not main.selectMenu[2]) or selScreenEnd then
+		print("start.f_selectScreen() returning true immediately (skip select screen)")
 		return true
 	end
+	print("start.f_selectScreen() continuing to show select screen")
 	main.f_bgReset(motif.selectbgdef.bg)
 	main.f_fadeReset('fadein', motif.select_info)
 	main.f_playBGM(false, motif.music.select_bgm, motif.music.select_bgm_loop, motif.music.select_bgm_volume, motif.music.select_bgm_loopstart, motif.music.select_bgm_loopend)

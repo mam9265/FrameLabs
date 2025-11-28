@@ -1,0 +1,262 @@
+;--------------------------------------------------------------------------------------
+;FATALITY TIME
+[StateDef 10000]
+type = S
+movetype= I
+physics = S
+juggle = 1
+velset = 0,0
+ctrl = 1
+
+[State 10000, 1]
+type = Helper
+trigger1 = 1
+trigger1 = NumHelper(7000) = 0
+ID = 7000 
+stateno = 7000
+pos = 160, -140
+postype = left
+helpertype = normal
+name = "FINISH_HIM_MODE" 
+keyctrl = 0
+ownpal = 1
+size.xscale = 1
+size.yscale = 1
+
+[State 10000, 2]
+type = ChangeState
+trigger1 = Time >1
+value = 0 
+ctrl = 1
+
+;-----------------------------------------------------------------
+;FINISH HIM HELPER
+[StateDef 7000]
+type = S
+movetype = A
+physics = S
+anim = 7000
+velset = 0,0
+ctrl = 1
+
+[State 7000, 1]
+type = HitDef
+trigger1 = time >0
+trigger1 = P2StateType != A
+trigger1 = P2Stateno != 49999
+attr = S, SA
+damage = 0,0
+animtype = Heavy
+hitflag = MF
+guardflag = A 
+priority = 7
+pausetime = 0,3
+sparkxy = 0,0
+sparkno = -1
+gurad.sparkno = -1
+hitsound = -1
+guardsound = -1
+ground.type = High
+ground.slidetime = 0
+ground.hittime = 0
+ground.velocity = 0
+air.velocity = 0
+air.fall = 1
+fall = 0
+numhits = 0
+p2stateno = 49999
+
+[state 7010, FINISH HIM!"]
+type = Helper
+trigger1 = Numhelper(7010) = 0
+trigger1 = movehit
+id = 7010 
+stateno = 7010
+pos = 0, 0
+postype = left
+helpertype = normal
+name = "FINISH HIM!"
+keyctrl = 0
+size.xscale = 1
+size.yscale = 1
+
+[State 300, 5]
+type = DestroySelf
+trigger1 = Time >400
+trigger2 = enemynear,stateno = 49999
+
+;-----------------------------------------------------------------------------
+;FINISH HIM!
+[Statedef 7010]
+type = S
+movetype= I
+physics = S
+juggle = 1
+velset = 0,0
+anim = 7010
+ctrl = 0
+
+[State 7010, 1]
+type = Posset
+trigger1 = 1
+x = -5
+y = -150
+
+[State 183, 1]
+type = AssertSpecial
+trigger1 = 1
+flag = Nomusic
+
+[State 7010, 1]
+type = PlaySnd
+triggerall = root,var(25) = 0
+trigger1 = Time = 50
+value = S100,26
+
+[State 7010, 1]
+type = PlaySnd
+triggerall = root,var(25) = 1
+trigger1 = Time = 0
+value = S410,5
+
+[State 300, 5] 
+type = playsnd
+trigger1 = Time = 0
+value = S100,28
+channel = 7
+abspan = 0
+Loop = 1
+
+[state -2]
+type = stopsnd
+trigger1 = win
+trigger2 = lose
+trigger3 = roundstate != 2
+channel = 7
+ignorehitpause = 1
+
+[state 7010, 2]
+type = AssertSpecial
+trigger1 = 1
+flag = noshadow
+
+[State 7010, 3]
+type = SprPriority
+trigger1 = 1
+value = 20 
+
+[State 6, 1]
+type = NotHitBy
+trigger1 = 1
+value = SCA
+time = 1
+
+[State 1007, Finish big]
+type = AngleDraw
+trigger1 = time =0
+value = 0
+scale = 0,0
+
+[State 1007, Finish big]
+type = AngleDraw
+trigger1 = time >0
+trigger1 = time <50
+value = 0
+scale = IfElse(Time >0,0+(Time*0.02),0.5), IfElse(Time >0,0+(Time*0.02),0.5)
+
+[State 1007, Finish big]
+type = AngleDraw
+trigger1 = time >=50
+trigger1 = time <=150
+value = 0
+scale = 1,1
+
+[State 5, 0]
+type = AngleDraw
+trigger1 = time >150
+value = 0
+scale = FVar(14) * Const(size.xscale), FVar(14) * Const(size.yscale)
+
+[State -2, VarAdd]
+type = Varset
+trigger1 = Time = 150
+ignorehitpause = 1
+fv = 14
+value = 1
+
+[State -2, VarAdd]
+type = Varadd ;parentVarAdd
+trigger1 = Time > 150
+ignorehitpause = 1
+fv = 14
+value = -0.02
+
+[State -2, VarAdd]
+type = Varadd ;parentVarAdd
+trigger1 = Time >= 200
+ignorehitpause = 1
+fv = 14
+value = 0
+
+[State 1007, Finish big]
+type = AngleDraw
+trigger1 = time >200
+value = 0
+scale = 0,0
+
+[State 300, 5]
+type = DestroySelf
+trigger1 = animtime = 0
+
+;---------------------------------------------------------------------------------------
+;PREPARE TO DIE
+[Statedef 49999]
+type = S
+movetype= H
+physics = S
+juggle = 1
+ctrl = 0
+velset = 0,0
+
+[State 7, 1]
+type = turn
+trigger1 = p2bodydist x<=-10
+trigger1 = p2statetype != A
+
+[State 49999, 1]
+type = LifeSet
+trigger1 = time<30
+value = 1
+
+[State 49999, 2]
+type = TargetLifeAdd
+trigger1 = time<30
+trigger1 = P2life <= 1
+value = 1
+
+[State 49999, 3]
+type = SelfState
+trigger1 = win
+trigger2 = P2Life <= 0
+value = 0
+ctrl = 1
+
+[State 49999, 3]
+type = SelfState
+trigger1 = Time = 305
+trigger1 = P2StateNo != [3000,3200] 
+trigger2 = life <= 0
+trigger3 = lose
+value = 5050
+ctrl = 0
+
+[State 49999, 4]
+type = LifeSet
+trigger1 = Time >=300
+trigger1 = P2StateNo != [3000,3200] 
+value = 0
+
+[State 49999, 5]
+type = ChangeAnim2
+trigger1 = !time
+value = 49999

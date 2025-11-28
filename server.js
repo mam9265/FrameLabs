@@ -322,9 +322,11 @@ FrameLabs.post('/launch-trail-ikemen', (req, res) => {
   console.log(`Launching Ikemen GO from: ${ikemenPath}`);
 
   try {
+    // AUTOTRAIN = 2 means regular trials mode (go to character select)
+    // AUTOTRAIN = 3 means daily challenge (auto-launch)
     const ikemenProcess = spawn(ikemenPath, [], {
       cwd,
-      env: { ...process.env, AUTOTRAIN: '2' },
+      env: { ...process.env, AUTOTRAIN: '2' }, // Regular trials - go to character select
     });
 
     // Log Ikemen output
@@ -1596,7 +1598,7 @@ FrameLabs.post('/api/daily-challenge/launch', async (req, res) => {
     // Set environment variables for trial mode
     const env = {
       ...process.env,
-      AUTOTRAIN: '2', // Trial mode
+      AUTOTRAIN: '3', // Daily challenge mode (auto-launch)
     };
     
     const ikemenProcess = spawn(ikemenPath, [], {
