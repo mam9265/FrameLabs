@@ -54,6 +54,8 @@ const user = require('./models/user');
 
 const buttonMapping = require('./models/buttonMapping');
 
+const dailyChallenge = require('./models/dailyChallenge');
+
 // Graceful shutdown route (admin only!)
 FrameLabs.post('/shutdown', (req, res) => {
   res.json({ message: 'Server shutting down...' });
@@ -320,9 +322,11 @@ FrameLabs.post('/launch-trail-ikemen', (req, res) => {
   console.log(`Launching Ikemen GO from: ${ikemenPath}`);
 
   try {
+    // AUTOTRAIN = 2 means regular trials mode (go to character select)
+    // AUTOTRAIN = 3 means daily challenge (auto-launch)
     const ikemenProcess = spawn(ikemenPath, [], {
       cwd,
-      env: { ...process.env, AUTOTRAIN: '2' },
+      env: { ...process.env, AUTOTRAIN: '2' }, // Regular trials - go to character select
     });
 
     // Log Ikemen output
@@ -343,7 +347,42 @@ FrameLabs.post('/launch-trail-ikemen', (req, res) => {
       // Optional: trigger cleanup or callback logic here
     });
 
-    // Respond to the HTTP request
+  } catch (err) {
+    console.error('Unexpected error:', err);
+    res.status(500).json({ error: 'Failed to launch Ikemen GO' });
+  }
+});
+
+FrameLabs.post('/launch-tutorial-ikemen', (req, res) => {
+  const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+  const cwd = path.dirname(ikemenPath);
+
+  console.log(`Launching Ikemen GO tutorial mode from: ${ikemenPath}`);
+
+  try {
+    const ikemenProcess = spawn(ikemenPath, [], {
+      cwd,
+      env: { ...process.env, AUTOTRAIN: '1', AUTOTUTORIAL: '1' },
+    });
+
+    // Log Ikemen output
+    ikemenProcess.stdout.on('data', (data) => {
+      console.log(`Ikemen: ${data.toString().trim()}`);
+    });
+
+    ikemenProcess.stderr.on('data', (data) => {
+      console.error(`Ikemen Error: ${data.toString().trim()}`);
+    });
+
+    ikemenProcess.on('error', (err) => {
+      console.error('Failed to start Ikemen GO:', err);
+    });
+
+    ikemenProcess.on('exit', (code, signal) => {
+      console.log(`Ikemen GO exited with code ${code} (signal: ${signal})`);
+      // Optional: trigger cleanup or callback logic here
+    });
+
   } catch (err) {
     console.error('Unexpected error:', err);
     res.status(500).json({ error: 'Failed to launch Ikemen GO' });
@@ -1380,6 +1419,397 @@ FrameLabs.delete('/api/controller-configs/:name', async (req, res) => {
   } catch (err) {
     console.error('Error deleting controller config:', err);
     res.status(500).json({ error: 'Server error while deleting controller config' });
+  }
+});
+
+// Helper function to get available characters from select.def
+function getAvailableCharacters() {
+  try {
+    const selectDefPath = path.join(__dirname, 'Ikemen-GO', 'data', 'select.def');
+    const content = fs.readFileSync(selectDefPath, 'utf8');
+    const characters = [];
+    
+    // Parse select.def to extract character names
+    const lines = content.split('\n');
+    let inCharactersSection = false;
+    
+    for (const line of lines) {
+      const trimmed = line.trim();
+      
+      // Check if we're in the [Characters] section
+      if (trimmed === '[Characters]') {
+        inCharactersSection = true;
+        continue;
+      }
+      
+      // Check if we've moved to another section
+      if (trimmed.startsWith('[') && trimmed !== '[Characters]') {
+        inCharactersSection = false;
+        continue;
+      }
+      
+      // Skip comments and empty lines
+      if (!inCharactersSection || trimmed.startsWith(';') || trimmed === '' || trimmed === 'randomselect') {
+        continue;
+      }
+      
+      // Extract character name (first part before comma)
+      const match = trimmed.match(/^([^,]+)/);
+      if (match) {
+        let charName = match[1].trim();
+        
+        // Handle character paths like "kfm/kfm.def" or "chars/kfm" or "guy by PotS/guy_pots.def"
+        if (charName.includes('/')) {
+          const parts = charName.split('/');
+          charName = parts[parts.length - 1].replace(/\.def$/, '');
+        }
+        
+        // Remove .def extension if present
+        charName = charName.replace(/\.def$/, '');
+        
+        // Clean up the name (remove extra spaces, etc.)
+        charName = charName.trim();
+        
+        if (charName && charName !== 'randomselect' && charName.length > 0) {
+          characters.push(charName);
+        }
+      }
+    }
+    
+    return characters.filter((char, index, self) => self.indexOf(char) === index); // Remove duplicates
+  } catch (err) {
+    console.error('Error reading select.def:', err);
+    // Fallback to known characters
+    return ['kfmZ', 'Lilith_YX'];
+  }
+}
+
+// Helper function to get or create today's daily challenge
+async function getOrCreateDailyChallenge() {
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  
+  let challenge = await dailyChallenge.findOne({ date: today });
+  
+  if (!challenge) {
+    // Get available characters
+    const availableChars = getAvailableCharacters();
+    
+    if (availableChars.length === 0) {
+      throw new Error('No characters available for daily challenge');
+    }
+    
+    // Select a random character
+    const randomChar = availableChars[Math.floor(Math.random() * availableChars.length)];
+    
+    // Create new daily challenge
+    challenge = new dailyChallenge({
+      date: today,
+      character: randomChar,
+      completedBy: [],
+    });
+    
+    await challenge.save();
+  }
+  
+  return challenge;
+}
+
+// Get today's daily challenge
+FrameLabs.get('/api/daily-challenge', async (req, res) => {
+  try {
+    const challenge = await getOrCreateDailyChallenge();
+    
+    res.status(200).json({
+      date: challenge.date,
+      character: challenge.character,
+      completedCount: challenge.completedBy.length,
+    });
+  } catch (err) {
+    console.error('Error getting daily challenge:', err);
+    res.status(500).json({ error: 'Server error while getting daily challenge' });
+  }
+});
+
+// Check if user has completed today's daily challenge
+FrameLabs.get('/api/daily-challenge/status/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const challenge = await getOrCreateDailyChallenge();
+    
+    const userCompletion = challenge.completedBy.find(
+      completion => completion.userId.toString() === userId
+    );
+    
+    const completedTrials = userCompletion && userCompletion.completedTrials 
+      ? userCompletion.completedTrials 
+      : [];
+    
+    res.status(200).json({
+      completed: completedTrials.length > 0,
+      completedTrials: completedTrials,
+      trialsCompleted: completedTrials.length,
+      date: challenge.date,
+      character: challenge.character,
+    });
+  } catch (err) {
+    console.error('Error checking daily challenge status:', err);
+    res.status(500).json({ error: 'Server error while checking daily challenge status' });
+  }
+});
+
+// Launch trial mode with daily challenge character
+FrameLabs.post('/api/daily-challenge/launch', async (req, res) => {
+  try {
+    const { userId } = req.body; // Get userId from request
+    const challenge = await getOrCreateDailyChallenge();
+    const ikemenPath = path.join(__dirname, 'Ikemen-GO', 'Ikemen_GO.exe');
+    const cwd = path.dirname(ikemenPath);
+    const configPath = path.join(cwd, 'save', 'config.json');
+    
+    console.log(`Launching daily challenge trial mode with character: ${challenge.character}`);
+    
+    // Remove any existing trial completion files
+    for (let i = 1; i <= 100; i++) { // Check up to 100 trials
+      const trialFile = path.join(cwd, `daily_challenge_trial_${i}_complete.txt`);
+      if (fs.existsSync(trialFile)) {
+        fs.unlinkSync(trialFile);
+      }
+    }
+    
+    // Update config.json to set TrainingChar for trial mode
+    let config = {};
+    if (fs.existsSync(configPath)) {
+      try {
+        config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      } catch (err) {
+        console.warn('Error parsing config.json, creating new one:', err);
+      }
+    }
+    
+    // Store original TrainingChar to restore later (optional)
+    const originalTrainingChar = config.TrainingChar || '';
+    
+    // Set the daily challenge character
+    config.TrainingChar = challenge.character;
+    
+    // Write updated config
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    
+    // Set environment variables for trial mode
+    const env = {
+      ...process.env,
+      AUTOTRAIN: '3', // Daily challenge mode (auto-launch)
+    };
+    
+    const ikemenProcess = spawn(ikemenPath, [], {
+      cwd,
+      env,
+    });
+    
+    // Log Ikemen output
+    ikemenProcess.stdout.on('data', (data) => {
+      console.log(`Ikemen: ${data.toString().trim()}`);
+    });
+    
+    ikemenProcess.stderr.on('data', (data) => {
+      console.error(`Ikemen Error: ${data.toString().trim()}`);
+    });
+    
+    ikemenProcess.on('error', (err) => {
+      console.error('Failed to start Ikemen GO:', err);
+      // Restore original TrainingChar on error
+      if (originalTrainingChar !== undefined) {
+        config.TrainingChar = originalTrainingChar;
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+      }
+    });
+    
+    ikemenProcess.on('exit', async (code, signal) => {
+      console.log(`Ikemen GO exited with code ${code} (signal: ${signal})`);
+      
+      // Check for individual trial completion files and award points incrementally
+      if (userId) {
+        try {
+          const account = await userAccount.findOne({ userId: userId });
+          if (!account) {
+            console.log('User account not found, skipping point awards');
+            return;
+          }
+          
+          // Get the challenge once outside the loop
+          const challengeCheck = await getOrCreateDailyChallenge();
+          
+          let totalPointsAwarded = 0;
+          let trialsCompleted = [];
+          
+          // Check for trial completion files (up to 100 trials)
+          for (let i = 1; i <= 100; i++) {
+            const trialFile = path.join(cwd, `daily_challenge_trial_${i}_complete.txt`);
+            if (fs.existsSync(trialFile)) {
+              trialsCompleted.push(i);
+              
+              const userCompletion = challengeCheck.completedBy.find(
+                c => c.userId.toString() === userId
+              );
+              
+              // Check if this specific trial was already awarded
+              const alreadyAwarded = userCompletion && 
+                userCompletion.completedTrials && 
+                userCompletion.completedTrials.includes(i);
+              
+              if (!alreadyAwarded) {
+                // Award 100 points for this trial
+                const pointsBefore = account.points || 0;
+                account.points = pointsBefore + 100;
+                totalPointsAwarded += 100;
+                
+                // Track which trials were completed
+                if (!userCompletion) {
+                  challengeCheck.completedBy.push({
+                    userId: userId,
+                    completedAt: new Date(),
+                    completedTrials: [i],
+                  });
+                } else {
+                  if (!userCompletion.completedTrials) {
+                    userCompletion.completedTrials = [];
+                  }
+                  userCompletion.completedTrials.push(i);
+                }
+                
+                // Clean up the trial completion file
+                fs.unlinkSync(trialFile);
+              } else {
+                // Already awarded, just clean up the file
+                fs.unlinkSync(trialFile);
+              }
+            }
+          }
+          
+          if (totalPointsAwarded > 0) {
+            await account.save();
+            await challengeCheck.save();
+            
+            // Update or create leaderboard entry
+            let leaderboardEntry = await leaderboard.findOne({ player_name: account.name });
+            if (leaderboardEntry) {
+              leaderboardEntry.score = account.points;
+            } else {
+              leaderboardEntry = new leaderboard({
+                player_name: account.name,
+                score: account.points,
+              });
+            }
+            await leaderboardEntry.save();
+            
+            console.log(`✅ Daily Challenge Trials Completed! User: ${account.name} earned ${totalPointsAwarded} points (${trialsCompleted.length} trial(s): ${trialsCompleted.join(', ')}). Total points: ${(account.points || 0) - totalPointsAwarded} → ${account.points}`);
+          }
+        } catch (err) {
+          console.error('Error awarding trial completion points:', err);
+        }
+      }
+      
+      // Optionally restore original TrainingChar after exit
+      // Uncomment if you want to restore it:
+      // if (originalTrainingChar !== undefined) {
+      //   config.TrainingChar = originalTrainingChar;
+      //   fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+      // }
+    });
+    
+    res.status(200).json({
+      message: 'Daily challenge trial mode launched',
+      character: challenge.character,
+      date: challenge.date,
+    });
+  } catch (err) {
+    console.error('Error launching daily challenge:', err);
+    res.status(500).json({ error: 'Server error while launching daily challenge' });
+  }
+});
+
+// Complete daily challenge and award points
+FrameLabs.post('/api/daily-challenge/complete', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+    
+    const challenge = await getOrCreateDailyChallenge();
+    
+    // Check if user has already completed today's challenge
+    const hasCompleted = challenge.completedBy.some(
+      completion => completion.userId.toString() === userId
+    );
+    
+    if (hasCompleted) {
+      return res.status(400).json({ error: 'Daily challenge already completed for today' });
+    }
+    
+    // Add user to completedBy array
+    challenge.completedBy.push({
+      userId: userId,
+      completedAt: new Date(),
+    });
+    await challenge.save();
+    
+    // Award 100 points to user account
+    const account = await userAccount.findOne({ userId: userId });
+    if (!account) {
+      return res.status(404).json({ error: 'User account not found' });
+    }
+    
+    const pointsBefore = account.points || 0;
+    account.points = pointsBefore + 100;
+    await account.save();
+    
+    console.log(`✅ Daily Challenge Completed! User: ${account.name} earned 100 points. Total points: ${pointsBefore} → ${account.points}`);
+    
+    // Update or create leaderboard entry
+    let leaderboardEntry = await leaderboard.findOne({ player_name: account.name });
+    if (leaderboardEntry) {
+      leaderboardEntry.score = account.points;
+    } else {
+      leaderboardEntry = new leaderboard({
+        player_name: account.name,
+        score: account.points,
+      });
+    }
+    await leaderboardEntry.save();
+    
+    res.status(200).json({
+      message: 'Daily challenge completed! You earned 100 points.',
+      pointsAwarded: 100,
+      totalPoints: account.points,
+      character: challenge.character,
+      date: challenge.date,
+    });
+  } catch (err) {
+    console.error('Error completing daily challenge:', err);
+    res.status(500).json({ error: 'Server error while completing daily challenge' });
+  }
+});
+
+// Get daily challenge leaderboard (users with most points from daily challenges)
+FrameLabs.get('/api/daily-challenge/leaderboard', async (req, res) => {
+  try {
+    const accounts = await userAccount.find({ points: { $gt: 0 } })
+      .sort({ points: -1 })
+      .limit(100)
+      .select('name points userId');
+    
+    const leaderboardData = accounts.map(account => ({
+      player_name: account.name,
+      score: account.points,
+      userId: account.userId,
+    }));
+    
+    res.status(200).json(leaderboardData);
+  } catch (err) {
+    console.error('Error getting daily challenge leaderboard:', err);
+    res.status(500).json({ error: 'Server error while getting leaderboard' });
   }
 });
 

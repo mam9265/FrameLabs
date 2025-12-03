@@ -70,6 +70,25 @@
       background-color: #3a008b;
       transform: scale(1.05);
     }
+    .Leaderboard {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+    }
+    .Leaderboard:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
@@ -87,11 +106,11 @@
       <p>TRY TO ENTER THE CORRECT COMBOS FOR EACH CHARACTER.</p>
     </div>
 
-    <a href="./practiceModeScreens/basicTutorial.html" class="card">
+    <div class="card" onclick="launchTutorialIkemen()">
       <span class="emoji">📘</span>
       <h2>BASIC TUTORIAL</h2>
       <p>NEW TO FRAME LABS OR FIGHTING GAMES? LEARN THE BASICS HERE.</p>
-    </a>
+    </div>
 
     <a href="./practiceModeScreens/dailyChallenge.html" class="card">
       <span class="emoji">📅</span>
@@ -102,9 +121,15 @@
 
   <button class="back-button" onclick="goBack()">⟵ MAIN MENU</button>
 
+  <button class="Leaderboard" onclick="leaderboard()">LEADERBOARD</button>
+
   <script>
     function goBack() {
       window.location.href = "homePage.html";
+    }
+
+    function leaderboard() {
+      window.location.href = "leaderboard.html";
     }
 
     function launchTrainingIkemen() {
@@ -118,6 +143,25 @@
         .then(res => res.json())
         .then(data => alert(data.message))
         .catch(err => alert('Error launching Ikemen GO: ' + err.message));
+    }
+    function launchTutorialIkemen() {
+      fetch('/launch-tutorial-ikemen', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => alert(data.message))
+        .catch(err => alert('Error launching Ikemen GO: ' + err.message));
+    }
+    
+    function launchDailyChallenge() {
+      fetch('/api/daily-challenge/launch', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            alert('Error: ' + data.error);
+          } else {
+            alert('Daily Challenge launched!\nCharacter: ' + data.character + '\nDate: ' + data.date);
+          }
+        })
+        .catch(err => alert('Error launching daily challenge: ' + err.message));
     }
   </script>
 </body>

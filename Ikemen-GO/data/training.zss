@@ -46,8 +46,15 @@ ignoreHitPause if gameMode != "training" || isHelper || teamSide != 2 {
 	map(_iksys_trainingPowerTimer) := 0;
 	map(_iksys_trainingDirection) := 0;
 	map(_iksys_trainingAirJumpNum) := 0;
+	map(_iksys_tutorialDisplayed) := 0;
+	map(_iksys_tutorialFlag) := 0;
 } else ignoreHitPause if roundState = 2 {
 	assertSpecial{flag: globalNoKo}
+	# Tutorial mode - display tutorial information if flag is set (only once per round)
+	if map(_iksys_tutorialMode) = 1 && map(_iksys_tutorialDisplayed) = 0 {
+		call Tutorial();
+		map(_iksys_tutorialDisplayed) := 1;
+	}
 	# Life and Power recovery
 	for i = 1; player(1),numPartner + 1; 1 {
 		call TrainingRecovery($i * 2 - 1);

@@ -1,0 +1,35 @@
+; Player information
+[Info]
+name ="SSF2T M. Bison"
+displayname ="M.Bison"
+versiondate =11,22,2000
+mugenversion =11,22,2000
+author ="Vegeta 20xx"
+pal.defaults =6,3,4,2
+
+; Files for the player
+[Files]
+trials  =trials.def
+cmd     =superturbo.cmd
+cns     =superturbo.cns
+st      =superturbo.cns
+stcommon =common1.cns
+sprite  =superturbo.sff
+anim    =superturbo.air
+sound   =superturbo.snd
+pal1=ssf2t4.act
+pal2=ssf2t5.act
+pal3=ssf2t6.act
+pal4=ssf2t1.act
+pal5=ssf2t2.act
+pal6=ssf2t3.act
+pal7=classic2.act
+pal8=classic1.act
+pal9=classic2.act
+pal10=classic1.act
+pal11=classic2.act
+pal12=classic1.act
+
+[Arcade]
+intro.storyboard=
+ending.storyboard=ending.def

@@ -194,9 +194,13 @@
  ;Insert your characters below.
 
 kfmZ, stages/kfm.def
-kfm720, stages/kfm.def, order=0
 Lilith_YX, random
-
+Cliff-SubZero/Cliff-SubZero.def, random
+Cliff-Scorpion/Cliff-Scorpion.def, random
+MortalKombatII_SHAOKAHN_Playable/MUGEN_Size.def, random
+ssf2tryu/ssf2tryu.DEF, random
+ssf2tken/ssf2tken.def, random
+ssf2tmbison/ssf2tmbison.def, random
 randomselect
 
 ;-------------------------------------------------------------------------------

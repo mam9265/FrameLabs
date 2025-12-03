@@ -1,0 +1,32 @@
+; Definition file for subzero
+; Contains all the filenames needed for the character
+
+; Player information 
+ 
+[Info]
+name             ="SubZero-By cliff-A"
+displayname      ="SubZero"
+versiondate      =05/22/12
+mugenversion     =
+author           ="Cliff-A"
+pal.defaults     =1,2,3,4
+
+
+[Files]
+trials      =trials.def
+cmd         =AI-Patch\AI-ToGo.cmd
+cns         =CNS-States\Cliff-Ice-Cube.cns
+st          =CNS-States\Cliff-Ice-Cube.cns
+stcommon    =CNS-States\common1.cns
+sprite      =Sprites\Cliff-Ice-Cube.sff
+anim        =Sprites\Cliff-Ice-Cube.air
+sound       =Sounds\Cliff-Ice-Cube.snd
+pal1=Palettes\Cliff-Ice-Cube1.act
+pal2=Palettes\Cliff-Ice-Cube2.act
+pal3=Palettes\Cliff-Ice-Cube3.act
+pal4=Palettes\Cliff-Ice-Cube4.act
+
+
+[Arcade]
+intro.storyboard  =Intro/intro.def
+ending.storyboard =Ending/ending.def

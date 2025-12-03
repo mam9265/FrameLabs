@@ -219,6 +219,26 @@ ignoreHitPause{
 	}
 }
 
+# Tutorial
+# Displays tutorial information to help players learn how to play the game
+[Function Tutorial() ret]
+ignoreHitPause{
+	let ret = 0;
+	# Only display tutorial once - check if already displayed this round
+	if map(_iksys_tutorialFlag) = 0 {
+		# Display tutorial in multiple short lines using separate messages that stack
+		# Each line appears below the previous one, all at once
+		# Using very large time value (999999 frames = ~4.6 hours at 60fps) so text stays until mode ends
+		lifebarAction{text: "TUTORIAL:"; time: 999999; top: 0; redirectId: player(1),id}
+		lifebarAction{text: "Arrows = Move/Jump/Crouch"; time: 999999; top: 0; redirectId: player(1),id}
+		lifebarAction{text: "A/B/C = Attacks"; time: 999999; top: 0; redirectId: player(1),id}
+		lifebarAction{text: "Back = Guard"; time: 999999; top: 0; redirectId: player(1),id}
+		lifebarAction{text: "Chain attacks for combos!"; time: 999999; top: 0; redirectId: player(1),id}
+		map(_iksys_tutorialFlag) := 1;
+		let ret = 1;
+	}
+}
+
 #===============================================================================
 # Global states (not halted by Pause/SuperPause, no helper limitations)
 #===============================================================================
@@ -249,6 +269,7 @@ if teamSide = 0 {
 	map(_iksys_receivedDamageFlag) := 0;
 	map(_iksys_receivedDamageCurr) := 0;
 	map(_iksys_receivedDamageRet) := 0;
+	map(_iksys_tutorialFlag) := 0;
 } else ignoreHitPause if roundState >= 2 {
 	call FirstAttack();
 	call CounterHit();
