@@ -1458,14 +1458,9 @@ function getAvailableCharacters() {
       if (match) {
         let charName = match[1].trim();
         
-        // Handle character paths like "kfm/kfm.def" or "chars/kfm" or "guy by PotS/guy_pots.def"
-        if (charName.includes('/')) {
-          const parts = charName.split('/');
-          charName = parts[parts.length - 1].replace(/\.def$/, '');
-        }
-        
-        // Remove .def extension if present
-        charName = charName.replace(/\.def$/, '');
+        // Remove .def extension if present, but preserve the full path
+        // This is important for characters in subdirectories like "MortalKombatII_SHAOKAHN_Playable/MUGEN_Size.def"
+        charName = charName.replace(/\.def$/i, '');
         
         // Clean up the name (remove extra spaces, etc.)
         charName = charName.trim();

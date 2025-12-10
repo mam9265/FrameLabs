@@ -407,9 +407,22 @@ main.t_itemname['trials'] = function(t, item)
 	setHomeTeam(1)
 	main.f_playerInput(main.playerInput, 1)
 	main.t_pIn[2] = 1
-	if main.t_charDef[config.TrainingChar:lower()] ~= nil then
-		main.forceChar[2] = {main.t_charDef[config.TrainingChar:lower()]}
-  	end
+	-- Try to get character reference (can dynamically load if not in t_charDef)
+	if config.TrainingChar ~= "" then
+		local charRef = nil
+		if start.f_getCharRef then
+			local success, result = pcall(function() return start.f_getCharRef(config.TrainingChar) end)
+			if success and result ~= nil then
+				charRef = result
+			end
+		end
+		if charRef == nil and main.t_charDef[config.TrainingChar:lower()] ~= nil then
+			charRef = main.t_charDef[config.TrainingChar:lower()]
+		end
+		if charRef ~= nil then
+			main.forceChar[2] = {charRef}
+		end
+	end
 	--main.lifebar.p1score = false
 	--main.lifebar.p2aiLevel = true
 	main.roundTime = -1
@@ -428,7 +441,23 @@ main.t_itemname['trials'] = function(t, item)
 	-- Auto-launch only for daily challenge (when AUTOTRAIN == "3")
 	-- AUTOTRAIN == "2" will go to character selection (regular trials)
 	-- Regular trials (no AUTOTRAIN or AUTOTRAIN != "3") will also go to character selection
-	if os.getenv("AUTOTRAIN") == "3" and config.TrainingChar ~= "" and main.t_charDef[config.TrainingChar:lower()] ~= nil then
+	-- Check if character is valid using f_getCharRef (which can dynamically load characters)
+	local p2CharRef = nil
+	if os.getenv("AUTOTRAIN") == "3" and config.TrainingChar ~= "" then
+		-- Try f_getCharRef first (can dynamically load characters)
+		if start.f_getCharRef then
+			local success, result = pcall(function() return start.f_getCharRef(config.TrainingChar) end)
+			if success and result ~= nil then
+				p2CharRef = result
+			end
+		end
+		-- Fallback to checking t_charDef directly
+		if p2CharRef == nil and main.t_charDef[config.TrainingChar:lower()] ~= nil then
+			p2CharRef = main.t_charDef[config.TrainingChar:lower()]
+		end
+	end
+	
+	if os.getenv("AUTOTRAIN") == "3" and config.TrainingChar ~= "" and p2CharRef ~= nil then
 		-- Initialize player data structures to prevent nil errors
 		if start.p == nil then
 			start.p = {}
