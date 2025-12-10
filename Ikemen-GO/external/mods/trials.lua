@@ -442,84 +442,75 @@ main.t_itemname['trials'] = function(t, item)
 	-- AUTOTRAIN == "2" will go to character selection (regular trials)
 	-- Regular trials (no AUTOTRAIN or AUTOTRAIN != "3") will also go to character selection
 	-- Check if character is valid using f_getCharRef (which can dynamically load characters)
-	local p2CharRef = nil
+	local p1CharRef = nil
 	if os.getenv("AUTOTRAIN") == "3" and config.TrainingChar ~= "" then
 		-- Try f_getCharRef first (can dynamically load characters)
 		if start.f_getCharRef then
 			local success, result = pcall(function() return start.f_getCharRef(config.TrainingChar) end)
 			if success and result ~= nil then
-				p2CharRef = result
+				p1CharRef = result
 			end
 		end
 		-- Fallback to checking t_charDef directly
-		if p2CharRef == nil and main.t_charDef[config.TrainingChar:lower()] ~= nil then
-			p2CharRef = main.t_charDef[config.TrainingChar:lower()]
+		if p1CharRef == nil and main.t_charDef[config.TrainingChar:lower()] ~= nil then
+			p1CharRef = main.t_charDef[config.TrainingChar:lower()]
 		end
 	end
-	
-	if os.getenv("AUTOTRAIN") == "3" and config.TrainingChar ~= "" and p2CharRef ~= nil then
+
+	if os.getenv("AUTOTRAIN") == "3" and config.TrainingChar ~= "" and p1CharRef ~= nil then
 		-- Initialize player data structures to prevent nil errors
-		if start.p == nil then
-			start.p = {}
-		end
-		if start.p[1] == nil then
-			start.p[1] = {}
-		end
-		if start.p[2] == nil then
-			start.p[2] = {}
-		end
+		if start.p == nil then start.p = {} end
+		if start.p[1] == nil then start.p[1] = {} end
+		if start.p[2] == nil then start.p[2] = {} end
+
 		-- Initialize selection arrays to prevent nil errors
-		if start.p[1].t_selected == nil then
-			start.p[1].t_selected = {}
-		end
-		if start.p[1].t_selTemp == nil then
-			start.p[1].t_selTemp = {}
-		end
-		if start.p[2].t_selected == nil then
-			start.p[2].t_selected = {}
-		end
-		if start.p[2].t_selTemp == nil then
-			start.p[2].t_selTemp = {}
-		end
-		
-		-- Get first available character name for P1
-		local p1CharName = nil
+		if start.p[1].t_selected == nil then start.p[1].t_selected = {} end
+		if start.p[1].t_selTemp == nil then start.p[1].t_selTemp = {} end
+		if start.p[2].t_selected == nil then start.p[2].t_selected = {} end
+		if start.p[2].t_selTemp == nil then start.p[2].t_selTemp = {} end
+
+		----------------------------------------------------------------
+		-- PLAYER 1 = TRAINING CHAR
+		----------------------------------------------------------------
+		local p1CharName = config.TrainingChar
+
+		----------------------------------------------------------------
+		-- PLAYER 2 = First available character
+		----------------------------------------------------------------
+		local p2CharName = nil
+
+		-- Try order 1 first
 		if main.t_orderChars and main.t_orderChars[1] and #main.t_orderChars[1] > 0 then
-			-- Use first character from order 1
-			local p1CharRef = main.t_orderChars[1][1]
-			if p1CharRef and start.f_getCharData then
-				p1CharName = start.f_getCharData(p1CharRef).char
+			local p2CharRef = main.t_orderChars[1][1]
+			if p2CharRef and start.f_getCharData then
+				p2CharName = start.f_getCharData(p2CharRef).char
 			end
 		end
-		
-		-- Fallback: get first playable character
-		if not p1CharName and main.t_selChars and #main.t_selChars > 0 then
+
+		-- Fallback: first playable char
+		if not p2CharName and main.t_selChars and #main.t_selChars > 0 then
 			for i = 1, #main.t_selChars do
 				if main.t_selChars[i].playable and main.t_selChars[i].char then
-					p1CharName = main.t_selChars[i].char
+					p2CharName = main.t_selChars[i].char
 					break
 				end
 			end
 		end
-		
-		if not p1CharName then
-			print("Auto-launch: No valid P1 character found, falling back to select screen")
+
+		if not p2CharName then
+			print("Auto-launch: No valid P2 character found, falling back to select screen")
 			return start.f_selectMode
 		end
-		
-		-- Get P2 character name from TrainingChar
-		local p2CharName = config.TrainingChar
-		
+
 		-- Initialize t_availableChars if needed (required by launchFight)
 		if main.t_availableChars == nil then
 			if main.f_tableCopy and main.t_orderChars then
 				main.t_availableChars = main.f_tableCopy(main.t_orderChars)
 			else
-				-- Fallback: create empty table structure
 				main.t_availableChars = {}
 			end
 		end
-		
+
 		-- Initialize t_savedData if needed (required by f_setRounds)
 		if start.t_savedData == nil then
 			start.t_savedData = {}
@@ -536,29 +527,29 @@ main.t_itemname['trials'] = function(t, item)
 		if start.t_savedData.lose == nil then
 			start.t_savedData.lose = {0, 0}
 		end
-		
+
 		-- Set team modes before launchFight
 		start.p[1].teamMode = 0 -- Single
 		start.p[1].numChars = 1
 		start.p[2].teamMode = 0 -- Single
 		start.p[2].numChars = 1
-		
-		-- Launch fight directly with character names
-		-- launchFight will handle character selection internally
+
+		----------------------------------------------------------------
+		-- LAUNCH FIGHT: P1 = TrainingChar, P2 = First available character
+		----------------------------------------------------------------
 		if launchFight then
 			launchFight{
-				p1char = {[1] = p1CharName},
-				p2char = {[1] = p2CharName},
+				p1char = {[1] = p1CharName}, -- Training Char is Player 1
+				p2char = {[1] = p2CharName}, -- Auto-selected char is Player 2
 			}
-			return nil -- Don't return select mode, fight is starting
+			return nil -- Fight is starting
 		else
 			print("Auto-launch: launchFight function not available, falling back to select screen")
 			return start.f_selectMode
 		end
 	end
-	
+
 	-- Regular trials mode - go to character selection
-	-- Return the function for the menu system to call after fadeout
 	print("Trials: Setting up character select mode")
 	print("Trials: Checking if start.f_selectMode exists...")
 	if start and start.f_selectMode then
@@ -574,16 +565,18 @@ main.t_itemname['trials'] = function(t, item)
 			print("ERROR: start table does not exist!")
 		end
 	end
+
 	print("Trials: Falling back to nil return")
 	return nil
-end
-print("Trials module: Override complete. main.t_itemname['trials'] type: " .. type(main.t_itemname['trials']))
--- Verify the function is accessible
-if main.t_itemname['trials'] then
-	print("Trials module: Function is accessible and ready")
-else
-	print("ERROR: Trials function is not accessible after override!")
-end
+	end
+
+	print("Trials module: Override complete. main.t_itemname['trials'] type: " .. type(main.t_itemname['trials']))
+
+	if main.t_itemname['trials'] then
+		print("Trials module: Function is accessible and ready")
+	else
+		print("ERROR: Trials function is not accessible after override!")
+	end
 
 --;===========================================================
 --; motif.lua
