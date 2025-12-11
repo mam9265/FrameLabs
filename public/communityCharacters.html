@@ -2,60 +2,245 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Add Community Character</title>
+  <title>Community Characters</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background: #eef; }
-    form { display: flex; flex-direction: column; width: 300px; gap: 12px; }
-    input, textarea, button { padding: 8px; border-radius: 6px; border: 1px solid #888; }
-    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
-    button:hover { background: #45a049; }
+    body {
+      text-align: center;
+      background-color: #015b91;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 110px;
+      letter-spacing: 6px;
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+    
+    .wrapper {
+      display: flex;
+      margin: auto;
+      width: 85%;
+      max-width: 1200px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      justify-content: center;
+    }
+
+    /* LEFT SIDE - INTRO */
+    .charList {
+      flex: 1;
+      padding: 40px;
+      background: linear-gradient(180deg, #3f0091, #2a006b);
+      color: #9be0e3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    /*
+    .charList h1 {
+      font-size: 70px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      letter-spacing: 3px;
+    }*/
+
+    /* RIGHT SIDE */
+    .charView {
+      flex: 0.7;
+      padding: 50px;
+      text-align: center;
+      background-color: #1a0047;
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      font-size: 22px;
+      margin: auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      width: 65%;
+      padding: 14px;
+      background-color: #9be0e3;
+      color: #2a006b;
+      font-size: 16px;
+      font-family: 'Orbitron', sans-serif;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      margin-left: auto;
+      margin-right: auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    select {
+
+      font-family: 'Orbitron', sans-serif;
+      background-color: #2a006b;
+      color: #9be0e3;
+      overflow-y: scroll;
+
+    }
+
+    button:hover {
+      background-color: #7dd4e0;
+    }
+
+    .back-button {
+      
+      bottom: 30px;
+      left: 30px;
+      background-color: #2a006b;
+      color: #9be0e3;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      letter-spacing: 1px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .back-button:hover {
+      background-color: #3a008b;
+      transform: scale(1.05);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <h1>Community Characters</h1>
+
+  <div class="wrapper">
+
+    <!-- LEFT SIDE -->
+    <div class="charList">
+
+        <p>Community characters will be shown here.</p>
+        <p>Select one to see more information about it.</p>
+        <select id = "charSelect" size="7" onmouseup="loadCharDesc()">  
+            
+        </select>
+
+        <!--<button> Upload Character </button>-->
+      
+    </div>
+
+    <script>
+
+            window.onload = loadChars();
+
+            async function loadChars() {
+                
+                try {
+
+                    const res = await fetch(`/api/community/characters`);
+                    if (!res.ok) throw new Error('Failed to fetch characters');
+                    
+                    characters = await res.json();
+                    const recordCount = characters.length;
+                    const select = document.getElementById('charSelect');
+                    let titles = [];
+                    for (let i = 0; i < recordCount; i++) { titles[i] = characters[i].title; }
+                    for (let j = 0; j < recordCount; j++) { 
+                        
+                        var optn = titles[j]; 
+                        var el = document.createElement("option"); 
+                        el.textContent = optn; 
+                        el.value = optn; 
+                        select.appendChild(el);
+
+                     }
+
+                } catch (err) {
+                    console.error('Error loading characters:', err);
+                    alert('Characters could not be loaded.');
+                }
+
+            }
+
+    </script>
+
+    <!-- RIGHT SIDE -->
+    <div class="charView">
+      
+        <p>Character Information:</p>
+
+        <p id = "charDescription">
+            Select a character on the left to see more information about it and add it to your account.
+            Adding a character to your account means you are able to use it in practice modes as you please.
+        </p>
+
+        <!--<button> Add character to Profile </button>-->
+
+    </div>
+
+    <script>
+
+        function loadCharDesc() {
+
+          const select = document.getElementById("charSelect");
+          var title = select.options[select.selectedIndex].text;
+
+          if (select) {
+            
+            //alert('Select happened.');
+            try {
+
+              const res = fetch(`/api/community/characters/${title}`);
+              if (!res.ok) throw new Error('Failed to fetch characters');
+
+              charDesc = res.json();
+              ///*
+              const desc = document.getElementById('charDescription');
+              desc.textContent = charDesc.description.text;//*/
+
+            } catch (err) {
+
+              console.error('Error loading characters:', err);
+              alert('Character desc could not be loaded.');
+              
+            }
+          
+          }
+
+        }
+
+    </script>
+
+  </div>
+
+  <button class="back-button" onclick="window.location.href='homePage.html'">Back to Home</button>
+
   </style>
 </head>
 <body>
-  <h2>Add a Community Character</h2>
-  
-  <form id="characterForm">
-    <label for="name">Character Name:</label>
-    <input type="text" id="name" name="name" required />
 
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" rows="4" required></textarea>
-
-    <button type="submit">Add Character</button>
-
-    <button class="back-button" onclick="window.location.href='communityCreations.html'">Back to Community Creations</button>
-  </form>
-
-  <p id="responseMsg"></p>
-
-  <script>
-    document.getElementById("characterForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById("name").value;
-      const description = document.getElementById("description").value;
-
-      try {
-        const response = await fetch("/api/community/characters", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, description }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          document.getElementById("responseMsg").innerText =
-            `✅ Character "${data.name}" added successfully!`;
-          e.target.reset();
-        } else {
-          document.getElementById("responseMsg").innerText = `❌ Error: ${data.error}`;
-        }
-      } catch (err) {
-        console.error(err);
-        document.getElementById("responseMsg").innerText = "⚠️ Failed to reach server.";
-      }
-    });
-  </script>
-</body>
 </html>
+
